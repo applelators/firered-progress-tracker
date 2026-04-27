@@ -103,7 +103,13 @@ const AREAS = [
     note:"Pikachu is rare but catchable here (5%). Metapod and Kakuna both appear in both versions at different rates — Kakuna is more common in FireRed, Metapod in LeafGreen.",
     pokemon:[{name:"Caterpie",method:"Grass",levels:"3–5",rate:"40%"},{name:"Weedle",method:"Grass",levels:"3–5",rate:"40%"},{name:"Metapod",method:"Grass",levels:"4–6",rate:"5% FR / 10% LG"},{name:"Kakuna",method:"Grass",levels:"4–6",rate:"10% FR / 5% LG"},{name:"Pikachu",method:"Grass",levels:"3–5",rate:"5%"}],
     items:[{name:"Poké Ball",hidden:false,note:"Dead-end grassy path northwest of south entrance"},{name:"Antidote",hidden:true,note:"West side of lone tree near south entrance"},{name:"Antidote",hidden:false,note:"Northeast area past Trainer Tips sign"},{name:"Potion",hidden:false,note:"Tall grass east of southern entrance"},{name:"Potion",hidden:false,note:"Dead-end path southeast of north exit"},{name:"Potion",hidden:true,note:"In front of Bug Catcher Sammy near north exit"}],
-    trainers:[{class:"Bug Catcher",name:"Rick"},{class:"Bug Catcher",name:"Doug"},{class:"Bug Catcher",name:"Anthony"},{class:"Bug Catcher",name:"Charlie"},{class:"Bug Catcher",name:"Sammy"}] },
+    trainers:[
+      {class:"Bug Catcher",name:"Rick",   team:[{name:"Weedle",level:6},{name:"Caterpie",level:6}]},
+      {class:"Bug Catcher",name:"Doug",   team:[{name:"Weedle",level:7},{name:"Kakuna",level:7},{name:"Weedle",level:7}]},
+      {class:"Bug Catcher",name:"Anthony",team:[{name:"Caterpie",level:7},{name:"Caterpie",level:8}]},
+      {class:"Bug Catcher",name:"Charlie",team:[{name:"Metapod",level:7},{name:"Caterpie",level:7},{name:"Metapod",level:7}]},
+      {class:"Bug Catcher",name:"Sammy",  team:[{name:"Weedle",level:9}]},
+    ] },
 
   { part:"Part 3", id:"route2-north", name:"Route 2 (North, via Cut)",
     note:"Return with HM01 Cut + Boulder Badge. TM28 Dig from the gatehouse man.",
@@ -114,7 +120,10 @@ const AREAS = [
     note:"Defeat Brock for TM39 Rock Tomb. Old Amber requires Cut to reach the museum scientist — bring it to Cinnabar Lab to revive Aerodactyl.",
     pokemon:[],
     items:[{name:"Poké Ball",hidden:true,note:"West of Pewter Museum on lighter-colored grass"},{name:"TM39 Rock Tomb",hidden:false,note:"Reward from Brock after defeating him"},{name:"Running Shoes",hidden:false,note:"From Professor Oak's aide on east side of town after defeating Brock"},{name:"Old Amber",hidden:false,note:"Scientist in back of Museum (requires Cut) — bring to Cinnabar Lab to revive Aerodactyl"}],
-    trainers:[{class:"Camper",name:"Liam"},{class:"Gym Leader",name:"Brock"}] },
+    trainers:[
+      {class:"Camper",    name:"Liam", team:[{name:"Geodude",level:10},{name:"Sandshrew",level:11}]},
+      {class:"Gym Leader",name:"Brock",team:[{name:"Geodude",level:12},{name:"Onix",level:14}]},
+    ] },
 
   { part:"Part 4", id:"route3", name:"Route 3",
     note:"Jigglypuff appears at 25% — catch one before Cerulean. Mankey is useful against Brock.",
@@ -377,6 +386,23 @@ const C = {
 // Parts that have been fully audited against the Bulbapedia walkthrough — extend as each part is verified.
 const AUDITED_PARTS = new Set(["Part 1", "Part 2", "Part 3"]);
 
+// ─── SPRITES ─────────────────────────────────────────────────────────────────
+const DEX_ID = Object.fromEntries(DEX.map(p => [p.name, p.id]));
+const pokeSpriteUrl = id => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+
+const ITEM_SPRITE = {
+  "Antidote":"antidote","Potion":"potion","Poké Ball":"poke-ball","Poké Ball ×5":"poke-ball",
+  "Great Ball":"great-ball","Ultra Ball":"ultra-ball","Master Ball":"master-ball",
+  "Town Map":"town-map","Oak's Parcel":"oaks-parcel","Teachy TV":"teachy-tv",
+  "HP Up":"hp-up","Old Amber":"old-amber",
+  "TM28 Dig":"tm-ground","TM39 Rock Tomb":"tm-rock",
+};
+const itemSpriteUrl = name => { const s = ITEM_SPRITE[name]; return s ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${s}.png` : null; };
+
+const TRAINER_CLASS_SPRITE = {"Bug Catcher":"bugcatcher","Camper":"camper"};
+const TRAINER_NAME_SPRITE  = {"Brock":"brock"};
+const trainerSpriteUrl = (cls, name) => { const s = TRAINER_NAME_SPRITE[name] || TRAINER_CLASS_SPRITE[cls]; return s ? `https://play.pokemonshowdown.com/sprites/trainers/${s}.png` : null; };
+
 function pct(a, b) { return b ? Math.round((a / b) * 100) : 0; }
 function groupByPart(arr) { return arr.reduce((a, x) => { (a[x.part] = a[x.part]||[]).push(x); return a; }, {}); }
 
@@ -534,6 +560,7 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
                   {p.frOnly && <div style={{ position:"absolute", top:2, right:3, fontSize:7, color:"#ee6666" }}>FR</div>}
                   {p.lgOnly && <div style={{ position:"absolute", top:2, right:3, fontSize:7, color:C.lgBlue }}>LG</div>}
                   {p.event  && <div style={{ position:"absolute", top:2, right:3, fontSize:7, color:"#cc88ff" }}>✦</div>}
+                  <img src={pokeSpriteUrl(p.id)} alt={p.name} style={{ width:48, height:48, imageRendering:"pixelated", display:"block", margin:"0 auto", opacity: isCaught ? 1 : 0.55 }} />
                   <div style={{ fontSize:9, color:C.muted, marginBottom:1 }}>#{String(p.id).padStart(3,"0")}</div>
                   <div style={{ fontSize:10, color: isCaught ? C.green : C.text, fontWeight:isCaught?"bold":"normal", lineHeight:1.3, wordBreak:"break-word" }}>{p.name}</div>
                 </div>
@@ -552,6 +579,7 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
           ) : (
             <>
               <div style={{ marginBottom:12 }}>
+                <img src={pokeSpriteUrl(selected.id)} alt={selected.name} style={{ width:80, height:80, imageRendering:"pixelated", display:"block", margin:"0 auto 6px" }} />
                 <div style={{ fontSize:9, color:C.muted, marginBottom:2 }}>#{String(selected.id).padStart(3,"0")}</div>
                 <div style={{ fontSize:16, fontWeight:"bold", color: caught[selected.name] ? C.green : C.text }}>{selected.name}</div>
                 <div style={{ fontSize:10, color: caught[selected.name] ? C.green : C.muted, marginTop:2 }}>
@@ -661,6 +689,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                     const isCaught = !!caught[p.name];
                     return (
                       <Row key={i} done={isCaught} onClick={() => toggleCaught(p.name)}>
+                        {DEX_ID[p.name] && <img src={pokeSpriteUrl(DEX_ID[p.name])} alt={p.name} style={{ width:32, height:32, imageRendering:"pixelated", flexShrink:0, opacity: isCaught ? 1 : 0.55 }} />}
                         <div style={{ flex:1 }}>
                           <span style={{ color: isCaught ? C.green : p.lgOnly ? C.lgBlue : p.frOnly ? "#ee6666" : C.text, fontWeight:"bold", fontSize:12 }}>
                             {p.name}
@@ -687,6 +716,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                     const key = `${areaId}|${it.name}`;
                     return (
                       <Row key={i} done={!!items[key]} onClick={() => toggleItem(key)}>
+                        {itemSpriteUrl(it.name) && <img src={itemSpriteUrl(it.name)} alt={it.name} style={{ width:24, height:24, imageRendering:"pixelated", flexShrink:0 }} />}
                         <div style={{ flex:1 }}>
                           <span style={{ fontSize:11, fontWeight:"bold", color: it.hidden ? C.gold : C.text }}>
                             {it.hidden && <span style={{ color:C.gold, marginRight:3 }}>★</span>}
@@ -706,9 +736,27 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                 <Section title="⚔️ Trainers" count={`${trainerDone}/${area.trainers.length}`} color="#bb66ee">
                   {area.trainers.map((t, i) => {
                     const key = `${areaId}|${t.class}|${t.name}`;
+                    const tSprite = trainerSpriteUrl(t.class, t.name);
                     return (
                       <Row key={i} done={!!trainers[key]} onClick={() => toggleTrainer(key)}>
-                        <span style={{ fontSize:11, fontWeight:"bold" }}>{t.class} {t.name}</span>
+                        {tSprite && <img src={tSprite} alt={t.class} style={{ width:48, height:48, imageRendering:"pixelated", flexShrink:0 }} />}
+                        <div style={{ flex:1 }}>
+                          <div style={{ fontSize:11, fontWeight:"bold", marginBottom:4 }}>{t.class} {t.name}</div>
+                          {t.team?.length > 0 && (
+                            <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+                              {t.team.map((p, j) => {
+                                const pid = DEX_ID[p.name];
+                                return (
+                                  <div key={j} style={{ textAlign:"center" }}>
+                                    {pid && <img src={pokeSpriteUrl(pid)} alt={p.name} style={{ width:32, height:32, imageRendering:"pixelated", display:"block", margin:"0 auto" }} />}
+                                    <div style={{ fontSize:8, color:C.muted, lineHeight:1.3 }}>{p.name}</div>
+                                    <div style={{ fontSize:8, color:C.muted }}>Lv.{p.level}</div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
                       </Row>
                     );
                   })}

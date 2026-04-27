@@ -36,11 +36,11 @@ Connect the GitHub repo to Cloudflare Pages with no build command and no output 
 
 ## Features
 
-- **Pokédex tab** — full 151-Pokémon grid with a "Where to find" side panel; click any Pokémon to see every area it appears in, with encounter method, level range, and rate
+- **Pokédex tab** — full 151-Pokémon grid with sprites; click any Pokémon to see a larger sprite, its caught status, and every area it appears in with encounter method, level range, and rate
 - **Areas tab** — audited areas covering Pallet Town through Pewter City, each with:
-  - All wild Pokémon encounters with encounter rates (FireRed / LeafGreen differences noted)
-  - All obtainable items — both visible and hidden (★ = requires Itemfinder)
-  - All trainers, checkable as defeated
+  - All wild Pokémon encounters with sprites, encounter rates, and FireRed / LeafGreen differences noted
+  - All obtainable items with sprites — both visible and hidden (★ = requires Itemfinder)
+  - All trainers with trainer class sprites and full Pokémon teams (species, sprite, and level), checkable as defeated
   - FireRed-exclusive and LeafGreen-exclusive tags on relevant encounters
   - Warnings on one-time-only encounters (Snorlax ×2, legendaries, etc.)
 - **Shared Pokémon state** — catching a Pokémon in any area marks it caught everywhere, including the Pokédex tab
@@ -83,6 +83,8 @@ Key things to plan around:
 - All encounter and item data is hardcoded; no API calls, instant load
 - Encounter rates sourced from Bulbapedia; Pokémon availability is accurate for audited parts
 - Persistent storage uses `localStorage`
+- Pokémon and item sprites served from [PokeAPI sprites](https://github.com/PokeAPI/sprites) via GitHub raw CDN
+- Trainer sprites served from [Pokémon Showdown](https://play.pokemonshowdown.com/sprites/trainers/)
 
 ---
 
