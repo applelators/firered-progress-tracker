@@ -1222,9 +1222,10 @@ const AREAS = [
 
 // ─── BUILD LOCATION MAP ── (which areas each Pokémon appears in)
 // Computed once at module level since AREAS is static
+const _allPokemon = a => a.floors ? a.floors.flatMap(f => f.pokemon || []) : (a.pokemon || []);
 const LOCATION_MAP = {};
 for (const area of AREAS) {
-  for (const p of area.pokemon) {
+  for (const p of _allPokemon(area)) {
     if (!LOCATION_MAP[p.name]) LOCATION_MAP[p.name] = [];
     LOCATION_MAP[p.name].push({ areaId: area.id, areaName: area.name, part: area.part, method: p.method, levels: p.levels, rate: p.rate });
   }
