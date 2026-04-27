@@ -413,24 +413,99 @@ const AREAS = [
     items:[] },
 
   { part:"Part 7", id:"route11", name:"Route 11",
-    note:"30 Pokémon caught → Oak's aide gives the Itemfinder. NPC offers a Nidorina↔Nidorino trade (both catchable elsewhere).",
-    pokemon:[{name:"Ekans",method:"Grass",levels:"12–15",rate:"30%",frOnly:true},{name:"Sandshrew",method:"Grass",levels:"12–15",rate:"30%",lgOnly:true},{name:"Spearow",method:"Grass",levels:"13–17",rate:"30%"},{name:"Drowzee",method:"Grass",levels:"11–15",rate:"25%"}],
-    items:[{name:"Itemfinder",hidden:false,note:"Oak's aide in east gate (30 Pokémon caught)"},{name:"Super Potion",hidden:false,note:"On the ground"}] },
+    note:"Ekans is FR-only at 40%; Sandshrew fills the same slot in LeafGreen. Get the Itemfinder from Oak's aide in the east gate (30 Pokémon). Trade NPC in the gate: Nidorino→Nidorina (FR) or Nidorina→Nidorino (LG).",
+    pokemon:[
+      {name:"Ekans",    method:"Grass",  levels:"12–15",rate:"40%",frOnly:true},
+      {name:"Sandshrew",method:"Grass",  levels:"12–15",rate:"40%",lgOnly:true},
+      {name:"Spearow",  method:"Grass",  levels:"13–17",rate:"35%"},
+      {name:"Drowzee",  method:"Grass",  levels:"11–15",rate:"25%"},
+      {name:"Magikarp", method:"Old Rod",levels:"5",    rate:"100%"},
+      {name:"Nidorina", method:"Trade",  levels:"any",  frOnly:true,note:"Trade Nidorino in the east gate (FR)"},
+      {name:"Nidorino", method:"Trade",  levels:"any",  lgOnly:true,note:"Trade Nidorina in the east gate (LG)"},
+    ],
+    items:[
+      {name:"Awakening",   hidden:false,note:"Northwest part of the route"},
+      {name:"X Defend",    hidden:false,note:"Middle of the route, in a grass patch"},
+      {name:"Escape Rope", hidden:true, note:"On a rock just north of the east gate (★ Itemfinder)"},
+      {name:"Great Ball",  hidden:false,note:"South of the east gate"},
+      {name:"Itemfinder",  hidden:false,note:"East gate — from Oak's aide after catching 30 different species"},
+    ],
+    trainers:[
+      {class:"Youngster",name:"Eddie",  team:[{name:"Ekans",    level:21}]},
+      {class:"Gamer",    name:"Hugo",   team:[{name:"Poliwag",  level:18},{name:"Horsea",   level:18}]},
+      {class:"Engineer", name:"Bernie", team:[{name:"Magnemite",level:18},{name:"Magnemite",level:18},{name:"Magneton",level:18}]},
+      {class:"Youngster",name:"Dave",   team:[{name:"Nidoran♂", level:18},{name:"Nidorino", level:18}]},
+      {class:"Youngster",name:"Dillon", team:[{name:"Sandshrew",level:19},{name:"Zubat",    level:19}]},
+      {class:"Gamer",    name:"Jasper", team:[{name:"Bellsprout",level:18},{name:"Oddish",  level:18}]},
+      {class:"Engineer", name:"Braxton",team:[{name:"Magnemite",level:21}]},
+      {class:"Gamer",    name:"Darian", team:[{name:"Growlithe",level:18},{name:"Vulpix",   level:18}]},
+      {class:"Youngster",name:"Yasu",   team:[{name:"Rattata",  level:17},{name:"Rattata",  level:17},{name:"Raticate",level:17}]},
+      {class:"Gamer",    name:"Dirk",   team:[{name:"Voltorb",  level:18},{name:"Magnemite",level:18}]},
+    ] },
 
-  { part:"Part 7", id:"route10", name:"Route 10 (Power Plant path)",
-    note:"Surf from the north pond to reach the Power Plant (Zapdos). Electric Pokémon in the north grass near the plant.",
-    pokemon:[{name:"Voltorb",method:"Grass (N)",levels:"25–27",rate:"25%"},{name:"Magnemite",method:"Grass (N)",levels:"22–26",rate:"30%"},{name:"Spearow",method:"Grass",levels:"15–20",rate:"45%"},{name:"Rattata",method:"Grass (S)",levels:"14–18",rate:"35%"},{name:"Ekans",method:"Grass (S)",levels:"14–18",rate:"25%",frOnly:true},{name:"Sandshrew",method:"Grass (S)",levels:"14–18",rate:"25%",lgOnly:true},{name:"Tentacool",method:"Surf",levels:"5–40",rate:"90%"},{name:"Magikarp",method:"Old Rod",levels:"5"},{name:"Goldeen",method:"Good Rod",levels:"10–30"},{name:"Goldeen",method:"Super Rod",levels:"15–35"},{name:"Seaking",method:"Super Rod",levels:"15–35"}],
-    items:[{name:"Revive",hidden:false,note:"South section"},{name:"Max Ether",hidden:false,note:"Near south pond"}] },
+  { part:"Part 7", id:"route2-east", name:"Route 2 (East)",
+    note:"Accessible after using Cut on the blocking tree. Mr. Mime trade is here — swap Abra with the boy in the gate. HM05 Flash from Oak's aide requires 10 Pokémon.",
+    pokemon:[
+      {name:"Mr. Mime",method:"Trade",levels:"any",note:"Trade Abra in the east gate building"},
+    ],
+    items:[
+      {name:"HM05 Flash",   hidden:false,note:"East gate building — from Oak's aide after catching 10 different species"},
+      {name:"Ether",        hidden:false,note:"South of the gate, past the first ledge"},
+      {name:"Paralyze Heal",hidden:false,note:"South of the second ledge"},
+    ],
+    trainers:[] },
 
-  { part:"Part 7", id:"rock-tunnel", name:"Rock Tunnel",
+  { part:"Part 7", id:"route9", name:"Route 9",
+    note:"Ekans is FR-only at 25%; Sandshrew fills the same slot in LeafGreen.",
+    pokemon:[
+      {name:"Rattata",  method:"Grass",levels:"14–17",rate:"40%"},
+      {name:"Spearow",  method:"Grass",levels:"13–17",rate:"35%"},
+      {name:"Ekans",    method:"Grass",levels:"11–17",rate:"25%",frOnly:true},
+      {name:"Sandshrew",method:"Grass",levels:"11–17",rate:"25%",lgOnly:true},
+    ],
+    items:[
+      {name:"TM40 Aerial Ace",hidden:false,note:"Southwest corner of the route"},
+      {name:"Ether",          hidden:true, note:"Northwest part of the route, on a rock (★ Itemfinder)"},
+      {name:"Burn Heal",      hidden:false,note:"Southeast corner of the route"},
+      {name:"Chesto Berry",   hidden:true, note:"Northeast part of the route (★ Itemfinder)"},
+      {name:"Rare Candy",     hidden:true, note:"Northeast part of the route, one step west and south from corner (★ Itemfinder)"},
+    ],
+    trainers:[
+      {class:"Picnicker",  name:"Alicia",team:[{name:"Oddish",    level:18},{name:"Bellsprout",level:18},{name:"Oddish",level:18},{name:"Bellsprout",level:18}]},
+      {class:"Hiker",      name:"Jeremy",team:[{name:"Machop",    level:20},{name:"Onix",      level:20}]},
+      {class:"Camper",     name:"Chris", team:[{name:"Growlithe", level:21},{name:"Charmander",level:21}]},
+      {class:"Bug Catcher",name:"Brent", team:[{name:"Beedrill",  level:19},{name:"Beedrill",  level:19}]},
+      {class:"Hiker",      name:"Alan",  team:[{name:"Geodude",   level:21},{name:"Onix",      level:21}]},
+      {class:"Bug Catcher",name:"Conner",team:[{name:"Caterpie",  level:20},{name:"Weedle",    level:20},{name:"Venonat",level:20}]},
+      {class:"Camper",     name:"Drew",  team:[{name:"Rattata",   level:19},{name:"Sandshrew", level:19},{name:"Ekans",level:19},{name:"Sandshrew",level:19}]},
+      {class:"Hiker",      name:"Brice", team:[{name:"Geodude",   level:20},{name:"Geodude",   level:20},{name:"Machop",level:20}]},
+      {class:"Picnicker",  name:"Caitlin",team:[{name:"Meowth",   level:23}]},
+    ] },
+
+  { part:"Part 7", id:"route10-north", name:"Route 10 (North)",
+    note:"Pokémon Center here — stock up before Rock Tunnel. Voltorb first appears at 40%. Ekans is FR-only; Sandshrew fills the same slot in LeafGreen.",
+    pokemon:[
+      {name:"Voltorb",  method:"Grass",  levels:"14–17",rate:"40%"},
+      {name:"Spearow",  method:"Grass",  levels:"13–17",rate:"35%"},
+      {name:"Ekans",    method:"Grass",  levels:"11–17",rate:"25%",frOnly:true},
+      {name:"Sandshrew",method:"Grass",  levels:"11–17",rate:"25%",lgOnly:true},
+      {name:"Magikarp", method:"Old Rod",levels:"5",    rate:"100%"},
+    ],
+    items:[
+      {name:"Everstone",   hidden:false,note:"Pokémon Center — from Oak's aide after catching 20 different species"},
+      {name:"Persim Berry",hidden:true, note:"Southeast of Pokémon Center, corner of fencing (★ Itemfinder)"},
+      {name:"Cheri Berry", hidden:true, note:"Southwest of Pokémon Center, edge of dirt patch (★ Itemfinder)"},
+      {name:"Super Potion",hidden:true, note:"One step east of Rock Tunnel north entrance — requires Cut (★ Itemfinder)"},
+    ],
+    trainers:[
+      {class:"Picnicker", name:"Heidi",team:[{name:"Pikachu", level:20},{name:"Clefairy",level:20}]},
+      {class:"PokéManiac",name:"Mark", team:[{name:"Rhyhorn", level:29},{name:"Lickitung",level:29}]},
+    ] },
+
+  { part:"Part 8", id:"rock-tunnel", name:"Rock Tunnel",
     note:"Two floors. Flash isn't required but helps. Mankey is FR-only; Slowpoke is LG-only.",
     pokemon:[{name:"Zubat",method:"Cave",levels:"17–22",rate:"50%"},{name:"Geodude",method:"Cave",levels:"16–23",rate:"15%"},{name:"Machop",method:"Cave",levels:"16–20",rate:"15%"},{name:"Onix",method:"Cave",levels:"16–20",rate:"10%"},{name:"Mankey",method:"Cave",levels:"17–22",rate:"5%",frOnly:true},{name:"Slowpoke",method:"Cave",levels:"16–20",rate:"5%",lgOnly:true}],
     items:[{name:"Revive",hidden:false,note:"1F"},{name:"Max Ether",hidden:false,note:"1F"},{name:"Escape Rope",hidden:false,note:"1F"},{name:"Potion",hidden:false,note:"1F"},{name:"Hyper Potion",hidden:false,note:"B1F"},{name:"Full Heal",hidden:false,note:"B1F"},{name:"TM28 Dig",hidden:false,note:"B1F"},{name:"Antidote",hidden:true,note:"Itemfinder, 1F"},{name:"Potion",hidden:true,note:"Itemfinder, B1F"}] },
-
-  { part:"Part 8", id:"route9", name:"Route 9",
-    note:"Raticate starts appearing here. Ekans (FR) / Sandshrew (LG) split continues.",
-    pokemon:[{name:"Rattata",method:"Grass",levels:"15–19",rate:"35%"},{name:"Raticate",method:"Grass",levels:"15–19",rate:"20%"},{name:"Nidoran♀",method:"Grass",levels:"13–17",rate:"15%"},{name:"Nidoran♂",method:"Grass",levels:"13–17",rate:"15%"},{name:"Ekans",method:"Grass",levels:"14–18",rate:"15%",frOnly:true},{name:"Sandshrew",method:"Grass",levels:"14–18",rate:"15%",lgOnly:true}],
-    items:[{name:"Rare Candy",hidden:false,note:"Mid-route"}] },
 
   { part:"Part 8", id:"route8", name:"Route 8",
     note:"Vulpix and Growlithe are FireRed exclusives — catch both here and on Route 7!",
@@ -611,7 +686,7 @@ const C = {
 };
 
 // Parts that have been fully audited against the Bulbapedia walkthrough — extend as each part is verified.
-const AUDITED_PARTS = new Set(["Part 1", "Part 2", "Part 3", "Part 4", "Part 5", "Part 6"]);
+const AUDITED_PARTS = new Set(["Part 1", "Part 2", "Part 3", "Part 4", "Part 5", "Part 6", "Part 7"]);
 
 // ─── SPRITES ─────────────────────────────────────────────────────────────────
 const DEX_ID = Object.fromEntries(DEX.map(p => [p.name, p.id]));
@@ -639,6 +714,8 @@ const ITEM_SPRITE = {
   "Bike Voucher":"bike-voucher","TM34 Shock Wave":"tm-electric","TM31 Brick Break":"tm-fighting",
   "TM44 Rest":"tm-normal","Hyper Potion":"hyper-potion","Super Potion":"super-potion",
   "X Attack":"x-attack","HM01 Cut":"hm01","Lava Cookie":"lava-cookie","Stardust":"stardust",
+  "X Defend":"x-defend","Itemfinder":"itemfinder","HM05 Flash":"hm05",
+  "TM40 Aerial Ace":"tm-flying","Everstone":"everstone",
 };
 const itemSpriteUrl = name => { const s = ITEM_SPRITE[name]; return s ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${s}.png` : null; };
 
@@ -647,6 +724,7 @@ const TRAINER_CLASS_SPRITE = {
   "Hiker":"hiker","Super Nerd":"supernerd","Team Rocket Grunt":"teamrocket",
   "Picnicker":"picnicker","Swimmer":"swimmer",
   "Gentleman":"gentleman","Fisherman":"fisherman","Sailor":"sailor","Engineer":"engineer",
+  "Gamer":"gamer-gen3","PokéManiac":"pokemaniac",
 };
 const TRAINER_NAME_SPRITE  = {"Brock":"brock","Misty":"misty","Lt. Surge":"lt-surge","Blue":"blue"};
 const trainerSpriteUrl = (cls, name) => { const s = TRAINER_NAME_SPRITE[name] || TRAINER_CLASS_SPRITE[cls]; return s ? `https://play.pokemonshowdown.com/sprites/trainers/${s}.png` : null; };

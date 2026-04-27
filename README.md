@@ -61,7 +61,8 @@ Area data is being audited part by part against the [Bulbapedia FireRed & LeafGr
 | Part 4 | Route 3 · Route 4 (West) · Mt. Moon · Route 4 (East) | Audited |
 | Part 5 | Cerulean City · Route 24 · Route 25 · Cerulean City (Return) · Route 5 · Underground Path (5↔6) | Audited |
 | Part 6 | Route 6 · Vermilion City · S.S. Anne | Audited |
-| Part 7–21 | Rock Tunnel through Sevii Islands | Pending audit |
+| Part 7 | Route 11 · Diglett's Cave · Route 2 (East) · Route 9 · Route 10 (North) | Audited |
+| Part 8–21 | Rock Tunnel through Sevii Islands | Pending audit |
 
 ---
 
