@@ -8,9 +8,10 @@ An interactive tracker built to support a **100% completion + Living Dex** run o
 
 | File | Description |
 |---|---|
-| `firered-area-tracker.jsx` | Main tracker — area-by-area encounter, item, and trainer tracker with shared Pokédex tab |
+| `firered-area-tracker-v2.jsx` | Main tracker (web) — visually redesigned version rendered by `index.html` |
+| `firered-area-tracker.jsx` | Main tracker (Claude.ai) — original version kept as a React artifact fallback |
 | `firered-walkthrough-tracker.jsx` | Simpler walkthrough milestone checklist + 151-Pokémon Living Dex grid |
-| `index.html` | Entry point for hosting as a static web page |
+| `index.html` | Web entry point — loads DM Sans from Google Fonts and renders v2 |
 
 ---
 
@@ -73,6 +74,20 @@ Key things to plan around:
 - **Trade evolutions** — Alakazam, Gengar, Machamp, and Golem each require a trade to evolve.
 - **Mew** — event-only and not obtainable through normal gameplay. Not flagged as catchable anywhere in this tracker.
 - **HOME migration path** — FireRed → Pal Park (Gen IV) → Pokémon Bank (3DS) → Pokémon HOME.
+
+---
+
+## Design (v2)
+
+The web version (`firered-area-tracker-v2.jsx`) uses a fully redesigned visual system:
+
+- **Palette** — deep warm near-black backgrounds (`#110d08`) with a FireRed orange accent (`#d4621a`), amber for items, sage green for caught state, and soft violet for event Pokémon
+- **Typography** — [DM Sans](https://fonts.google.com/specimen/DM+Sans) (400/600/700) for all UI text; Courier New kept only for Pokédex numbers
+- **Encounter rate tiers** — sky blue ≥ 30%, golden yellow ≥ 10%, soft violet < 10%; split FR/LG rates rendered as stacked color-coded pill badges
+- **Checkboxes** — explicit 14×14px checkbox on every row; done rows dim to 40% opacity with strikethrough
+- **Sprites** — uncaught Pokémon sprites are desaturated and dimmed; caught sprites render at full opacity
+
+The v1 file (`firered-area-tracker.jsx`) retains the original styling for Claude.ai artifact use. localStorage keys are identical between versions — save data is fully compatible.
 
 ---
 
