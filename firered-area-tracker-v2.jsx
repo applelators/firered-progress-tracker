@@ -153,51 +153,67 @@ const AREAS = [
     trainers:[] },
 
   { part:"Part 4", id:"mt-moon", name:"Mt. Moon",
-    note:"⚠ CHOOSE ONE fossil at the end of B2F — Dome→Kabuto or Helix→Omanyte. Only one per file; trade for the other. Pokémon availability varies significantly by floor.",
-    pokemon:[
-      {name:"Zubat",    method:"Cave (1F)",  levels:"7–10", rate:"69%"},
-      {name:"Geodude",  method:"Cave (1F)",  levels:"7–9",  rate:"25%"},
-      {name:"Paras",    method:"Cave (1F)",  levels:"8",    rate:"5%"},
-      {name:"Clefairy", method:"Cave (1F)",  levels:"8",    rate:"1%"},
-      {name:"Paras",    method:"Cave (B1F)", levels:"5–10", rate:"100%"},
-      {name:"Zubat",    method:"Cave (B2F)", levels:"8–11", rate:"49%"},
-      {name:"Geodude",  method:"Cave (B2F)", levels:"9–10", rate:"30%"},
-      {name:"Paras",    method:"Cave (B2F)", levels:"10–12",rate:"15%"},
-      {name:"Clefairy", method:"Cave (B2F)", levels:"10–12",rate:"6%"},
-      {name:"Kabuto",   method:"Fossil",     levels:"5",    note:"Restore Dome Fossil at Cinnabar Lab (if you chose Dome)"},
-      {name:"Omanyte",  method:"Fossil",     levels:"5",    note:"Restore Helix Fossil at Cinnabar Lab (if you chose Helix)"},
-    ],
-    items:[
-      {name:"TM09 Bullet Seed",hidden:false,note:"1F, west chamber"},
-      {name:"Paralyze Heal",   hidden:false,note:"1F, west chamber"},
-      {name:"Potion",          hidden:false,note:"1F, southeast area"},
-      {name:"Rare Candy",      hidden:false,note:"1F, southeast corner"},
-      {name:"Escape Rope",     hidden:false,note:"1F, east-central area"},
-      {name:"Moon Stone",      hidden:false,note:"1F, northwest corner"},
-      {name:"Tiny Mushroom",   hidden:true, note:"B1F — recurring hidden items throughout B1F/B2F (★ Itemfinder)"},
-      {name:"Big Mushroom",    hidden:true, note:"B1F — recurring hidden items (★ Itemfinder)"},
-      {name:"Star Piece",      hidden:false,note:"B2F, south section"},
-      {name:"TM46 Thief",      hidden:false,note:"B2F, northeast platform"},
-      {name:"Ether",           hidden:true, note:"B2F, northeast section (★ Itemfinder)"},
-      {name:"Moon Stone",      hidden:true, note:"B2F, near fossils (★ Itemfinder)"},
-      {name:"Revive",          hidden:false,note:"B2F, north of center ladder"},
-      {name:"Antidote",        hidden:false,note:"B2F, southwest of northwest ladder"},
-      {name:"Dome Fossil",     hidden:false,note:"⚠ B2F — choose Dome OR Helix, not both! (Dome→Kabuto)"},
-      {name:"Helix Fossil",    hidden:false,note:"⚠ B2F — choose Dome OR Helix, not both! (Helix→Omanyte)"},
-    ],
-    trainers:[
-      {class:"Bug Catcher",      name:"Kent",   team:[{name:"Weedle",   level:11},{name:"Kakuna",   level:11}]},
-      {class:"Lass",             name:"Iris",   team:[{name:"Clefairy", level:14}]},
-      {class:"Super Nerd",       name:"Jovan",  team:[{name:"Magnemite",level:11},{name:"Voltorb",  level:11}]},
-      {class:"Bug Catcher",      name:"Robby",  team:[{name:"Caterpie", level:10},{name:"Metapod",  level:10},{name:"Caterpie",level:10}]},
-      {class:"Lass",             name:"Miriam", team:[{name:"Oddish",   level:11},{name:"Bellsprout",level:11}]},
-      {class:"Youngster",        name:"Josh",   team:[{name:"Rattata",  level:10},{name:"Rattata",  level:10},{name:"Zubat",   level:10}]},
-      {class:"Hiker",            name:"Marcos", team:[{name:"Geodude",  level:10},{name:"Geodude",  level:10},{name:"Onix",    level:10}]},
-      {class:"Team Rocket Grunt",name:"Grunt 1",team:[{name:"Sandshrew",level:11},{name:"Rattata",  level:11},{name:"Zubat",   level:11}]},
-      {class:"Team Rocket Grunt",name:"Grunt 2",team:[{name:"Zubat",    level:11},{name:"Ekans",    level:11}]},
-      {class:"Team Rocket Grunt",name:"Grunt 3",team:[{name:"Rattata",  level:13},{name:"Sandshrew",level:13}]},
-      {class:"Team Rocket Grunt",name:"Grunt 4",team:[{name:"Rattata",  level:13},{name:"Zubat",    level:13}]},
-      {class:"Super Nerd",       name:"Miguel", team:[{name:"Grimer",   level:12},{name:"Voltorb",  level:12},{name:"Koffing",level:12}]},
+    note:"⚠ CHOOSE ONE fossil at the end of B2F — Dome→Kabuto or Helix→Omanyte. Only one per file; trade for the other.",
+    floors:[
+      { label:"1F",
+        pokemon:[
+          {name:"Zubat",   method:"Cave",levels:"7–10",rate:"69%"},
+          {name:"Geodude", method:"Cave",levels:"7–9", rate:"25%"},
+          {name:"Paras",   method:"Cave",levels:"8",   rate:"5%"},
+          {name:"Clefairy",method:"Cave",levels:"8",   rate:"1%"},
+        ],
+        items:[
+          {name:"TM09 Bullet Seed",hidden:false,note:"West chamber"},
+          {name:"Paralyze Heal",   hidden:false,note:"West chamber"},
+          {name:"Potion",          hidden:false,note:"Southeast area"},
+          {name:"Rare Candy",      hidden:false,note:"Southeast corner"},
+          {name:"Escape Rope",     hidden:false,note:"East-central area"},
+          {name:"Moon Stone",      hidden:false,note:"Northwest corner"},
+        ],
+        trainers:[
+          {class:"Bug Catcher",name:"Kent",   team:[{name:"Weedle",   level:11},{name:"Kakuna",   level:11}]},
+          {class:"Lass",       name:"Iris",   team:[{name:"Clefairy", level:14}]},
+          {class:"Super Nerd", name:"Jovan",  team:[{name:"Magnemite",level:11},{name:"Voltorb",  level:11}]},
+          {class:"Bug Catcher",name:"Robby",  team:[{name:"Caterpie", level:10},{name:"Metapod",  level:10},{name:"Caterpie",level:10}]},
+          {class:"Lass",       name:"Miriam", team:[{name:"Oddish",   level:11},{name:"Bellsprout",level:11}]},
+          {class:"Youngster",  name:"Josh",   team:[{name:"Rattata",  level:10},{name:"Rattata",  level:10},{name:"Zubat",   level:10}]},
+          {class:"Hiker",      name:"Marcos", team:[{name:"Geodude",  level:10},{name:"Geodude",  level:10},{name:"Onix",    level:10}]},
+        ]},
+      { label:"B1F",
+        pokemon:[
+          {name:"Paras",method:"Cave",levels:"5–10",rate:"100%",note:"Mushroom room off main path"},
+        ],
+        items:[
+          {name:"Tiny Mushroom",hidden:true,note:"Recurring throughout B1F/B2F (★ Itemfinder)"},
+          {name:"Big Mushroom", hidden:true,note:"Recurring throughout B1F/B2F (★ Itemfinder)"},
+        ],
+        trainers:[]},
+      { label:"B2F",
+        pokemon:[
+          {name:"Zubat",   method:"Cave",levels:"8–11", rate:"49%"},
+          {name:"Geodude", method:"Cave",levels:"9–10", rate:"30%"},
+          {name:"Paras",   method:"Cave",levels:"10–12",rate:"15%"},
+          {name:"Clefairy",method:"Cave",levels:"10–12",rate:"6%"},
+          {name:"Kabuto",  method:"Fossil",levels:"5",  note:"Restore Dome Fossil at Cinnabar Lab"},
+          {name:"Omanyte", method:"Fossil",levels:"5",  note:"Restore Helix Fossil at Cinnabar Lab"},
+        ],
+        items:[
+          {name:"Star Piece",  hidden:false,note:"South section"},
+          {name:"TM46 Thief",  hidden:false,note:"Northeast platform"},
+          {name:"Ether",       hidden:true, note:"Northeast section (★ Itemfinder)"},
+          {name:"Moon Stone",  hidden:true, note:"Near fossils (★ Itemfinder)"},
+          {name:"Revive",      hidden:false,note:"North of center ladder"},
+          {name:"Antidote",    hidden:false,note:"Southwest of northwest ladder"},
+          {name:"Dome Fossil", hidden:false,note:"⚠ Choose Dome OR Helix, not both! (Dome→Kabuto)"},
+          {name:"Helix Fossil",hidden:false,note:"⚠ Choose Dome OR Helix, not both! (Helix→Omanyte)"},
+        ],
+        trainers:[
+          {class:"Team Rocket Grunt",name:"Grunt 1",team:[{name:"Sandshrew",level:11},{name:"Rattata",  level:11},{name:"Zubat",   level:11}]},
+          {class:"Team Rocket Grunt",name:"Grunt 2",team:[{name:"Zubat",    level:11},{name:"Ekans",    level:11}]},
+          {class:"Team Rocket Grunt",name:"Grunt 3",team:[{name:"Rattata",  level:13},{name:"Sandshrew",level:13}]},
+          {class:"Team Rocket Grunt",name:"Grunt 4",team:[{name:"Rattata",  level:13},{name:"Zubat",    level:13}]},
+          {class:"Super Nerd",       name:"Miguel", team:[{name:"Grimer",   level:12},{name:"Voltorb",  level:12},{name:"Koffing",level:12}]},
+        ]},
     ] },
 
   { part:"Part 4", id:"route4-east", name:"Route 4 (East)",
@@ -504,41 +520,51 @@ const AREAS = [
 
   { part:"Part 8", id:"rock-tunnel", name:"Rock Tunnel",
     note:"Two floors; use Flash to ease navigation. Mankey and Machop both appear in both versions — no version exclusives here.",
-    pokemon:[
-      {name:"Geodude",method:"Cave (1F)",  levels:"15–17",rate:"35%"},
-      {name:"Zubat",  method:"Cave (1F)",  levels:"15–16",rate:"30%"},
-      {name:"Mankey", method:"Cave (1F)",  levels:"16–17",rate:"15%"},
-      {name:"Machop", method:"Cave (1F)",  levels:"16–17",rate:"15%"},
-      {name:"Onix",   method:"Cave (1F)",  levels:"13–15",rate:"5%"},
-      {name:"Geodude",method:"Cave (B1F)", levels:"15–17",rate:"35%"},
-      {name:"Zubat",  method:"Cave (B1F)", levels:"15–16",rate:"30%"},
-      {name:"Mankey", method:"Cave (B1F)", levels:"16–17",rate:"15%"},
-      {name:"Machop", method:"Cave (B1F)", levels:"17",    rate:"10%"},
-      {name:"Onix",   method:"Cave (B1F)", levels:"13–17", rate:"10%"},
-    ],
-    items:[
-      {name:"Repel",       hidden:false,note:"1F, northeast"},
-      {name:"Escape Rope", hidden:false,note:"1F, west"},
-      {name:"Pearl",       hidden:false,note:"1F, south"},
-      {name:"Revive",      hidden:false,note:"B1F, southeast"},
-      {name:"Max Ether",   hidden:false,note:"B1F, northwest"},
-    ],
-    trainers:[
-      {class:"PokéManiac",name:"Ashton", team:[{name:"Cubone",   level:23},{name:"Slowpoke",level:23}]},
-      {class:"Hiker",     name:"Lenny",  team:[{name:"Geodude",  level:19},{name:"Machop",  level:19},{name:"Geodude",level:19},{name:"Geodude",level:19}]},
-      {class:"Hiker",     name:"Oliver", team:[{name:"Onix",     level:20},{name:"Onix",    level:20},{name:"Geodude",level:20}]},
-      {class:"Hiker",     name:"Lucas",  team:[{name:"Geodude",  level:21},{name:"Graveler",level:21}]},
-      {class:"Picnicker", name:"Leah",   team:[{name:"Bellsprout",level:22},{name:"Clefairy",level:22}]},
-      {class:"Picnicker", name:"Ariana", team:[{name:"Pidgey",   level:19},{name:"Rattata", level:19},{name:"Rattata",level:19},{name:"Bellsprout",level:19}]},
-      {class:"Picnicker", name:"Dana",   team:[{name:"Meowth",   level:20},{name:"Oddish",  level:20},{name:"Pidgey", level:20}]},
-      {class:"PokéManiac",name:"Winston",team:[{name:"Slowpoke", level:25}]},
-      {class:"Picnicker", name:"Martha", team:[{name:"Oddish",   level:22},{name:"Bulbasaur",level:22}]},
-      {class:"PokéManiac",name:"Steve",  team:[{name:"Charmander",level:22},{name:"Cubone",level:22}]},
-      {class:"Hiker",     name:"Allen",  team:[{name:"Geodude",  level:25}]},
-      {class:"Hiker",     name:"Eric",   team:[{name:"Machop",   level:20},{name:"Onix",    level:20}]},
-      {class:"Picnicker", name:"Sofia",  team:[{name:"Jigglypuff",level:21},{name:"Pidgey",level:21},{name:"Meowth",level:21}]},
-      {class:"Hiker",     name:"Dudley", team:[{name:"Geodude",  level:21},{name:"Geodude", level:21},{name:"Graveler",level:21}]},
-      {class:"PokéManiac",name:"Cooper", team:[{name:"Slowpoke", level:20},{name:"Slowpoke",level:20},{name:"Slowpoke",level:20}]},
+    floors:[
+      { label:"1F",
+        pokemon:[
+          {name:"Geodude",method:"Cave",levels:"15–17",rate:"35%"},
+          {name:"Zubat",  method:"Cave",levels:"15–16",rate:"30%"},
+          {name:"Mankey", method:"Cave",levels:"16–17",rate:"15%"},
+          {name:"Machop", method:"Cave",levels:"16–17",rate:"15%"},
+          {name:"Onix",   method:"Cave",levels:"13–15",rate:"5%"},
+        ],
+        items:[
+          {name:"Repel",      hidden:false,note:"Northeast"},
+          {name:"Escape Rope",hidden:false,note:"West"},
+          {name:"Pearl",      hidden:false,note:"South"},
+        ],
+        trainers:[
+          {class:"PokéManiac",name:"Ashton", team:[{name:"Cubone",    level:23},{name:"Slowpoke", level:23}]},
+          {class:"Hiker",     name:"Lenny",  team:[{name:"Geodude",   level:19},{name:"Machop",   level:19},{name:"Geodude",  level:19},{name:"Geodude",level:19}]},
+          {class:"Hiker",     name:"Oliver", team:[{name:"Onix",      level:20},{name:"Onix",     level:20},{name:"Geodude",  level:20}]},
+          {class:"Hiker",     name:"Lucas",  team:[{name:"Geodude",   level:21},{name:"Graveler", level:21}]},
+          {class:"Picnicker", name:"Leah",   team:[{name:"Bellsprout",level:22},{name:"Clefairy", level:22}]},
+          {class:"Picnicker", name:"Ariana", team:[{name:"Pidgey",    level:19},{name:"Rattata",  level:19},{name:"Rattata",  level:19},{name:"Bellsprout",level:19}]},
+          {class:"Picnicker", name:"Dana",   team:[{name:"Meowth",    level:20},{name:"Oddish",   level:20},{name:"Pidgey",   level:20}]},
+        ]},
+      { label:"B1F",
+        pokemon:[
+          {name:"Geodude",method:"Cave",levels:"15–17",rate:"35%"},
+          {name:"Zubat",  method:"Cave",levels:"15–16",rate:"30%"},
+          {name:"Mankey", method:"Cave",levels:"16–17",rate:"15%"},
+          {name:"Machop", method:"Cave",levels:"17",   rate:"10%"},
+          {name:"Onix",   method:"Cave",levels:"13–17",rate:"10%"},
+        ],
+        items:[
+          {name:"Revive",  hidden:false,note:"Southeast"},
+          {name:"Max Ether",hidden:false,note:"Northwest"},
+        ],
+        trainers:[
+          {class:"PokéManiac",name:"Winston",team:[{name:"Slowpoke",   level:25}]},
+          {class:"Picnicker", name:"Martha", team:[{name:"Oddish",     level:22},{name:"Bulbasaur",level:22}]},
+          {class:"PokéManiac",name:"Steve",  team:[{name:"Charmander", level:22},{name:"Cubone",   level:22}]},
+          {class:"Hiker",     name:"Allen",  team:[{name:"Geodude",    level:25}]},
+          {class:"Hiker",     name:"Eric",   team:[{name:"Machop",     level:20},{name:"Onix",     level:20}]},
+          {class:"Picnicker", name:"Sofia",  team:[{name:"Jigglypuff", level:21},{name:"Pidgey",   level:21},{name:"Meowth",level:21}]},
+          {class:"Hiker",     name:"Dudley", team:[{name:"Geodude",    level:21},{name:"Geodude",  level:21},{name:"Graveler",level:21}]},
+          {class:"PokéManiac",name:"Cooper", team:[{name:"Slowpoke",   level:20},{name:"Slowpoke", level:20},{name:"Slowpoke",level:20}]},
+        ]},
     ] },
 
   { part:"Part 8", id:"route10-south", name:"Route 10 (South)",
@@ -658,95 +684,143 @@ const AREAS = [
 
   { part:"Part 9", id:"rocket-hideout", name:"Rocket Hideout (B1F–B4F)",
     note:"Four basement floors. Collect the Lift Key (dropped by a Grunt on B4F northwest) to use the elevator. Giovanni on B4F drops the Silph Scope — required to identify Ghost-types in Pokémon Tower.",
-    pokemon:[],
-    items:[
-      {name:"PP Up",        hidden:true, note:"B1F — southeastern planter (★ Itemfinder)"},
-      {name:"Escape Rope",  hidden:false,note:"B1F — western room"},
-      {name:"Hyper Potion", hidden:false,note:"B1F — east room (via B2F stairs)"},
-      {name:"X Speed",      hidden:false,note:"B2F — northeast corner"},
-      {name:"Moon Stone",   hidden:false,note:"B2F — west wall"},
-      {name:"TM12 Taunt",   hidden:false,note:"B2F — middle area"},
-      {name:"Super Potion", hidden:false,note:"B2F — southwest area"},
-      {name:"TM21 Frustration",hidden:false,note:"B3F — east-central room"},
-      {name:"Nugget",       hidden:true, note:"B3F — northwest corner (★ Itemfinder)"},
-      {name:"Rare Candy",   hidden:false,note:"B3F — spinner maze, east side"},
-      {name:"Black Glasses",hidden:false,note:"B3F — southeast corner"},
-      {name:"Max Ether",    hidden:false,note:"B4F — northwest room table"},
-      {name:"TM49 Snatch",  hidden:false,note:"B4F — northwest room"},
-      {name:"Calcium",      hidden:false,note:"B4F — southeast, table west of elevator"},
-      {name:"Net Ball",     hidden:true, note:"B4F — between potted plants SW of Giovanni (★ Itemfinder)"},
-      {name:"Nest Ball",    hidden:true, note:"B4F — between potted plants SE of Giovanni (★ Itemfinder)"},
-      {name:"Lift Key",     hidden:false,note:"B4F — dropped by northwest Grunt after defeat"},
-      {name:"Silph Scope",  hidden:false,note:"B4F — dropped by Giovanni after defeat"},
-    ],
-    trainers:[
-      {class:"Team Rocket Grunt",name:"Grunt 1", team:[{name:"Drowzee",  level:21},{name:"Machop",  level:21}]},
-      {class:"Team Rocket Grunt",name:"Grunt 2", team:[{name:"Raticate", level:21},{name:"Raticate",level:21}]},
-      {class:"Team Rocket Grunt",name:"Grunt 3", team:[{name:"Rattata",  level:19},{name:"Raticate",level:19},{name:"Raticate",level:19},{name:"Rattata",level:19}]},
-      {class:"Team Rocket Grunt",name:"Grunt 4", team:[{name:"Grimer",   level:20},{name:"Koffing", level:20},{name:"Koffing",level:20}]},
-      {class:"Team Rocket Grunt",name:"Grunt 5", team:[{name:"Grimer",   level:22},{name:"Koffing", level:22}]},
-      {class:"Team Rocket Grunt",name:"Grunt 6", team:[{name:"Zubat",    level:17},{name:"Koffing", level:17},{name:"Grimer",level:17},{name:"Zubat",level:17},{name:"Raticate",level:17}]},
-      {class:"Team Rocket Grunt",name:"Grunt 7", team:[{name:"Machop",   level:21},{name:"Machop",  level:21}]},
-      {class:"Team Rocket Grunt",name:"Grunt 8", team:[{name:"Rattata",  level:20},{name:"Raticate",level:20},{name:"Drowzee",level:20}]},
-      {class:"Team Rocket Grunt",name:"Grunt 9", team:[{name:"Koffing",  level:21},{name:"Zubat",   level:21}]},
-      {class:"Team Rocket Grunt",name:"Grunt 10",team:[{name:"Sandshrew",level:23},{name:"Ekans",   level:23},{name:"Sandslash",level:23}]},
-      {class:"Team Rocket Grunt",name:"Grunt 11",team:[{name:"Ekans",    level:23},{name:"Sandshrew",level:23},{name:"Arbok",level:23}]},
-      {class:"Giovanni",         name:"Giovanni",team:[{name:"Onix",     level:25},{name:"Rhyhorn", level:24},{name:"Kangaskhan",level:29}]},
+    floors:[
+      { label:"B1F",
+        pokemon:[],
+        items:[
+          {name:"PP Up",       hidden:true, note:"Southeastern planter (★ Itemfinder)"},
+          {name:"Escape Rope", hidden:false,note:"Western room"},
+          {name:"Hyper Potion",hidden:false,note:"East room (accessible via B2F south stairs)"},
+        ],
+        trainers:[
+          {class:"Team Rocket Grunt",name:"Grunt 1",team:[{name:"Drowzee", level:21},{name:"Machop",  level:21}]},
+          {class:"Team Rocket Grunt",name:"Grunt 2",team:[{name:"Raticate",level:21},{name:"Raticate",level:21}]},
+          {class:"Team Rocket Grunt",name:"Grunt 3",team:[{name:"Rattata", level:19},{name:"Raticate",level:19},{name:"Raticate",level:19},{name:"Rattata",level:19}]},
+          {class:"Team Rocket Grunt",name:"Grunt 4",team:[{name:"Grimer",  level:20},{name:"Koffing", level:20},{name:"Koffing",level:20}]},
+          {class:"Team Rocket Grunt",name:"Grunt 9",team:[{name:"Koffing", level:21},{name:"Zubat",   level:21}]},
+        ]},
+      { label:"B2F",
+        pokemon:[],
+        items:[
+          {name:"X Speed",     hidden:false,note:"Northeast corner"},
+          {name:"Moon Stone",  hidden:false,note:"West wall"},
+          {name:"TM12 Taunt",  hidden:false,note:"Middle area"},
+          {name:"Super Potion",hidden:false,note:"Southwest area"},
+        ],
+        trainers:[
+          {class:"Team Rocket Grunt",name:"Grunt 6",team:[{name:"Zubat",level:17},{name:"Koffing",level:17},{name:"Grimer",level:17},{name:"Zubat",level:17},{name:"Raticate",level:17}]},
+        ]},
+      { label:"B3F",
+        pokemon:[],
+        items:[
+          {name:"TM21 Frustration",hidden:false,note:"East-central room"},
+          {name:"Nugget",          hidden:true, note:"Northwest corner (★ Itemfinder)"},
+          {name:"Rare Candy",      hidden:false,note:"Spinner maze, east side"},
+          {name:"Black Glasses",   hidden:false,note:"Southeast corner"},
+        ],
+        trainers:[
+          {class:"Team Rocket Grunt",name:"Grunt 7",team:[{name:"Machop", level:21},{name:"Machop",  level:21}]},
+          {class:"Team Rocket Grunt",name:"Grunt 8",team:[{name:"Rattata",level:20},{name:"Raticate",level:20},{name:"Drowzee",level:20}]},
+        ]},
+      { label:"B4F",
+        pokemon:[],
+        items:[
+          {name:"Max Ether",  hidden:false,note:"Northwest room table"},
+          {name:"TM49 Snatch",hidden:false,note:"Northwest room"},
+          {name:"Calcium",    hidden:false,note:"Southeast, table west of elevator"},
+          {name:"Net Ball",   hidden:true, note:"Between potted plants SW of Giovanni (★ Itemfinder)"},
+          {name:"Nest Ball",  hidden:true, note:"Between potted plants SE of Giovanni (★ Itemfinder)"},
+          {name:"Lift Key",   hidden:false,note:"Dropped by northwest Grunt after defeat"},
+          {name:"Silph Scope",hidden:false,note:"Dropped by Giovanni after defeat"},
+        ],
+        trainers:[
+          {class:"Team Rocket Grunt",name:"Grunt 5", team:[{name:"Grimer",   level:22},{name:"Koffing",   level:22}]},
+          {class:"Team Rocket Grunt",name:"Grunt 10",team:[{name:"Sandshrew",level:23},{name:"Ekans",     level:23},{name:"Sandslash",level:23}]},
+          {class:"Team Rocket Grunt",name:"Grunt 11",team:[{name:"Ekans",    level:23},{name:"Sandshrew", level:23},{name:"Arbok",    level:23}]},
+          {class:"Giovanni",         name:"Giovanni",team:[{name:"Onix",     level:25},{name:"Rhyhorn",   level:24},{name:"Kangaskhan",level:29}]},
+        ]},
     ] },
 
   { part:"Part 9", id:"pokemon-tower", name:"Pokémon Tower",
     note:"Requires Silph Scope (from Rocket Hideout) to reveal and catch Ghost-types on floors 3–7. Rescue Mr. Fuji on 7F to receive the Poké Flute. Cleanse Tag is a field item on 5F.",
-    pokemon:[
-      {name:"Gastly", method:"Cave (3F)",  levels:"17–19",rate:"90%"},
-      {name:"Cubone", method:"Cave (3F)",  levels:"17–18",rate:"9%"},
-      {name:"Haunter",method:"Cave (3F)",  levels:"17",   rate:"1%"},
-      {name:"Gastly", method:"Cave (4F–5F)",levels:"20–22",rate:"86%"},
-      {name:"Cubone", method:"Cave (4F–5F)",levels:"19–21",rate:"9%"},
-      {name:"Haunter",method:"Cave (4F–5F)",levels:"20–22",rate:"5%"},
-      {name:"Gastly", method:"Cave (6F)",  levels:"22–23",rate:"85%"},
-      {name:"Cubone", method:"Cave (6F)",  levels:"21–22",rate:"9%"},
-      {name:"Haunter",method:"Cave (6F)",  levels:"22–23",rate:"6%"},
-      {name:"Gastly", method:"Cave (7F)",  levels:"22–23",rate:"75%"},
-      {name:"Haunter",method:"Cave (7F)",  levels:"22–23",rate:"15%"},
-      {name:"Cubone", method:"Cave (7F)",  levels:"22–23",rate:"10%"},
-    ],
-    items:[
-      {name:"Escape Rope",  hidden:false,note:"3F"},
-      {name:"Awakening",    hidden:false,note:"3F"},
-      {name:"Super Potion", hidden:false,note:"3F"},
-      {name:"Star Piece",   hidden:true, note:"3F (★ Itemfinder)"},
-      {name:"Elixir",       hidden:false,note:"4F"},
-      {name:"Escape Rope",  hidden:false,note:"4F"},
-      {name:"Full Heal",    hidden:false,note:"4F"},
-      {name:"Great Ball",   hidden:false,note:"4F"},
-      {name:"Cleanse Tag",  hidden:false,note:"5F"},
-      {name:"Nugget",       hidden:false,note:"5F"},
-      {name:"Big Mushroom", hidden:true, note:"5F (★ Itemfinder)"},
-      {name:"X Accuracy",   hidden:false,note:"6F"},
-      {name:"Rare Candy",   hidden:false,note:"6F"},
-      {name:"Poké Flute",   hidden:false,note:"From Mr. Fuji after rescuing him on 7F — wakes both Snorlax"},
-    ],
-    trainers:[
-      {class:"Rival",name:"Blue",note:"2F — team varies by your starter choice",
-        team:[
-          {name:"Pidgeotto",level:25},{name:"Exeggcute",level:23},{name:"Gyarados",level:22},{name:"Kadabra",level:20},{name:"Charmeleon",level:25},
+    floors:[
+      { label:"2F",
+        pokemon:[],
+        items:[],
+        trainers:[
+          {class:"Rival",name:"Blue",note:"Team varies by starter — shown here for Bulbasaur start",
+            team:[{name:"Pidgeotto",level:25},{name:"Exeggcute",level:23},{name:"Gyarados",level:22},{name:"Kadabra",level:20},{name:"Charmeleon",level:25}]},
         ]},
-      {class:"Channeler",name:"Hope",     team:[{name:"Gastly",level:23}]},
-      {class:"Channeler",name:"Patricia", team:[{name:"Gastly",level:22}]},
-      {class:"Channeler",name:"Carly",    team:[{name:"Gastly",level:24}]},
-      {class:"Channeler",name:"Laurel",   team:[{name:"Gastly",level:23},{name:"Gastly",level:23}]},
-      {class:"Channeler",name:"Jody",     team:[{name:"Gastly",level:22}]},
-      {class:"Channeler",name:"Paula",    team:[{name:"Gastly",level:24}]},
-      {class:"Channeler",name:"Ruth",     team:[{name:"Gastly",level:22}]},
-      {class:"Channeler",name:"Tammy",    team:[{name:"Haunter",level:23}]},
-      {class:"Channeler",name:"Karina",   team:[{name:"Gastly",level:24}]},
-      {class:"Channeler",name:"Janae",    team:[{name:"Gastly",level:22}]},
-      {class:"Channeler",name:"Angelica", team:[{name:"Gastly",level:22},{name:"Gastly",level:22},{name:"Gastly",level:22}]},
-      {class:"Channeler",name:"Jennifer", team:[{name:"Gastly",level:24}]},
-      {class:"Channeler",name:"Emilia",   team:[{name:"Gastly",level:24}]},
-      {class:"Team Rocket Grunt",name:"Grunt 1",team:[{name:"Zubat",  level:25},{name:"Zubat",   level:25},{name:"Golbat",level:25}]},
-      {class:"Team Rocket Grunt",name:"Grunt 2",team:[{name:"Koffing",level:26},{name:"Drowzee", level:26}]},
-      {class:"Team Rocket Grunt",name:"Grunt 3",team:[{name:"Zubat",  level:23},{name:"Rattata", level:23}]},
+      { label:"3F",
+        pokemon:[
+          {name:"Gastly", method:"Cave",levels:"17–19",rate:"90%"},
+          {name:"Cubone", method:"Cave",levels:"17–18",rate:"9%"},
+          {name:"Haunter",method:"Cave",levels:"17",   rate:"1%"},
+        ],
+        items:[
+          {name:"Escape Rope", hidden:false,note:""},
+          {name:"Awakening",   hidden:false,note:""},
+          {name:"Super Potion",hidden:false,note:""},
+          {name:"Star Piece",  hidden:true, note:"★ Itemfinder"},
+        ],
+        trainers:[
+          {class:"Channeler",name:"Hope",    team:[{name:"Gastly",level:23}]},
+          {class:"Channeler",name:"Patricia",team:[{name:"Gastly",level:22}]},
+          {class:"Channeler",name:"Carly",   team:[{name:"Gastly",level:24}]},
+        ]},
+      { label:"4F–5F",
+        pokemon:[
+          {name:"Gastly", method:"Cave",levels:"20–22",rate:"86%"},
+          {name:"Cubone", method:"Cave",levels:"19–21",rate:"9%"},
+          {name:"Haunter",method:"Cave",levels:"20–22",rate:"5%"},
+        ],
+        items:[
+          {name:"Elixir",    hidden:false,note:"4F"},
+          {name:"Escape Rope",hidden:false,note:"4F"},
+          {name:"Full Heal", hidden:false,note:"4F"},
+          {name:"Great Ball",hidden:false,note:"4F"},
+          {name:"Cleanse Tag",hidden:false,note:"5F"},
+          {name:"Nugget",    hidden:false,note:"5F"},
+          {name:"Big Mushroom",hidden:true,note:"5F (★ Itemfinder)"},
+        ],
+        trainers:[
+          {class:"Channeler",name:"Laurel",team:[{name:"Gastly",level:23},{name:"Gastly",level:23}]},
+          {class:"Channeler",name:"Jody",  team:[{name:"Gastly",level:22}]},
+          {class:"Channeler",name:"Paula", team:[{name:"Gastly",level:24}]},
+          {class:"Channeler",name:"Ruth",  team:[{name:"Gastly",level:22}]},
+          {class:"Channeler",name:"Tammy", team:[{name:"Haunter",level:23}]},
+        ]},
+      { label:"6F",
+        pokemon:[
+          {name:"Gastly", method:"Cave",levels:"22–23",rate:"85%"},
+          {name:"Cubone", method:"Cave",levels:"21–22",rate:"9%"},
+          {name:"Haunter",method:"Cave",levels:"22–23",rate:"6%"},
+        ],
+        items:[
+          {name:"X Accuracy",hidden:false,note:""},
+          {name:"Rare Candy", hidden:false,note:""},
+        ],
+        trainers:[
+          {class:"Channeler",name:"Karina",   team:[{name:"Gastly",level:24}]},
+          {class:"Channeler",name:"Janae",    team:[{name:"Gastly",level:22}]},
+          {class:"Channeler",name:"Angelica", team:[{name:"Gastly",level:22},{name:"Gastly",level:22},{name:"Gastly",level:22}]},
+          {class:"Channeler",name:"Jennifer", team:[{name:"Gastly",level:24}]},
+          {class:"Channeler",name:"Emilia",   team:[{name:"Gastly",level:24}]},
+        ]},
+      { label:"7F",
+        pokemon:[
+          {name:"Gastly", method:"Cave",levels:"22–23",rate:"75%"},
+          {name:"Haunter",method:"Cave",levels:"22–23",rate:"15%"},
+          {name:"Cubone", method:"Cave",levels:"22–23",rate:"10%"},
+        ],
+        items:[
+          {name:"Poké Flute",hidden:false,note:"From Mr. Fuji after rescuing him — wakes both Snorlax"},
+        ],
+        trainers:[
+          {class:"Team Rocket Grunt",name:"Grunt 1",team:[{name:"Zubat",  level:25},{name:"Zubat",  level:25},{name:"Golbat",level:25}]},
+          {class:"Team Rocket Grunt",name:"Grunt 2",team:[{name:"Koffing",level:26},{name:"Drowzee",level:26}]},
+          {class:"Team Rocket Grunt",name:"Grunt 3",team:[{name:"Zubat",  level:23},{name:"Rattata",level:23}]},
+        ]},
     ] },
 
   { part:"Part 10", id:"route12", name:"Route 12 (Silence Bridge)",
@@ -1451,15 +1525,32 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
   );
 }
 
+// ─── FLOOR-AWARE HELPERS ──────────────────────────────────────────────────────
+// Areas with a `floors` array organise data per floor; flat areas use top-level arrays.
+const flattenPokemon  = a => a.floors ? a.floors.flatMap(f => f.pokemon  || []) : (a.pokemon  || []);
+const flattenItems    = a => a.floors ? a.floors.flatMap(f => f.items    || []) : (a.items    || []);
+const flattenTrainers = a => a.floors ? a.floors.flatMap(f => f.trainers || []) : (a.trainers || []);
+// Floor items are keyed by index to handle duplicate names (e.g. two Escape Ropes).
+const floorItemKey = (aId, label, idx) => `${aId}|${label}|${idx}`;
+function countItemsDone(area, areaId, itemsState) {
+  if (!area) return 0;
+  if (area.floors) return area.floors.reduce((n, f) =>
+    n + (f.items || []).filter((_, i) => itemsState[floorItemKey(areaId, f.label, i)]).length, 0);
+  return (area.items || []).filter(it => itemsState[`${areaId}|${it.name}`]).length;
+}
+
 // ─── AREAS TAB ────────────────────────────────────────────────────────────────
 function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTrainer, areaId, setAreaId, area, search, setSearch }) {
   const visibleAreas = useMemo(() => AREAS.filter(a => AUDITED_PARTS.has(a.part)), []);
   const groups = useMemo(() => groupByPart(visibleAreas), [visibleAreas]);
   const filtered = useMemo(() => search.trim() ? visibleAreas.filter(a => a.name.toLowerCase().includes(search.toLowerCase())) : null, [search, visibleAreas]);
 
-  const pokeDone    = area ? area.pokemon.filter(p => caught[p.name]).length : 0;
-  const itemDone    = area ? area.items.filter(i => items[`${areaId}|${i.name}`]).length : 0;
-  const trainerDone = area ? (area.trainers || []).filter(t => trainers[`${areaId}|${t.class}|${t.name}`]).length : 0;
+  const areaPokemon  = area ? flattenPokemon(area)  : [];
+  const areaItems    = area ? flattenItems(area)    : [];
+  const areaTrainers = area ? flattenTrainers(area) : [];
+  const pokeDone    = areaPokemon.filter(p => caught[p.name]).length;
+  const itemDone    = countItemsDone(area, areaId, items);
+  const trainerDone = areaTrainers.filter(t => trainers[`${areaId}|${t.class}|${t.name}`]).length;
 
   return (
     <div style={{ display:"flex", flex:1, overflow:"hidden" }}>
@@ -1505,9 +1596,9 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
             )}
 
             <div style={{ display:"flex", gap:10, marginBottom:14, flexWrap:"wrap" }}>
-              <MiniBar label="Pokémon"  done={pokeDone}    total={area.pokemon.length}           color={C.green} />
-              <MiniBar label="Items"    done={itemDone}    total={area.items.length}             color={C.gold} />
-              {area.trainers?.length > 0 && <MiniBar label="Trainers" done={trainerDone} total={area.trainers.length} color="#a87acc" />}
+              <MiniBar label="Pokémon"  done={pokeDone}    total={areaPokemon.length}   color={C.green} />
+              <MiniBar label="Items"    done={itemDone}    total={areaItems.length}     color={C.gold} />
+              {areaTrainers.length > 0 && <MiniBar label="Trainers" done={trainerDone} total={areaTrainers.length} color="#a87acc" />}
             </div>
 
             <div style={{ fontSize:11, color:C.muted, marginBottom:12, display:"flex", gap:16, flexWrap:"wrap" }}>
@@ -1516,88 +1607,76 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
               <span><span style={{ color:C.gold }}>★</span> = Hidden (Itemfinder)</span>
             </div>
 
-            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
-              {/* Pokémon */}
-              <Section title="Wild Pokémon" count={`${pokeDone}/${area.pokemon.length}`} color={C.green}>
-                {area.pokemon.length === 0 ? <Empty text="No wild Pokémon here" /> :
-                  area.pokemon.map((p, i) => {
-                    const isCaught = !!caught[p.name];
-                    return (
-                      <Row key={i} done={isCaught} onClick={() => toggleCaught(p.name)}>
-                        {DEX_ID[p.name] && <img src={pokeSpriteUrl(DEX_ID[p.name])} alt={p.name} style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0, opacity: isCaught ? 1 : 0.45, filter: isCaught ? "none" : "grayscale(40%)" }} />}
-                        <div style={{ flex:1 }}>
-                          <span style={{ color: isCaught ? C.green : p.lgOnly ? C.lgBlue : p.frOnly ? "#c85252" : C.text, fontWeight:"600", fontSize:12 }}>
-                            {p.name}
-                            {p.frOnly && <Tag color="#c85252">FR</Tag>}
-                            {p.lgOnly && <Tag color={C.lgBlue}>LG</Tag>}
-                          </span>
-                          <span style={{ fontSize:10, color:C.muted, marginLeft:6 }}>{p.method}</span>
-                          {p.note && <div style={{ fontSize:10, color:"#b87030", marginTop:2 }}>{p.note}</div>}
-                        </div>
-                        <div style={{ textAlign:"right", flexShrink:0, paddingLeft:8, display:"flex", flexDirection:"column", alignItems:"flex-end", gap:3 }}>
-                          <RateDisplay rate={p.rate} />
-                          <div style={{ fontSize:10, color:C.muted }}>Lv.{p.levels}</div>
-                        </div>
-                      </Row>
-                    );
-                  })
-                }
-              </Section>
-
-              {/* Items */}
-              <Section title="Items" count={`${itemDone}/${area.items.length}`} color={C.gold}>
-                {area.items.length === 0 ? <Empty text="No items here" /> :
-                  area.items.map((it, i) => {
-                    const key = `${areaId}|${it.name}`;
-                    return (
-                      <Row key={i} done={!!items[key]} onClick={() => toggleItem(key)}>
-                        {itemSpriteUrl(it.name) && <img src={itemSpriteUrl(it.name)} alt={it.name} style={{ width:24, height:24, imageRendering:"pixelated", flexShrink:0 }} />}
-                        <div style={{ flex:1 }}>
-                          <span style={{ fontSize:12, fontWeight:"600", color: it.hidden ? C.gold : C.text }}>
-                            {it.hidden && <span style={{ color:C.gold, marginRight:4 }}>★</span>}
-                            {it.name}
-                          </span>
-                          {it.note && <div style={{ fontSize:10, color:C.muted, marginTop:2, lineHeight:1.5 }}>{it.note}</div>}
-                        </div>
-                      </Row>
-                    );
-                  })
-                }
-              </Section>
-            </div>
-
-            {area.trainers?.length > 0 && (
-              <div style={{ marginTop:12 }}>
-                <Section title="Trainers" count={`${trainerDone}/${area.trainers.length}`} color="#a87acc">
-                  {area.trainers.map((t, i) => {
-                    const key = `${areaId}|${t.class}|${t.name}`;
-                    const tSprite = trainerSpriteUrl(t.class, t.name);
-                    return (
-                      <Row key={i} done={!!trainers[key]} onClick={() => toggleTrainer(key)}>
-                        {tSprite && <img src={tSprite} alt={t.class} style={{ width:48, height:48, imageRendering:"pixelated", flexShrink:0 }} />}
-                        <div style={{ flex:1 }}>
-                          <div style={{ fontSize:12, fontWeight:"600", marginBottom:2 }}>{t.class} {t.name}</div>
-                          {t.note && <div style={{ fontSize:10, color:C.muted, marginBottom:5, lineHeight:1.4 }}>{t.note}</div>}
-                          {t.team?.length > 0 && (
-                            <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
-                              {t.team.map((p, j) => {
-                                const pid = DEX_ID[p.name];
-                                return (
-                                  <div key={j} style={{ textAlign:"center" }}>
-                                    {pid && <img src={pokeSpriteUrl(pid)} alt={p.name} style={{ width:32, height:32, imageRendering:"pixelated", display:"block", margin:"0 auto" }} />}
-                                    <div style={{ fontSize:9, color:C.muted, lineHeight:1.3 }}>{p.name}</div>
-                                    <div style={{ fontSize:9, color:C.muted }}>Lv.{p.level}</div>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          )}
-                        </div>
-                      </Row>
-                    );
-                  })}
-                </Section>
-              </div>
+            {area.floors ? (
+              // ── Floor-by-floor layout ───────────────────────────────────────
+              area.floors.map(floor => {
+                const hasPoks = (floor.pokemon || []).length > 0;
+                const hasItms = (floor.items   || []).length > 0;
+                const hasTrns = (floor.trainers|| []).length > 0;
+                if (!hasPoks && !hasItms && !hasTrns) return null;
+                const pokDone = (floor.pokemon ||[]).filter(p=>caught[p.name]).length;
+                const itmDone = (floor.items   ||[]).filter((_,i)=>items[floorItemKey(areaId,floor.label,i)]).length;
+                const trnDone = (floor.trainers||[]).filter(t=>trainers[`${areaId}|${t.class}|${t.name}`]).length;
+                return (
+                  <div key={floor.label}>
+                    <FloorDivider label={floor.label} />
+                    {(hasPoks || hasItms) && (
+                      <div style={{ display:"grid", gridTemplateColumns:(hasPoks&&hasItms)?"1fr 1fr":"1fr", gap:12, marginBottom:12 }}>
+                        {hasPoks && (
+                          <Section title="Wild Pokémon" count={`${pokDone}/${floor.pokemon.length}`} color={C.green}>
+                            {floor.pokemon.map((p,i) => <PokemonEntry key={i} p={p} caught={caught} toggleCaught={toggleCaught} />)}
+                          </Section>
+                        )}
+                        {hasItms && (
+                          <Section title="Items" count={`${itmDone}/${floor.items.length}`} color={C.gold}>
+                            {floor.items.map((it,i) => {
+                              const key = floorItemKey(areaId, floor.label, i);
+                              return <ItemEntry key={i} it={it} itemKey={key} done={!!items[key]} toggleItem={toggleItem} />;
+                            })}
+                          </Section>
+                        )}
+                      </div>
+                    )}
+                    {hasTrns && (
+                      <div style={{ marginBottom:12 }}>
+                        <Section title="Trainers" count={`${trnDone}/${floor.trainers.length}`} color="#a87acc">
+                          {floor.trainers.map((t,i) => (
+                            <TrainerEntry key={i} t={t} areaId={areaId} done={!!trainers[`${areaId}|${t.class}|${t.name}`]} toggleTrainer={toggleTrainer} />
+                          ))}
+                        </Section>
+                      </div>
+                    )}
+                  </div>
+                );
+              })
+            ) : (
+              // ── Flat layout (single-level areas) ───────────────────────────
+              <>
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+                  <Section title="Wild Pokémon" count={`${pokeDone}/${areaPokemon.length}`} color={C.green}>
+                    {areaPokemon.length === 0 ? <Empty text="No wild Pokémon here" /> :
+                      areaPokemon.map((p,i) => <PokemonEntry key={i} p={p} caught={caught} toggleCaught={toggleCaught} />)
+                    }
+                  </Section>
+                  <Section title="Items" count={`${itemDone}/${areaItems.length}`} color={C.gold}>
+                    {areaItems.length === 0 ? <Empty text="No items here" /> :
+                      areaItems.map((it,i) => {
+                        const key = `${areaId}|${it.name}`;
+                        return <ItemEntry key={i} it={it} itemKey={key} done={!!items[key]} toggleItem={toggleItem} />;
+                      })
+                    }
+                  </Section>
+                </div>
+                {areaTrainers.length > 0 && (
+                  <div style={{ marginTop:12 }}>
+                    <Section title="Trainers" count={`${trainerDone}/${areaTrainers.length}`} color="#a87acc">
+                      {areaTrainers.map((t,i) => (
+                        <TrainerEntry key={i} t={t} areaId={areaId} done={!!trainers[`${areaId}|${t.class}|${t.name}`]} toggleTrainer={toggleTrainer} />
+                      ))}
+                    </Section>
+                  </div>
+                )}
+              </>
             )}
           </>
         )}
@@ -1608,11 +1687,14 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
 
 // ─── Shared sub-components ────────────────────────────────────────────────────
 function AreaRow({ area, areaId, setAreaId, caught, items, trainers }) {
-  const isSel = areaId === area.id;
-  const pd  = area.pokemon.filter(p => caught[p.name]).length;
-  const id_ = area.items.filter(i => items[`${area.id}|${i.name}`]).length;
-  const td  = (area.trainers || []).filter(t => trainers[`${area.id}|${t.class}|${t.name}`]).length;
-  const total = area.pokemon.length + area.items.length + (area.trainers?.length || 0);
+  const isSel  = areaId === area.id;
+  const allPoks = flattenPokemon(area);
+  const allItms = flattenItems(area);
+  const allTrns = flattenTrainers(area);
+  const pd  = allPoks.filter(p => caught[p.name]).length;
+  const id_ = countItemsDone(area, area.id, items);
+  const td  = allTrns.filter(t => trainers[`${area.id}|${t.class}|${t.name}`]).length;
+  const total = allPoks.length + allItms.length + allTrns.length;
   const allDone = total > 0 && (pd + id_ + td) === total;
   return (
     <div onClick={() => setAreaId(area.id)} style={{ padding:"8px 12px", cursor:"pointer", borderBottom:`1px solid rgba(58,42,28,0.5)`, borderLeft:`3px solid ${isSel ? C.accent : "transparent"}`, background: isSel ? "rgba(212,98,26,0.10)" : "transparent", transition:"background 0.1s" }}
@@ -1621,12 +1703,83 @@ function AreaRow({ area, areaId, setAreaId, caught, items, trainers }) {
       <div style={{ fontSize:12, fontWeight: isSel ? "600" : "400", color: allDone ? C.green : isSel ? C.text : "#c4a888", lineHeight:1.4 }}>{allDone ? "✓ " : ""}{area.name}</div>
       {total > 0 && (
         <div style={{ display:"flex", gap:10, marginTop:3, fontSize:10, color:C.muted }}>
-          <span style={{ color: pd===area.pokemon.length && area.pokemon.length>0 ? C.green : C.muted }}>{pd}/{area.pokemon.length} pkm</span>
-          <span style={{ color: id_===area.items.length && area.items.length>0 ? C.gold : C.muted }}>{id_}/{area.items.length} itm</span>
-          {area.trainers?.length > 0 && <span style={{ color: td===area.trainers.length ? "#a87acc" : C.muted }}>{td}/{area.trainers.length} tr</span>}
+          <span style={{ color: pd===allPoks.length && allPoks.length>0 ? C.green : C.muted }}>{pd}/{allPoks.length} pkm</span>
+          <span style={{ color: id_===allItms.length && allItms.length>0 ? C.gold : C.muted }}>{id_}/{allItms.length} itm</span>
+          {allTrns.length > 0 && <span style={{ color: td===allTrns.length ? "#a87acc" : C.muted }}>{td}/{allTrns.length} tr</span>}
         </div>
       )}
     </div>
+  );
+}
+
+function FloorDivider({ label }) {
+  return (
+    <div style={{ display:"flex", alignItems:"center", gap:8, margin:"16px 0 10px" }}>
+      <div style={{ padding:"2px 10px", background:"rgba(212,98,26,0.15)", border:`1px solid rgba(212,98,26,0.35)`, borderRadius:5, fontSize:11, fontWeight:"700", color:C.accent, letterSpacing:1, flexShrink:0 }}>{label}</div>
+      <div style={{ flex:1, height:1, background:C.border }} />
+    </div>
+  );
+}
+
+function PokemonEntry({ p, caught, toggleCaught }) {
+  const isCaught = !!caught[p.name];
+  return (
+    <Row done={isCaught} onClick={() => toggleCaught(p.name)}>
+      {DEX_ID[p.name] && <img src={pokeSpriteUrl(DEX_ID[p.name])} alt={p.name} style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0, opacity:isCaught?1:0.45, filter:isCaught?"none":"grayscale(40%)" }} />}
+      <div style={{ flex:1 }}>
+        <span style={{ color:isCaught?C.green:p.lgOnly?C.lgBlue:p.frOnly?"#c85252":C.text, fontWeight:"600", fontSize:12 }}>
+          {p.name}{p.frOnly&&<Tag color="#c85252">FR</Tag>}{p.lgOnly&&<Tag color={C.lgBlue}>LG</Tag>}
+        </span>
+        <span style={{ fontSize:10, color:C.muted, marginLeft:6 }}>{p.method}</span>
+        {p.note&&<div style={{ fontSize:10, color:"#b87030", marginTop:2 }}>{p.note}</div>}
+      </div>
+      <div style={{ textAlign:"right", flexShrink:0, paddingLeft:8, display:"flex", flexDirection:"column", alignItems:"flex-end", gap:3 }}>
+        <RateDisplay rate={p.rate} />
+        {p.levels&&<div style={{ fontSize:10, color:C.muted }}>Lv.{p.levels}</div>}
+      </div>
+    </Row>
+  );
+}
+
+function ItemEntry({ it, itemKey, done, toggleItem }) {
+  return (
+    <Row done={done} onClick={() => toggleItem(itemKey)}>
+      {itemSpriteUrl(it.name)&&<img src={itemSpriteUrl(it.name)} alt={it.name} style={{ width:24, height:24, imageRendering:"pixelated", flexShrink:0 }} />}
+      <div style={{ flex:1 }}>
+        <span style={{ fontSize:12, fontWeight:"600", color:it.hidden?C.gold:C.text }}>
+          {it.hidden&&<span style={{ color:C.gold, marginRight:4 }}>★</span>}{it.name}
+        </span>
+        {it.note&&<div style={{ fontSize:10, color:C.muted, marginTop:2, lineHeight:1.5 }}>{it.note}</div>}
+      </div>
+    </Row>
+  );
+}
+
+function TrainerEntry({ t, areaId, done, toggleTrainer }) {
+  const key = `${areaId}|${t.class}|${t.name}`;
+  const tSprite = trainerSpriteUrl(t.class, t.name);
+  return (
+    <Row done={done} onClick={() => toggleTrainer(key)}>
+      {tSprite&&<img src={tSprite} alt={t.class} style={{ width:48, height:48, imageRendering:"pixelated", flexShrink:0 }} />}
+      <div style={{ flex:1 }}>
+        <div style={{ fontSize:12, fontWeight:"600", marginBottom:2 }}>{t.class} {t.name}</div>
+        {t.note&&<div style={{ fontSize:10, color:C.muted, marginBottom:5, lineHeight:1.4 }}>{t.note}</div>}
+        {t.team?.length>0&&(
+          <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+            {t.team.map((p,j)=>{
+              const pid=DEX_ID[p.name];
+              return (
+                <div key={j} style={{ textAlign:"center" }}>
+                  {pid&&<img src={pokeSpriteUrl(pid)} alt={p.name} style={{ width:32, height:32, imageRendering:"pixelated", display:"block", margin:"0 auto" }} />}
+                  <div style={{ fontSize:9, color:C.muted, lineHeight:1.3 }}>{p.name}</div>
+                  <div style={{ fontSize:9, color:C.muted }}>Lv.{p.level}</div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </Row>
   );
 }
 
