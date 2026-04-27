@@ -2177,12 +2177,21 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
 
       {/* Bottom sheet — mobile only */}
       {isMobile && selected && (
-        <div style={{ position:"fixed", bottom:0, left:0, right:0, zIndex:200, background:C.card, borderTop:`2px solid var(--frlg-accent)`, boxShadow:"0 -6px 24px rgba(0,0,0,0.6)", maxHeight:"52vh", overflowY:"auto" }}>
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"10px 16px 6px", borderBottom:`1px solid ${C.border}`, position:"sticky", top:0, background:C.card }}>
-            <span style={{ fontSize:12, fontWeight:"700", color:C.text }}>{selected.name}</span>
-            <button onClick={() => setDexSelected(null)} style={{ background:"transparent", border:`1px solid ${C.border}`, color:C.muted, borderRadius:6, cursor:"pointer", padding:"2px 10px", fontSize:13 }}>✕</button>
+        <div style={{ position:"fixed", bottom:0, left:0, right:0, zIndex:200, background:C.card, borderTop:`2px solid var(--frlg-accent)`, boxShadow:"0 -6px 24px rgba(0,0,0,0.6)", maxHeight:"44vh", display:"flex", flexDirection:"column" }}>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"10px 16px 8px", borderBottom:`1px solid ${C.border}`, flexShrink:0 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+              <img src={pokeSpriteUrl(selected.id)} alt={selected.name} style={{ width:36, height:36, imageRendering:"pixelated" }} />
+              <div>
+                <div style={{ fontSize:13, fontWeight:"700", color: caught[selected.name] ? C.green : C.text }}>
+                  {caught[selected.name] ? "✓ " : ""}{selected.name}
+                </div>
+                {selected.frOnly && <div style={{ fontSize:10, color:"#c85252", fontWeight:"500" }}>FireRed exclusive</div>}
+                {selected.lgOnly && <div style={{ fontSize:10, color:C.lgGreen, fontWeight:"500" }}>LeafGreen exclusive</div>}
+              </div>
+            </div>
+            <button onClick={() => setDexSelected(null)} style={{ background:"transparent", border:`1px solid ${C.border}`, color:C.muted, borderRadius:6, cursor:"pointer", padding:"4px 12px", fontSize:15 }}>✕</button>
           </div>
-          <div style={{ padding:"12px 16px 20px" }}>
+          <div style={{ overflowY:"auto", padding:"8px 16px 16px" }}>
             <DexDetail selected={selected} caught={caught} locs={locs} compact />
           </div>
         </div>
@@ -2207,23 +2216,19 @@ function DexDetail({ selected, caught, locs, compact }) {
           {selected.event  && <div style={{ fontSize:10, color:"#a87acc", marginTop:4, fontWeight:"500" }}>Event — not in-game obtainable</div>}
         </div>
       )}
-      {compact && (
-        <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:10 }}>
-          <img src={pokeSpriteUrl(selected.id)} alt={selected.name} style={{ width:48, height:48, imageRendering:"pixelated" }} />
-          <div>
-            <div style={{ fontSize:10, color:C.muted, fontFamily:"'Courier New',monospace" }}>#{String(selected.id).padStart(3,"0")}</div>
-            <div style={{ fontSize:13, fontWeight:"700", color: caught[selected.name] ? C.green : C.text }}>{caught[selected.name] ? "✓ Caught" : "Not caught"}</div>
-            {selected.frOnly && <div style={{ fontSize:10, color:"#c85252", fontWeight:"500" }}>FireRed exclusive</div>}
-            {selected.lgOnly && <div style={{ fontSize:10, color:C.lgGreen, fontWeight:"500" }}>LeafGreen exclusive</div>}
-          </div>
-        </div>
-      )}
-      <div style={{ fontSize:10, letterSpacing:2, color:C.muted, marginBottom:8, textTransform:"uppercase" }}>Where to find</div>
+      <div style={{ fontSize:10, letterSpacing:2, color:C.muted, marginBottom:6, textTransform:"uppercase" }}>Where to find</div>
       {locs.length === 0 ? (
         <div style={{ fontSize:11, color:C.muted, lineHeight:1.8 }}>
           Not found as a wild encounter or gift in any tracked area.<br/>
           Obtain via <span style={{ color:C.text, fontWeight:"500" }}>evolution, trading, or breeding</span>.
         </div>
+      ) : compact ? (
+        locs.map((l, i) => (
+          <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", padding:"5px 0", borderBottom:`1px solid ${C.border}30` }}>
+            <span style={{ fontSize:12, color:C.text, fontWeight:"600" }}>{l.areaName}</span>
+            <span style={{ fontSize:10, color:C.muted, marginLeft:8, whiteSpace:"nowrap" }}>{l.method} · Lv.{l.levels}{l.rate ? ` · ${l.rate}` : ""}</span>
+          </div>
+        ))
       ) : (
         locs.map((l, i) => (
           <div key={i} style={{ marginBottom:8, padding:"8px 10px", background:"rgba(0,0,0,0.2)", borderRadius:6, borderLeft:`3px solid ${C.border}` }}>
