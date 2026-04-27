@@ -131,8 +131,8 @@ const AREAS = [
       {name:"Pidgey",method:"Grass",levels:"6–7",rate:"30%"},
       {name:"Jigglypuff",method:"Grass",levels:"3–7",rate:"10%"},
       {name:"Mankey",method:"Grass",levels:"7",rate:"10%"},
-      {name:"Nidoran♀",method:"Grass",levels:"6–7",rate:"14% FR / 1% LG"},
-      {name:"Nidoran♂",method:"Grass",levels:"6–7",rate:"1% FR / 14% LG"},
+      {name:"Nidoran♀",method:"Grass",levels:"6–7",rate:"1% FR / 14% LG"},
+      {name:"Nidoran♂",method:"Grass",levels:"6–7",rate:"14% FR / 1% LG"},
     ],
     items:[{name:"Oran Berry",hidden:true,note:"Between ledges near Youngster Calvin (★ Itemfinder)"}],
     trainers:[
@@ -243,8 +243,8 @@ const AREAS = [
       {name:"Weedle",    method:"Grass",levels:"7",    rate:"20%"},
       {name:"Pidgey",    method:"Grass",levels:"11–13",rate:"15%"},
       {name:"Abra",      method:"Grass",levels:"8–12", rate:"15%"},
-      {name:"Metapod",   method:"Grass",levels:"8",    rate:"4%",frOnly:true},
-      {name:"Kakuna",    method:"Grass",levels:"8",    rate:"4%",lgOnly:true},
+      {name:"Metapod",   method:"Grass",levels:"8",    rate:"4% FR / 1% LG"},
+      {name:"Kakuna",    method:"Grass",levels:"8",    rate:"1% FR / 4% LG"},
     ],
     items:[
       {name:"Nugget",       hidden:false,note:"From the Team Rocket Grunt at the north end of Nugget Bridge"},
@@ -270,8 +270,8 @@ const AREAS = [
       {name:"Weedle",    method:"Grass",levels:"7",    rate:"20%"},
       {name:"Pidgey",    method:"Grass",levels:"11–13",rate:"15%"},
       {name:"Abra",      method:"Grass",levels:"8–12", rate:"15%"},
-      {name:"Metapod",   method:"Grass",levels:"8",    rate:"4%",frOnly:true},
-      {name:"Kakuna",    method:"Grass",levels:"8",    rate:"4%",lgOnly:true},
+      {name:"Metapod",   method:"Grass",levels:"8",    rate:"4% FR / 1% LG"},
+      {name:"Kakuna",    method:"Grass",levels:"8",    rate:"1% FR / 4% LG"},
     ],
     items:[
       {name:"Elixir",          hidden:true, note:"Northwest maze near Hiker Franklin (★ Itemfinder)"},
@@ -300,11 +300,10 @@ const AREAS = [
     trainers:[{class:"Team Rocket Grunt",name:"Grunt",team:[{name:"Machop",level:17},{name:"Drowzee",level:17}]}] },
 
   { part:"Part 5", id:"route5", name:"Route 5",
-    note:"Mankey (FR) and Meowth (LG) occupy the same 35% slot. The south gatehouse to Saffron City has a trade NPC offering Mr. Mime for Abra.",
+    note:"Meowth appears in both versions at 35%. Oddish is FR-only; Bellsprout is LG-only. The south gatehouse to Saffron City has a trade NPC offering Mr. Mime for Abra.",
     pokemon:[
       {name:"Pidgey",    method:"Grass",levels:"13–16",rate:"40%"},
-      {name:"Mankey",    method:"Grass",levels:"10–16",rate:"35%",frOnly:true},
-      {name:"Meowth",    method:"Grass",levels:"10–16",rate:"35%",lgOnly:true},
+      {name:"Meowth",    method:"Grass",levels:"10–16",rate:"35%"},
       {name:"Oddish",    method:"Grass",levels:"13–16",rate:"25%",frOnly:true},
       {name:"Bellsprout",method:"Grass",levels:"13–16",rate:"25%",lgOnly:true},
       {name:"Mr. Mime",  method:"Trade",levels:"any",note:"Trade Abra to the man in the south gatehouse to Saffron City"},
@@ -317,10 +316,12 @@ const AREAS = [
     items:[{name:"Super Repel",hidden:false,note:"South portion of route"}] },
 
   { part:"Part 5", id:"underground-5-6", name:"Underground Path (5↔6)",
-    note:"No wild encounters. A woman gives you Ms. Nido (FR) or Mr. Nido (LG) — a nicknamed Nidoran that holds a Tiny Mushroom. Many hidden items line the tunnel floor.",
+    note:"No wild encounters. A woman gives you a nicknamed Nidoran (Ms. Nido in FR, Mr. Nido in LG) — it holds a Tiny Mushroom. A trade NPC lets you swap for the opposite gender. Both methods are version-exclusive.",
     pokemon:[
-      {name:"Nidoran♀",method:"Gift (FR)",levels:"any",note:"Ms. Nido — from the woman in the tunnel; holds Tiny Mushroom"},
-      {name:"Nidoran♂",method:"Gift (LG)",levels:"any",note:"Mr. Nido — from the woman in the tunnel (LG version)"},
+      {name:"Nidoran♀",method:"Gift",  levels:"any",frOnly:true,note:"Ms. Nido (FR) — from the woman in the tunnel; holds Tiny Mushroom"},
+      {name:"Nidoran♂",method:"Trade", levels:"any",frOnly:true,note:"Trade Nidoran♀ (Ms. Nido) with the trade NPC in the tunnel"},
+      {name:"Nidoran♂",method:"Gift",  levels:"any",lgOnly:true,note:"Mr. Nido (LG) — from the woman in the tunnel; holds Tiny Mushroom"},
+      {name:"Nidoran♀",method:"Trade", levels:"any",lgOnly:true,note:"Trade Nidoran♂ (Mr. Nido) with the trade NPC in the tunnel (LG)"},
     ],
     items:[
       {name:"Tiny Mushroom",hidden:false,note:"Held by the gift Nidoran (Ms. Nido / Mr. Nido)"},
