@@ -1361,7 +1361,7 @@ function groupByPart(arr) { return arr.reduce((a, x) => { (a[x.part] = a[x.part]
 
 // ─── ROOT COMPONENT ───────────────────────────────────────────────────────────
 function FireRedTracker() {
-  const [tab, setTab]           = useState("dex");
+  const [tab, setTab]           = useState("areas");
   const [caught, setCaught]     = useState({});  // {pokémonName: true} — GLOBAL
   const [items, setItems]       = useState({});  // {areaId|itemName: true} — area-specific
   const [trainers, setTrainers] = useState({});  // {areaId|class|name: true} — area-specific
@@ -1428,7 +1428,7 @@ function FireRedTracker() {
         </div>
         {/* Tabs */}
         <div style={{ display:"flex", gap:2, marginTop:14 }}>
-          {[["dex","Pokédex"],["areas","Areas"]].map(([t,label]) => (
+          {[["areas","Areas"],["dex","Pokédex"]].map(([t,label]) => (
             <button key={t} onClick={() => setTab(t)} style={{
               padding:"8px 20px", border:"none", borderRadius:"6px 6px 0 0", cursor:"pointer",
               fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:13, fontWeight:"600",
