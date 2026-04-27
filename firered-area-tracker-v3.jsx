@@ -1918,13 +1918,14 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
 const flattenPokemon  = a => a.floors ? a.floors.flatMap(f => f.pokemon  || []) : (a.pokemon  || []);
 const flattenItems    = a => a.floors ? a.floors.flatMap(f => f.items    || []) : (a.items    || []);
 const flattenTrainers = a => a.floors ? a.floors.flatMap(f => f.trainers || []) : (a.trainers || []);
-// Floor items are keyed by index to handle duplicate names (e.g. two Escape Ropes).
+// All items are keyed by index to handle duplicate names (e.g. two Antidotes in Viridian Forest).
 const floorItemKey = (aId, label, idx) => `${aId}|${label}|${idx}`;
+const flatItemKey  = (aId, idx) => `${aId}|${idx}`;
 function countItemsDone(area, areaId, itemsState) {
   if (!area) return 0;
   if (area.floors) return area.floors.reduce((n, f) =>
     n + (f.items || []).filter((_, i) => itemsState[floorItemKey(areaId, f.label, i)]).length, 0);
-  return (area.items || []).filter(it => itemsState[`${areaId}|${it.name}`]).length;
+  return (area.items || []).filter((_, i) => itemsState[flatItemKey(areaId, i)]).length;
 }
 
 // ─── AREAS TAB ────────────────────────────────────────────────────────────────
@@ -2110,10 +2111,10 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                     </Section>
                     <Section title="Items" count={`${itemDone}/${areaItems.length}`} color={C.gold}
                       allDone={itemDone===areaItems.length && areaItems.length>0}
-                      onMarkAll={() => { const kfn = (it) => `${areaId}|${it.name}`; itemDone===areaItems.length ? clearAllItems(areaItems,kfn) : markAllItems(areaItems,kfn); }}>
+                      onMarkAll={() => { const kfn = (_,i) => flatItemKey(areaId,i); itemDone===areaItems.length ? clearAllItems(areaItems,kfn) : markAllItems(areaItems,kfn); }}>
                       {areaItems.length === 0 ? <Empty text="No items here" /> :
                         areaItems.map((it,i) => {
-                          const key = `${areaId}|${it.name}`;
+                          const key = flatItemKey(areaId, i);
                           return <ItemEntry key={i} it={it} itemKey={key} done={!!items[key]} toggleItem={toggleItem} />;
                         })
                       }
