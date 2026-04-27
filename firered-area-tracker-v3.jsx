@@ -1545,6 +1545,116 @@ const AREAS = [
       {class:"Swimmer♀",   name:"Melissa",team:[{name:"Poliwag",level:31},{name:"Seaking",level:31}]},
     ]},
 
+  { part:"Part 13", id:"cinnabar-island", name:"Cinnabar Island",
+    note:"Cinnabar Lab restores fossils and hosts three one-time NPC trades.",
+    pokemon:[
+      {name:"Omanyte",   method:"Fossil",   note:"Restore Helix Fossil at Cinnabar Lab",                  warn:true},
+      {name:"Kabuto",    method:"Fossil",   note:"Restore Dome Fossil at Cinnabar Lab",                   warn:true},
+      {name:"Aerodactyl",method:"Fossil",   note:"Restore Old Amber at Cinnabar Lab",                     warn:true},
+      {name:"Electrode", method:"Trade",    note:"Trade Raichu with Old man in Cinnabar Lab",              warn:true},
+      {name:"Tangela",   method:"Trade",    note:"Trade Venonat with woman in Cinnabar Lab (holds Stardust)", warn:true},
+      {name:"Seel",      method:"Trade",    note:"Trade Ponyta with Scientist in Cinnabar Lab",            warn:true},
+      {name:"Tentacool", method:"Surf",      levels:"5–40",  rate:"90%"},
+      {name:"Tentacruel",method:"Surf",      levels:"30–40", rate:"10%"},
+      {name:"Magikarp",  method:"Old Rod",   levels:"5",     rate:"100%"},
+      {name:"Horsea",    method:"Good Rod",  levels:"5–15",  rate:"60%", frOnly:true},
+      {name:"Horsea",    method:"Good Rod",  levels:"5–15",  rate:"20%", lgOnly:true},
+      {name:"Krabby",    method:"Good Rod",  levels:"5–15",  rate:"20%", frOnly:true},
+      {name:"Krabby",    method:"Good Rod",  levels:"5–15",  rate:"60%", lgOnly:true},
+      {name:"Magikarp",  method:"Good Rod",  levels:"5–15",  rate:"20%"},
+      {name:"Shellder",  method:"Super Rod", levels:"15–40", rate:"40%", frOnly:true},
+      {name:"Horsea",    method:"Super Rod", levels:"15–40", rate:"40%", frOnly:true},
+      {name:"Krabby",    method:"Super Rod", levels:"15–40", rate:"40%", lgOnly:true},
+      {name:"Staryu",    method:"Super Rod", levels:"15–40", rate:"40%", lgOnly:true},
+      {name:"Gyarados",  method:"Super Rod", levels:"15–40", rate:"15%"},
+      {name:"Seadra",    method:"Super Rod", levels:"15–40", rate:"4%",  frOnly:true},
+      {name:"Slowbro",   method:"Super Rod", levels:"15–40", rate:"4%",  lgOnly:true},
+      {name:"Psyduck",   method:"Super Rod", levels:"15–40", rate:"1%",  frOnly:true},
+      {name:"Slowpoke",  method:"Super Rod", levels:"15–40", rate:"1%",  lgOnly:true},
+    ],
+    items:[],
+    trainers:[]},
+
+  { part:"Part 13", id:"pokemon-mansion", name:"Pokémon Mansion",
+    note:"Wild Pokémon are identical on 1F, 2F, and 3F. The Secret Key in B1F unlocks Cinnabar Gym.",
+    floors:[
+      { label:"1F–3F",
+        pokemon:[
+          {name:"Raticate", method:"Cave", levels:"32–36", rate:"30%"},
+          {name:"Koffing",  method:"Cave", levels:"28–30", rate:"30%", frOnly:true},
+          {name:"Grimer",   method:"Cave", levels:"28–30", rate:"30%", lgOnly:true},
+          {name:"Rattata",  method:"Cave", levels:"26–28", rate:"15%"},
+          {name:"Growlithe",method:"Cave", levels:"30–32", rate:"15%", frOnly:true},
+          {name:"Vulpix",   method:"Cave", levels:"30–32", rate:"15%", lgOnly:true},
+          {name:"Grimer",   method:"Cave", levels:"28",    rate:"5%",  frOnly:true},
+          {name:"Weezing",  method:"Cave", levels:"32",    rate:"5%",  frOnly:true},
+          {name:"Koffing",  method:"Cave", levels:"28",    rate:"5%",  lgOnly:true},
+          {name:"Muk",      method:"Cave", levels:"32",    rate:"5%",  lgOnly:true},
+        ],
+        items:[
+          {name:"Moon Stone",  hidden:true,  note:"1F – Northwest pillar"},
+          {name:"Escape Rope", hidden:false, note:"1F – Near the pillars"},
+          {name:"Protein",     hidden:false, note:"1F – Northeast room"},
+          {name:"Carbos",      hidden:false, note:"1F – Among potted plants"},
+          {name:"Zinc",        hidden:false, note:"2F – Western balcony"},
+          {name:"Calcium",     hidden:false, note:"2F – Northeast room"},
+          {name:"HP Up",       hidden:false, note:"2F – East room"},
+          {name:"Iron",        hidden:false, note:"3F – Northeast room"},
+          {name:"Rare Candy",  hidden:true,  note:"3F – East-central hallway"},
+          {name:"Max Potion",  hidden:false, note:"3F – Southwest room"},
+        ],
+        trainers:[
+          {class:"Youngster",name:"Johnson",team:[{name:"Ekans",level:33},{name:"Ekans",level:33},{name:"Raticate",level:34}]},
+          {class:"Scientist",name:"Ted",    team:[{name:"Electrode",level:29},{name:"Weezing",level:29}]},
+          {class:"Burglar",  name:"Arnie",  team:[{name:"Charmander",level:34},{name:"Charmeleon",level:34}]},
+          {class:"Burglar",  name:"Simon",  team:[{name:"Ninetales",level:38}]},
+          {class:"Scientist",name:"Braydon",team:[{name:"Magnemite",level:33},{name:"Magneton",level:33},{name:"Voltorb",level:33}]},
+        ]},
+      { label:"B1F",
+        pokemon:[
+          {name:"Raticate", method:"Cave", levels:"34–38", rate:"30%"},
+          {name:"Koffing",  method:"Cave", levels:"28–30", rate:"30%", frOnly:true},
+          {name:"Grimer",   method:"Cave", levels:"28–30", rate:"30%", lgOnly:true},
+          {name:"Growlithe",method:"Cave", levels:"30–32", rate:"15%", frOnly:true},
+          {name:"Vulpix",   method:"Cave", levels:"30–32", rate:"15%", lgOnly:true},
+          {name:"Ditto",    method:"Cave", levels:"30",    rate:"10%"},
+          {name:"Rattata",  method:"Cave", levels:"26",    rate:"5%"},
+          {name:"Grimer",   method:"Cave", levels:"28",    rate:"5%",  frOnly:true},
+          {name:"Weezing",  method:"Cave", levels:"34",    rate:"5%",  frOnly:true},
+          {name:"Koffing",  method:"Cave", levels:"28",    rate:"5%",  lgOnly:true},
+          {name:"Muk",      method:"Cave", levels:"34",    rate:"5%",  lgOnly:true},
+        ],
+        items:[
+          {name:"Full Restore",   hidden:false, note:"Southwest corner"},
+          {name:"Elixir",         hidden:true,  note:"Northeast room"},
+          {name:"TM14 Blizzard",  hidden:false, note:"North-central room"},
+          {name:"Secret Key",     hidden:false, note:"Northwest room — opens Cinnabar Gym"},
+          {name:"TM22 SolarBeam", hidden:false, note:"West-central room"},
+        ],
+        trainers:[
+          {class:"Burglar",  name:"Lewis",team:[{name:"Growlithe",level:34},{name:"Ponyta",level:34}]},
+          {class:"Scientist",name:"Ivan", team:[{name:"Magnemite",level:34},{name:"Electrode",level:34}]},
+        ]},
+    ]},
+
+  { part:"Part 13", id:"cinnabar-gym", name:"Cinnabar Gym",
+    note:"Requires the Secret Key from Pokémon Mansion B1F. Blaine awards the Volcano Badge.",
+    pokemon:[],
+    items:[
+      {name:"TM38 Fire Blast", hidden:false, note:"Reward from Blaine"},
+    ],
+    trainers:[
+      {class:"Burglar",   name:"Quinn",  team:[{name:"Growlithe",level:36},{name:"Vulpix",level:36},{name:"Ninetales",level:36}]},
+      {class:"Super Nerd",name:"Erik",   team:[{name:"Vulpix",level:36},{name:"Vulpix",level:36},{name:"Ninetales",level:36}]},
+      {class:"Super Nerd",name:"Avery",  team:[{name:"Ponyta",level:34},{name:"Charmander",level:34},{name:"Vulpix",level:34},{name:"Growlithe",level:34}]},
+      {class:"Burglar",   name:"Ramon",  team:[{name:"Ponyta",level:41}]},
+      {class:"Super Nerd",name:"Derek",  team:[{name:"Rapidash",level:41}]},
+      {class:"Burglar",   name:"Dusty",  team:[{name:"Vulpix",level:37},{name:"Growlithe",level:37}]},
+      {class:"Super Nerd",name:"Zac",    team:[{name:"Growlithe",level:37},{name:"Vulpix",level:37}]},
+      {class:"Gym Leader",name:"Blaine", note:"Volcano Badge · TM38 Fire Blast",
+        team:[{name:"Growlithe",level:42},{name:"Ponyta",level:40},{name:"Rapidash",level:42},{name:"Arcanine",level:47}]},
+    ]},
+
 ];
 
 // ─── BUILD LOCATION MAP ── (which areas each Pokémon appears in)
@@ -1667,7 +1777,7 @@ const MAP_CONNECTIONS = [
 ];
 
 // Parts that have been fully audited against the Bulbapedia walkthrough — extend as each part is verified.
-const AUDITED_PARTS = new Set(["Part 1", "Part 2", "Part 3", "Part 4", "Part 5", "Part 6", "Part 7", "Part 8", "Part 9", "Part 10", "Part 11", "Part 12"]);
+const AUDITED_PARTS = new Set(["Part 1", "Part 2", "Part 3", "Part 4", "Part 5", "Part 6", "Part 7", "Part 8", "Part 9", "Part 10", "Part 11", "Part 12", "Part 13"]);
 
 // ─── SPRITES ─────────────────────────────────────────────────────────────────
 const DEX_ID = Object.fromEntries(DEX.map(p => [p.name, p.id]));
@@ -1724,6 +1834,7 @@ const ITEM_SPRITE = {
   "TM42 Facade":"tm-normal","TM47 Steel Wing":"tm-steel",
   "Quick Claw":"quick-claw","Leaf Stone":"leaf-stone","Carbos":"carbos",
   "Big Pearl":"big-pearl","Water Stone":"water-stone",
+  "Secret Key":"secret-key","TM14 Blizzard":"tm-ice","TM22 SolarBeam":"tm-grass","TM38 Fire Blast":"tm-fire",
 };
 const itemSpriteUrl = name => { const s = ITEM_SPRITE[name]; return s ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${s}.png` : null; };
 const METHOD_SPRITE_URL = {
@@ -1745,8 +1856,9 @@ const TRAINER_CLASS_SPRITE = {
   "Young Couple":"youngcouple","Rocker":"rocker-gen3",
   "Crush Kin":"crushkin-gen3","Juggler":"juggler","Tamer":"tamer-gen3",
   "Scientist":"scientist","Black Belt":"blackbelt-gen3","Psychic":"psychic-gen3",
+  "Burglar":"burglar",
 };
-const TRAINER_NAME_SPRITE  = {"Brock":"brock","Misty":"misty","Lt. Surge":"lt-surge","Blue":"blue","Giovanni":"giovanni","Erika":"erika","Koga":"koga","Sabrina":"sabrina"};
+const TRAINER_NAME_SPRITE  = {"Brock":"brock","Misty":"misty","Lt. Surge":"lt-surge","Blue":"blue","Giovanni":"giovanni","Erika":"erika","Koga":"koga","Sabrina":"sabrina","Blaine":"blaine"};
 const trainerSpriteUrl = (cls, name) => { const s = TRAINER_NAME_SPRITE[name] || TRAINER_CLASS_SPRITE[cls]; return s ? `https://play.pokemonshowdown.com/sprites/trainers/${s}.png` : null; };
 
 function pct(a, b) { return b ? Math.round((a / b) * 100) : 0; }
