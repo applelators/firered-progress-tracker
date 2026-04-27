@@ -74,6 +74,11 @@ const DEX = [
 // Pokémon are tracked GLOBALLY by name. Items are tracked per-area.
 // Gift/Trade/Fossil Pokémon are included in pokemon arrays so they sync to the Pokédex.
 const AREAS = [
+  { part:"Part 1", id:"pallet-town", name:"Pallet Town",
+    note:"Choose one starter from Professor Oak — Blue takes the one with a type advantage over yours.",
+    pokemon:[{name:"Bulbasaur",method:"Gift",levels:"5",note:"Choose one of three from Professor Oak"},{name:"Charmander",method:"Gift",levels:"5",note:"Choose one of three from Professor Oak"},{name:"Squirtle",method:"Gift",levels:"5",note:"Choose one of three from Professor Oak"}],
+    items:[{name:"Potion",hidden:false,note:"From the PC in your bedroom"},{name:"Pokédex",hidden:false,note:"From Professor Oak after choosing your starter"},{name:"Poké Ball ×5",hidden:false,note:"From Oak's aide after receiving the Pokédex"},{name:"Town Map",hidden:false,note:"From Daisy (Blue's sister) after receiving the Pokédex"}] },
+
   { part:"Part 2", id:"route1", name:"Route 1",
     note:"Can't catch on first visit — no Poké Balls yet. Return from Viridian City.",
     pokemon:[{name:"Pidgey",method:"Grass",levels:"2–5",rate:"50%"},{name:"Rattata",method:"Grass",levels:"2–4",rate:"50%"}],
@@ -82,22 +87,23 @@ const AREAS = [
   { part:"Part 2", id:"viridian-city", name:"Viridian City",
     note:"Deliver Oak's Parcel to unlock the old man's Pokémon-catching tutorial on Route 2.",
     pokemon:[{name:"Farfetch'd",method:"Trade",levels:"any",note:"Trade your Spearow to the man in the north house"}],
-    items:[] },
+    items:[{name:"Oak's Parcel",hidden:false,note:"From the Poké Mart shopkeeper — deliver to Professor Oak in Pallet Town"},{name:"Potion",hidden:false,note:"Near the city's north exit, west of the small tree"},{name:"Teachy TV",hidden:false,note:"From the old man after delivering Oak's Parcel"}] },
 
   { part:"Part 2", id:"route22", name:"Route 22",
-    note:"Worth visiting before Viridian Forest — Nidoran duo and Mankey available right away.",
-    pokemon:[{name:"Nidoran♂",method:"Grass",levels:"3–5",rate:"45%"},{name:"Nidoran♀",method:"Grass",levels:"3–5",rate:"45%"},{name:"Mankey",method:"Grass",levels:"3–5",rate:"10%"}],
+    note:"Worth visiting early — Mankey is useful against Brock. Spearow can be traded for Farfetch'd in Viridian City.",
+    pokemon:[{name:"Rattata",method:"Grass",levels:"2–5",rate:"45%"},{name:"Mankey",method:"Grass",levels:"2–5",rate:"45%"},{name:"Spearow",method:"Grass",levels:"3–5",rate:"10%"}],
     items:[] },
 
   { part:"Part 3", id:"route2-south", name:"Route 2 (South)",
-    note:"Pass-through only. Return with Cut + Boulder Badge to reach the north items.",
-    pokemon:[{name:"Pidgey",method:"Grass",levels:"3–5",rate:"35%"},{name:"Rattata",method:"Grass",levels:"3–5",rate:"35%"},{name:"Nidoran♂",method:"Grass",levels:"3–5",rate:"15%"},{name:"Nidoran♀",method:"Grass",levels:"3–5",rate:"15%"}],
+    note:"Pass-through only on first visit. Return with Cut + Boulder Badge to reach the north section and its items.",
+    pokemon:[{name:"Pidgey",method:"Grass",levels:"2–5",rate:"45%"},{name:"Rattata",method:"Grass",levels:"2–5",rate:"45%"},{name:"Caterpie",method:"Grass",levels:"4–5",rate:"5%"},{name:"Weedle",method:"Grass",levels:"4–5",rate:"5%"}],
     items:[] },
 
   { part:"Part 3", id:"viridian-forest", name:"Viridian Forest",
-    note:"Pikachu is rare but catchable here (5%). Metapod is FireRed-only; Kakuna is LeafGreen-only.",
-    pokemon:[{name:"Caterpie",method:"Grass",levels:"3–5",rate:"40%"},{name:"Weedle",method:"Grass",levels:"3–5",rate:"40%"},{name:"Metapod",method:"Grass",levels:"4–6",rate:"15%",frOnly:true},{name:"Kakuna",method:"Grass",levels:"4–6",rate:"15%",lgOnly:true},{name:"Pikachu",method:"Grass",levels:"3–5",rate:"5%"}],
-    items:[{name:"Antidote",hidden:false,note:"Near the south entrance"},{name:"Potion",hidden:false,note:"Center of the forest"}] },
+    note:"Pikachu is rare but catchable here (5%). Metapod and Kakuna both appear in both versions at different rates — Kakuna is more common in FireRed, Metapod in LeafGreen.",
+    pokemon:[{name:"Caterpie",method:"Grass",levels:"3–5",rate:"40%"},{name:"Weedle",method:"Grass",levels:"3–5",rate:"40%"},{name:"Metapod",method:"Grass",levels:"4–6",rate:"5% FR / 10% LG"},{name:"Kakuna",method:"Grass",levels:"4–6",rate:"10% FR / 5% LG"},{name:"Pikachu",method:"Grass",levels:"3–5",rate:"5%"}],
+    items:[{name:"Poké Ball",hidden:false,note:"Dead-end grassy path northwest of south entrance"},{name:"Antidote",hidden:true,note:"West side of lone tree near south entrance"},{name:"Antidote",hidden:false,note:"Northeast area past Trainer Tips sign"},{name:"Potion",hidden:false,note:"Tall grass east of southern entrance"},{name:"Potion",hidden:false,note:"Dead-end path southeast of north exit"},{name:"Potion",hidden:true,note:"In front of Bug Catcher Sammy near north exit"}],
+    trainers:[{class:"Bug Catcher",name:"Rick"},{class:"Bug Catcher",name:"Doug"},{class:"Bug Catcher",name:"Anthony"},{class:"Bug Catcher",name:"Charlie"},{class:"Bug Catcher",name:"Sammy"}] },
 
   { part:"Part 3", id:"route2-north", name:"Route 2 (North, via Cut)",
     note:"Return with HM01 Cut + Boulder Badge. TM28 Dig from the gatehouse man.",
@@ -105,9 +111,10 @@ const AREAS = [
     items:[{name:"TM28 Dig",hidden:false,note:"From man in gatehouse (Boulder Badge + Cut)"},{name:"HP Up",hidden:false,note:"Behind the Cut tree near north entrance"},{name:"Antidote",hidden:true,note:"Itemfinder — behind the gatehouse"}] },
 
   { part:"Part 3", id:"pewter-city", name:"Pewter City",
-    note:"Museum Old Amber is available from a back-room scientist after you've restored a fossil at Cinnabar Lab.",
+    note:"Defeat Brock for TM39 Rock Tomb. Old Amber requires Cut to reach the museum scientist — bring it to Cinnabar Lab to revive Aerodactyl.",
     pokemon:[],
-    items:[{name:"TM34 Shock Wave",hidden:false,note:"Man inside the Museum ($50 admission)"},{name:"Old Amber",hidden:false,note:"Scientist in back of Museum — give to Cinnabar Lab to revive Aerodactyl"}] },
+    items:[{name:"Poké Ball",hidden:true,note:"West of Pewter Museum on lighter-colored grass"},{name:"TM39 Rock Tomb",hidden:false,note:"Reward from Brock after defeating him"},{name:"Running Shoes",hidden:false,note:"From Professor Oak's aide on east side of town after defeating Brock"},{name:"Old Amber",hidden:false,note:"Scientist in back of Museum (requires Cut) — bring to Cinnabar Lab to revive Aerodactyl"}],
+    trainers:[{class:"Camper",name:"Liam"},{class:"Gym Leader",name:"Brock"}] },
 
   { part:"Part 4", id:"route3", name:"Route 3",
     note:"Jigglypuff appears at 25% — catch one before Cerulean. Mankey is useful against Brock.",
@@ -367,6 +374,9 @@ const C = {
   muted:"#705050", panel:"#1e0e0e",
 };
 
+// Parts that have been fully audited against the Bulbapedia walkthrough — extend as each part is verified.
+const AUDITED_PARTS = new Set(["Part 1", "Part 2", "Part 3"]);
+
 function pct(a, b) { return b ? Math.round((a / b) * 100) : 0; }
 function groupByPart(arr) { return arr.reduce((a, x) => { (a[x.part] = a[x.part]||[]).push(x); return a; }, {}); }
 
@@ -375,6 +385,7 @@ function FireRedTracker() {
   const [tab, setTab]           = useState("dex");
   const [caught, setCaught]     = useState({});  // {pokémonName: true} — GLOBAL
   const [items, setItems]       = useState({});  // {areaId|itemName: true} — area-specific
+  const [trainers, setTrainers] = useState({});  // {areaId|class|name: true} — area-specific
   const [areaId, setAreaId]     = useState(null);
   const [dexFilter, setDexFilter] = useState("all");
   const [dexSelected, setDexSelected] = useState(null); // name of selected Pokémon in Dex view
@@ -383,8 +394,9 @@ function FireRedTracker() {
 
   useEffect(() => {
     (async () => {
-      try { const r = localStorage.getItem("fr-caught5"); if (r) setCaught(JSON.parse(r)); } catch {}
-      try { const r = localStorage.getItem("fr-items5");  if (r) setItems(JSON.parse(r));  } catch {}
+      try { const r = localStorage.getItem("fr-caught5");   if (r) setCaught(JSON.parse(r));   } catch {}
+      try { const r = localStorage.getItem("fr-items5");    if (r) setItems(JSON.parse(r));    } catch {}
+      try { const r = localStorage.getItem("fr-trainers1"); if (r) setTrainers(JSON.parse(r)); } catch {}
       setBooted(true);
     })();
   }, []);
@@ -403,6 +415,15 @@ function FireRedTracker() {
       const next = { ...prev };
       if (next[key]) delete next[key]; else next[key] = true;
       try { localStorage.setItem("fr-items5", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }, []);
+
+  const toggleTrainer = useCallback((key) => {
+    setTrainers(prev => {
+      const next = { ...prev };
+      if (next[key]) delete next[key]; else next[key] = true;
+      try { localStorage.setItem("fr-trainers1", JSON.stringify(next)); } catch {}
       return next;
     });
   }, []);
@@ -444,7 +465,7 @@ function FireRedTracker() {
       {tab === "dex" && <DexTab caught={caught} toggleCaught={toggleCaught} dexFilter={dexFilter} setDexFilter={setDexFilter} dexSelected={dexSelected} setDexSelected={setDexSelected} />}
 
       {/* ── Tab: Areas ── */}
-      {tab === "areas" && <AreasTab caught={caught} toggleCaught={toggleCaught} items={items} toggleItem={toggleItem} areaId={areaId} setAreaId={setAreaId} area={area} search={search} setSearch={setSearch} />}
+      {tab === "areas" && <AreasTab caught={caught} toggleCaught={toggleCaught} items={items} toggleItem={toggleItem} trainers={trainers} toggleTrainer={toggleTrainer} areaId={areaId} setAreaId={setAreaId} area={area} search={search} setSearch={setSearch} />}
     </div>
   );
 }
@@ -567,12 +588,14 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
 }
 
 // ─── AREAS TAB ────────────────────────────────────────────────────────────────
-function AreasTab({ caught, toggleCaught, items, toggleItem, areaId, setAreaId, area, search, setSearch }) {
-  const groups = useMemo(() => groupByPart(AREAS), []);
-  const filtered = useMemo(() => search.trim() ? AREAS.filter(a => a.name.toLowerCase().includes(search.toLowerCase())) : null, [search]);
+function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTrainer, areaId, setAreaId, area, search, setSearch }) {
+  const visibleAreas = useMemo(() => AREAS.filter(a => AUDITED_PARTS.has(a.part)), []);
+  const groups = useMemo(() => groupByPart(visibleAreas), [visibleAreas]);
+  const filtered = useMemo(() => search.trim() ? visibleAreas.filter(a => a.name.toLowerCase().includes(search.toLowerCase())) : null, [search, visibleAreas]);
 
-  const pokeDone = area ? area.pokemon.filter(p => caught[p.name]).length : 0;
-  const itemDone = area ? area.items.filter(i => items[`${areaId}|${i.name}`]).length : 0;
+  const pokeDone    = area ? area.pokemon.filter(p => caught[p.name]).length : 0;
+  const itemDone    = area ? area.items.filter(i => items[`${areaId}|${i.name}`]).length : 0;
+  const trainerDone = area ? (area.trainers || []).filter(t => trainers[`${areaId}|${t.class}|${t.name}`]).length : 0;
 
   return (
     <div style={{ display:"flex", flex:1, overflow:"hidden" }}>
@@ -583,11 +606,11 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, areaId, setAreaId, 
             style={{ width:"100%", background:"rgba(0,0,0,0.4)", border:`1px solid ${C.border}`, color:C.text, padding:"5px 8px", fontFamily:"'Courier New',monospace", fontSize:11, borderRadius:2, boxSizing:"border-box" }} />
         </div>
         {filtered
-          ? filtered.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} />)
+          ? filtered.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} trainers={trainers} />)
           : Object.entries(groups).map(([part, list]) => (
               <div key={part}>
                 <div style={{ padding:"5px 10px", fontSize:9, letterSpacing:3, color:C.muted, textTransform:"uppercase", background:"rgba(0,0,0,0.25)", borderBottom:`1px solid rgba(82,16,16,0.4)` }}>{part}</div>
-                {list.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} />)}
+                {list.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} trainers={trainers} />)}
               </div>
             ))
         }
@@ -618,8 +641,9 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, areaId, setAreaId, 
             )}
 
             <div style={{ display:"flex", gap:12, marginBottom:14, flexWrap:"wrap" }}>
-              <MiniBar label="Pokémon" done={pokeDone} total={area.pokemon.length} color={C.green} />
-              <MiniBar label="Items"   done={itemDone} total={area.items.length}   color={C.gold} />
+              <MiniBar label="Pokémon"  done={pokeDone}    total={area.pokemon.length}           color={C.green} />
+              <MiniBar label="Items"    done={itemDone}    total={area.items.length}             color={C.gold} />
+              {area.trainers?.length > 0 && <MiniBar label="Trainers" done={trainerDone} total={area.trainers.length} color="#bb66ee" />}
             </div>
 
             <div style={{ fontSize:10, color:C.muted, marginBottom:10, display:"flex", gap:16, flexWrap:"wrap" }}>
@@ -676,6 +700,21 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, areaId, setAreaId, 
                 }
               </Section>
             </div>
+
+            {area.trainers?.length > 0 && (
+              <div style={{ marginTop:12 }}>
+                <Section title="⚔️ Trainers" count={`${trainerDone}/${area.trainers.length}`} color="#bb66ee">
+                  {area.trainers.map((t, i) => {
+                    const key = `${areaId}|${t.class}|${t.name}`;
+                    return (
+                      <Row key={i} done={!!trainers[key]} onClick={() => toggleTrainer(key)}>
+                        <span style={{ fontSize:11, fontWeight:"bold" }}>{t.class} {t.name}</span>
+                      </Row>
+                    );
+                  })}
+                </Section>
+              </div>
+            )}
           </>
         )}
       </div>
@@ -684,12 +723,13 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, areaId, setAreaId, 
 }
 
 // ─── Shared sub-components ────────────────────────────────────────────────────
-function AreaRow({ area, areaId, setAreaId, caught, items }) {
+function AreaRow({ area, areaId, setAreaId, caught, items, trainers }) {
   const isSel = areaId === area.id;
-  const pd = area.pokemon.filter(p => caught[p.name]).length;
+  const pd  = area.pokemon.filter(p => caught[p.name]).length;
   const id_ = area.items.filter(i => items[`${area.id}|${i.name}`]).length;
-  const total = area.pokemon.length + area.items.length;
-  const allDone = total > 0 && (pd + id_) === total;
+  const td  = (area.trainers || []).filter(t => trainers[`${area.id}|${t.class}|${t.name}`]).length;
+  const total = area.pokemon.length + area.items.length + (area.trainers?.length || 0);
+  const allDone = total > 0 && (pd + id_ + td) === total;
   return (
     <div onClick={() => setAreaId(area.id)} style={{ padding:"7px 10px", cursor:"pointer", borderBottom:`1px solid rgba(82,16,16,0.2)`, borderLeft:`3px solid ${isSel ? C.accent : "transparent"}`, background: isSel ? "rgba(196,32,32,0.1)" : "transparent", transition:"all 0.08s" }}
       onMouseEnter={e => { if (!isSel) e.currentTarget.style.background="rgba(255,255,255,0.02)"; }}
@@ -699,6 +739,7 @@ function AreaRow({ area, areaId, setAreaId, caught, items }) {
         <div style={{ display:"flex", gap:8, marginTop:2, fontSize:9 }}>
           <span style={{ color: pd===area.pokemon.length && area.pokemon.length>0 ? C.green : C.muted }}>{pd}/{area.pokemon.length} 🐾</span>
           <span style={{ color: id_===area.items.length && area.items.length>0 ? C.gold : C.muted }}>{id_}/{area.items.length} 🎒</span>
+          {area.trainers?.length > 0 && <span style={{ color: td===area.trainers.length ? "#bb66ee" : C.muted }}>{td}/{area.trainers.length} ⚔️</span>}
         </div>
       )}
     </div>
