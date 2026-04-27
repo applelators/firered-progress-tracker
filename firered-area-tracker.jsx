@@ -77,7 +77,8 @@ const AREAS = [
   { part:"Part 1", id:"pallet-town", name:"Pallet Town",
     note:"Choose one starter from Professor Oak — Blue takes the one with a type advantage over yours.",
     pokemon:[{name:"Bulbasaur",method:"Gift",levels:"5",note:"Choose one of three from Professor Oak"},{name:"Charmander",method:"Gift",levels:"5",note:"Choose one of three from Professor Oak"},{name:"Squirtle",method:"Gift",levels:"5",note:"Choose one of three from Professor Oak"}],
-    items:[{name:"Potion",hidden:false,note:"From the PC in your bedroom"},{name:"Pokédex",hidden:false,note:"From Professor Oak after choosing your starter"},{name:"Poké Ball ×5",hidden:false,note:"From Oak's aide after receiving the Pokédex"},{name:"Town Map",hidden:false,note:"From Daisy (Blue's sister) after receiving the Pokédex"}] },
+    items:[{name:"Potion",hidden:false,note:"From the PC in your bedroom"},{name:"Pokédex",hidden:false,note:"From Professor Oak after choosing your starter"},{name:"Poké Ball ×5",hidden:false,note:"From Oak's aide after receiving the Pokédex"},{name:"Town Map",hidden:false,note:"From Daisy (Blue's sister) after receiving the Pokédex"}],
+    trainers:[{class:"Rival",name:"Blue",note:"Has the starter with a type advantage over yours — one of these three.",team:[{name:"Charmander",level:5},{name:"Squirtle",level:5},{name:"Bulbasaur",level:5}]}] },
 
   { part:"Part 2", id:"route1", name:"Route 1",
     note:"Can't catch on first visit — no Poké Balls yet. Return from Viridian City.",
@@ -92,7 +93,8 @@ const AREAS = [
   { part:"Part 2", id:"route22", name:"Route 22",
     note:"Worth visiting early — Mankey is useful against Brock. Spearow can be traded for Farfetch'd in Viridian City.",
     pokemon:[{name:"Rattata",method:"Grass",levels:"2–5",rate:"45%"},{name:"Mankey",method:"Grass",levels:"2–5",rate:"45%"},{name:"Spearow",method:"Grass",levels:"3–5",rate:"10%"}],
-    items:[] },
+    items:[],
+    trainers:[{class:"Rival",name:"Blue",note:"Pidgey + whichever starter counters yours, both Lv.9.",team:[{name:"Pidgey",level:9}]}] },
 
   { part:"Part 3", id:"route2-south", name:"Route 2 (South)",
     note:"Pass-through only on first visit. Return with Cut + Boulder Badge to reach the north section and its items.",
@@ -400,7 +402,7 @@ const ITEM_SPRITE = {
 const itemSpriteUrl = name => { const s = ITEM_SPRITE[name]; return s ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${s}.png` : null; };
 
 const TRAINER_CLASS_SPRITE = {"Bug Catcher":"bugcatcher","Camper":"camper"};
-const TRAINER_NAME_SPRITE  = {"Brock":"brock"};
+const TRAINER_NAME_SPRITE  = {"Brock":"brock","Blue":"blue"};
 const trainerSpriteUrl = (cls, name) => { const s = TRAINER_NAME_SPRITE[name] || TRAINER_CLASS_SPRITE[cls]; return s ? `https://play.pokemonshowdown.com/sprites/trainers/${s}.png` : null; };
 
 function pct(a, b) { return b ? Math.round((a / b) * 100) : 0; }
@@ -741,7 +743,8 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                       <Row key={i} done={!!trainers[key]} onClick={() => toggleTrainer(key)}>
                         {tSprite && <img src={tSprite} alt={t.class} style={{ width:48, height:48, imageRendering:"pixelated", flexShrink:0 }} />}
                         <div style={{ flex:1 }}>
-                          <div style={{ fontSize:11, fontWeight:"bold", marginBottom:4 }}>{t.class} {t.name}</div>
+                          <div style={{ fontSize:11, fontWeight:"bold", marginBottom:2 }}>{t.class} {t.name}</div>
+                          {t.note && <div style={{ fontSize:9, color:C.muted, marginBottom:4, lineHeight:1.4 }}>{t.note}</div>}
                           {t.team?.length > 0 && (
                             <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
                               {t.team.map((p, j) => {
