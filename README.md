@@ -56,8 +56,8 @@ Area data is being audited part by part against the [Bulbapedia FireRed & LeafGr
 | Part | Areas | Status |
 |------|-------|--------|
 | Part 1 | Pallet Town | Audited |
-| Part 2 | Route 1 · Viridian City · Route 22 | Audited |
-| Part 3 | Route 2 (South) · Viridian Forest · Route 2 (North) · Pewter City | Audited |
+| Part 2 | Route 1 · Viridian City · Route 22 · Route 2 (West) | Audited |
+| Part 3 | Viridian Forest · Pewter City | Audited |
 | Part 4–21 | Cerulean City through Sevii Islands | Pending audit |
 
 ---

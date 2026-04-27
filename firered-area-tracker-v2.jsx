@@ -113,10 +113,7 @@ const AREAS = [
       {class:"Bug Catcher",name:"Sammy",  team:[{name:"Weedle",level:9}]},
     ] },
 
-  { part:"Part 3", id:"route2-north", name:"Route 2 (North, via Cut)",
-    note:"Return with HM01 Cut + Boulder Badge. TM28 Dig from the gatehouse man.",
-    pokemon:[{name:"Pidgey",method:"Grass",levels:"3–5",rate:"35%"},{name:"Rattata",method:"Grass",levels:"3–5",rate:"35%"},{name:"Nidoran♂",method:"Grass",levels:"3–5",rate:"15%"},{name:"Nidoran♀",method:"Grass",levels:"3–5",rate:"15%"}],
-    items:[{name:"TM28 Dig",hidden:false,note:"From man in gatehouse (Boulder Badge + Cut)"},{name:"HP Up",hidden:false,note:"Behind the Cut tree near north entrance"},{name:"Antidote",hidden:true,note:"Itemfinder — behind the gatehouse"}] },
+
 
   { part:"Part 3", id:"pewter-city", name:"Pewter City",
     note:"Defeat Brock for TM39 Rock Tomb. Old Amber requires Cut to reach the museum scientist — bring it to Cinnabar Lab to revive Aerodactyl.",
