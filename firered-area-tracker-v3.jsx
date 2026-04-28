@@ -3367,7 +3367,8 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
   const areaPokemon  = area ? flattenPokemon(area)  : [];
   const areaItems    = area ? flattenItems(area)    : [];
   const areaTrainers = area ? flattenTrainers(area) : [];
-  const pokeDone    = areaPokemon.filter(p => caught[p.name]).length;
+  const verPokemon   = areaPokemon.filter(p => !(version === "fr" && p.lgOnly) && !(version === "lg" && p.frOnly));
+  const pokeDone    = verPokemon.filter(p => caught[p.name]).length;
   const itemDone    = countItemsDone(area, areaId, items);
   const trainerDone = areaTrainers.filter(t => trainers[`${areaId}|${t.class}|${t.name}`]).length;
 
@@ -3428,8 +3429,8 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
               const atype = getAreaType(area);
               const tint = AREA_TINT[atype];
               const typeLabel = { route:"Route", cave:"Cave / Dungeon", water:"Water / Ship", safari:"Safari Zone", special:"Special", city:"City / Town" }[atype] || atype;
-              const allDone = areaPokemon.length + areaItems.length + areaTrainers.length > 0 &&
-                pokeDone === areaPokemon.length && itemDone === areaItems.length && trainerDone === areaTrainers.length;
+              const allDone = verPokemon.length + areaItems.length + areaTrainers.length > 0 &&
+                pokeDone === verPokemon.length && itemDone === areaItems.length && trainerDone === areaTrainers.length;
               return (
                 <div style={{ position:"sticky", top:0, zIndex:10, background:C.bg, borderBottom:`1px solid ${C.border}`, padding:"12px 20px 10px", boxShadow:"0 2px 8px rgba(0,0,0,0.3)" }}>
                   {/* Mobile back button */}
@@ -3460,7 +3461,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                   </div>
                   {/* Progress bars */}
                   <div style={{ display:"flex", gap:10, marginTop:10, flexWrap:"wrap" }}>
-                    <MiniBar label="Pokémon"  done={pokeDone}    total={areaPokemon.length}   color={C.green} />
+                    <MiniBar label="Pokémon"  done={pokeDone}    total={verPokemon.length}    color={C.green} />
                     <MiniBar label="Items"    done={itemDone}    total={areaItems.length}     color={C.gold} />
                     {areaTrainers.length > 0 && <MiniBar label="Trainers" done={trainerDone} total={areaTrainers.length} color="#a87acc" />}
                   </div>
@@ -3489,10 +3490,11 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                   const hasItms = (floor.items    || []).length > 0;
                   const hasTrns = (floor.trainers || []).length > 0;
                   if (!hasPoks && !hasItms && !hasTrns) return null;
-                  const pokDone = (floor.pokemon  || []).filter(p => caught[p.name]).length;
+                  const floorVerPoks = (floor.pokemon || []).filter(p => !(version === "fr" && p.lgOnly) && !(version === "lg" && p.frOnly));
+                  const pokDone = floorVerPoks.filter(p => caught[p.name]).length;
                   const itmDone = (floor.items    || []).filter((_, i) => items[floorItemKey(areaId, floor.label, i)]).length;
                   const trnDone = (floor.trainers || []).filter(t => trainers[`${areaId}|${t.class}|${t.name}`]).length;
-                  const floorTotal = (floor.pokemon||[]).length + (floor.items||[]).length + (floor.trainers||[]).length;
+                  const floorTotal = floorVerPoks.length + (floor.items||[]).length + (floor.trainers||[]).length;
                   const floorDone  = pokDone + itmDone + trnDone;
                   const floorKey = `${areaId}|${floor.label}`;
                   const isCollapsed = collapsedFloors.has(floorKey);
@@ -3509,9 +3511,9 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                         <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap:12, marginBottom:12 }}>
                           {/* Wild Pokémon left */}
                           <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
-                            <Section title="Wild Pokémon" count={`${pokDone}/${(floor.pokemon||[]).length}`} color={C.green}
-                              allDone={pokDone===(floor.pokemon||[]).length && (floor.pokemon||[]).length>0}
-                              onMarkAll={() => pokDone===(floor.pokemon||[]).length ? clearAllPokemon(floor.pokemon||[]) : markAllPokemon(floor.pokemon||[])}>
+                            <Section title="Wild Pokémon" count={`${pokDone}/${floorVerPoks.length}`} color={C.green}
+                              allDone={pokDone===floorVerPoks.length && floorVerPoks.length>0}
+                              onMarkAll={() => pokDone===floorVerPoks.length ? clearAllPokemon(floorVerPoks) : markAllPokemon(floorVerPoks)}>
                               {!hasPoks ? <Empty text="No wild Pokémon here" /> : renderPokemonList(floor.pokemon, caught, toggleCaught, version)}
                             </Section>
                             <Section title="Items" count={`${itmDone}/${(floor.items||[]).length}`} color={C.gold}
@@ -3541,9 +3543,9 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                 <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap:12 }}>
                   {/* Wild Pokémon + Items left */}
                   <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
-                    <Section title="Wild Pokémon" count={`${pokeDone}/${areaPokemon.length}`} color={C.green}
-                      allDone={pokeDone===areaPokemon.length && areaPokemon.length>0}
-                      onMarkAll={() => pokeDone===areaPokemon.length ? clearAllPokemon(areaPokemon) : markAllPokemon(areaPokemon)}>
+                    <Section title="Wild Pokémon" count={`${pokeDone}/${verPokemon.length}`} color={C.green}
+                      allDone={pokeDone===verPokemon.length && verPokemon.length>0}
+                      onMarkAll={() => pokeDone===verPokemon.length ? clearAllPokemon(verPokemon) : markAllPokemon(verPokemon)}>
                       {areaPokemon.length === 0 ? <Empty text="No wild Pokémon here" /> :
                         renderPokemonList(areaPokemon, caught, toggleCaught, version)
                       }
