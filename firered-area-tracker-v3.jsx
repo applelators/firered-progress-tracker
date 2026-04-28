@@ -3682,16 +3682,44 @@ function PokemonEntry({ p, caught, toggleCaught, version }) {
 }
 
 function ItemEntry({ it, itemKey, done, toggleItem }) {
+  const [showImg, setShowImg] = React.useState(false);
   return (
-    <Row done={done} onClick={() => toggleItem(itemKey)}>
-      {itemSpriteUrl(it.name)&&<img src={itemSpriteUrl(it.name)} alt={it.name} style={{ width:24, height:24, imageRendering:"pixelated", flexShrink:0 }} />}
-      <div style={{ flex:1 }}>
-        <span style={{ fontSize:12, fontWeight:"600", color:it.hidden?C.gold:C.text }}>
-          {it.hidden&&<span style={{ color:C.gold, marginRight:4 }}>★</span>}{it.name}
-        </span>
-        {it.note&&<div style={{ fontSize:10, color:C.muted, marginTop:2, lineHeight:1.5 }}>{it.note}</div>}
-      </div>
-    </Row>
+    <>
+      <Row done={done} onClick={() => toggleItem(itemKey)}>
+        {itemSpriteUrl(it.name)&&<img src={itemSpriteUrl(it.name)} alt={it.name} style={{ width:24, height:24, imageRendering:"pixelated", flexShrink:0 }} />}
+        <div style={{ flex:1 }}>
+          <span style={{ fontSize:12, fontWeight:"600", color:it.hidden?C.gold:C.text }}>
+            {it.hidden&&<span style={{ color:C.gold, marginRight:4 }}>★</span>}{it.name}
+          </span>
+          {it.note&&<div style={{ fontSize:10, color:C.muted, marginTop:2, lineHeight:1.5 }}>{it.note}</div>}
+        </div>
+        {it.img&&(
+          <button onClick={e=>{e.stopPropagation();setShowImg(true);}}
+            style={{ background:"transparent", border:"none", cursor:"pointer", color:C.muted,
+                     fontSize:14, padding:"0 4px", flexShrink:0, alignSelf:"center" }}
+            title="View location screenshot">📍</button>
+        )}
+      </Row>
+      {showImg&&(
+        <div onClick={()=>setShowImg(false)}
+          style={{ position:"fixed", inset:0, zIndex:300, background:"rgba(0,0,0,0.88)",
+                   display:"flex", alignItems:"center", justifyContent:"center" }}>
+          <div onClick={e=>e.stopPropagation()} style={{ position:"relative", maxWidth:"92vw" }}>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:8 }}>
+              <span style={{ color:C.text, fontSize:13, fontWeight:"600" }}>
+                {it.hidden&&"★ "}{it.name}
+              </span>
+              <button onClick={()=>setShowImg(false)}
+                style={{ background:"transparent", border:`1px solid ${C.border}`, color:C.muted,
+                         borderRadius:6, cursor:"pointer", padding:"2px 10px", fontSize:14, marginLeft:16 }}>✕</button>
+            </div>
+            <img src={it.img} alt={`${it.name} location`}
+              style={{ maxWidth:"100%", maxHeight:"80vh", display:"block",
+                       borderRadius:6, border:`1px solid ${C.border}` }} />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
