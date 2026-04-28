@@ -134,7 +134,7 @@ const AREAS = [
   { part:"Part 3", id:"viridian-forest", name:"Viridian Forest",
     note:"Pikachu is rare but catchable here (5%). Metapod and Kakuna both appear in both versions at different rates — Kakuna is more common in FireRed, Metapod in LeafGreen.",
     pokemon:[{name:"Caterpie",method:"Grass",levels:"3–5",rate:"40%"},{name:"Weedle",method:"Grass",levels:"3–5",rate:"40%"},{name:"Metapod",method:"Grass",levels:"4–6",rate:"5% FR / 10% LG"},{name:"Kakuna",method:"Grass",levels:"4–6",rate:"10% FR / 5% LG"},{name:"Pikachu",method:"Grass",levels:"3–5",rate:"5%"}],
-    items:[{name:"Poké Ball",hidden:false,note:"Dead-end grassy path northwest of south entrance"},{name:"Antidote",hidden:true,note:"West side of lone tree near south entrance"},{name:"Antidote",hidden:false,note:"Northeast area past Trainer Tips sign"},{name:"Potion",hidden:false,note:"Tall grass east of southern entrance"},{name:"Potion",hidden:false,note:"Dead-end path southeast of north exit"},{name:"Potion",hidden:true,note:"In front of Bug Catcher Sammy near north exit"}],
+    items:[{name:"Poké Ball",hidden:false,note:"Dead-end grassy path northwest of south entrance"},{name:"Antidote",hidden:true,note:"West side of lone tree near south entrance",img:"screenshots/hidden/viridian-forest-1.png"},{name:"Antidote",hidden:false,note:"Northeast area past Trainer Tips sign"},{name:"Potion",hidden:false,note:"Tall grass east of southern entrance"},{name:"Potion",hidden:false,note:"Dead-end path southeast of north exit"},{name:"Potion",hidden:true,note:"In front of Bug Catcher Sammy near north exit",img:"screenshots/hidden/viridian-forest-5.png"}],
     trainers:[
       {class:"Bug Catcher",name:"Rick",   team:[{name:"Weedle",level:6},{name:"Caterpie",level:6}]},
       {class:"Bug Catcher",name:"Doug",   team:[{name:"Weedle",level:7},{name:"Kakuna",level:7},{name:"Weedle",level:7}]},
@@ -148,7 +148,7 @@ const AREAS = [
   { part:"Part 3", id:"pewter-city", name:"Pewter City",
     note:"Defeat Brock for TM39 Rock Tomb. Old Amber requires Cut to reach the museum scientist — bring it to Cinnabar Lab to revive Aerodactyl.",
     pokemon:[],
-    items:[{name:"Poké Ball",hidden:true,note:"West of Pewter Museum on lighter-colored grass"},{name:"TM39 Rock Tomb",hidden:false,note:"Reward from Brock after defeating him"},{name:"Running Shoes",hidden:false,note:"From Professor Oak's aide on east side of town after defeating Brock"},{name:"Old Amber",hidden:false,note:"Scientist in back of Museum (requires Cut) — bring to Cinnabar Lab to revive Aerodactyl"}],
+    items:[{name:"Poké Ball",hidden:true,note:"West of Pewter Museum on lighter-colored grass",img:"screenshots/hidden/pewter-city-0.png"},{name:"TM39 Rock Tomb",hidden:false,note:"Reward from Brock after defeating him"},{name:"Running Shoes",hidden:false,note:"From Professor Oak's aide on east side of town after defeating Brock"},{name:"Old Amber",hidden:false,note:"Scientist in back of Museum (requires Cut) — bring to Cinnabar Lab to revive Aerodactyl"}],
     trainers:[
       {class:"Camper",    name:"Liam", team:[{name:"Geodude",level:10},{name:"Sandshrew",level:11}]},
       {class:"Gym Leader",name:"Brock",team:[{name:"Geodude",level:12},{name:"Onix",level:14}]},
@@ -164,7 +164,7 @@ const AREAS = [
       {name:"Nidoran♀",method:"Grass",levels:"6–7",rate:"1% FR / 14% LG"},
       {name:"Nidoran♂",method:"Grass",levels:"6–7",rate:"14% FR / 1% LG"},
     ],
-    items:[{name:"Oran Berry",hidden:true,note:"Between ledges near Youngster Calvin (★ Itemfinder)"}],
+    items:[{name:"Oran Berry",hidden:true,note:"Between ledges near Youngster Calvin (★ Itemfinder)",img:"screenshots/hidden/route3-0.png"}],
     trainers:[
       {class:"Lass",       name:"Janice", team:[{name:"Pidgey",   level:9},{name:"Pidgey",  level:9}]},
       {class:"Bug Catcher",name:"Colton", team:[{name:"Caterpie", level:10},{name:"Weedle",  level:10},{name:"Caterpie",level:10}]},
@@ -179,7 +179,7 @@ const AREAS = [
   { part:"Part 4", id:"route4-west", name:"Route 4 (West)",
     note:"Small area between Route 3 and Mt. Moon. A man near the Pokémon Center sells Magikarp for ₽500.",
     pokemon:[{name:"Magikarp",method:"Buy",levels:"5",note:"Purchase from the man for ₽500 — at the Pokémon Center building on Route 4"}],
-    items:[{name:"Persim Berry",hidden:true,note:"West of Pokémon Center, between rocks (★ Itemfinder)"}],
+    items:[{name:"Persim Berry",hidden:true,note:"West of Pokémon Center, between rocks (★ Itemfinder)",img:"screenshots/hidden/route4-west-0.png"}],
     trainers:[] },
 
   { part:"Part 4", id:"mt-moon", name:"Mt. Moon",
@@ -230,8 +230,8 @@ const AREAS = [
         items:[
           {name:"Star Piece",  hidden:false,note:"South section"},
           {name:"TM46 Thief",  hidden:false,note:"Northeast platform"},
-          {name:"Ether",       hidden:true, note:"Northeast section (★ Itemfinder)"},
-          {name:"Moon Stone",  hidden:true, note:"Near fossils (★ Itemfinder)"},
+          {name:"Ether",       hidden:true, note:"Northeast section (★ Itemfinder)",img:"screenshots/hidden/mt-moon-b2f-2.png"},
+          {name:"Moon Stone",  hidden:true, note:"Near fossils (★ Itemfinder)",img:"screenshots/hidden/mt-moon-b2f-3.png"},
           {name:"Revive",      hidden:false,note:"North of center ladder"},
           {name:"Antidote",    hidden:false,note:"Southwest of northwest ladder"},
           {name:"Dome Fossil", hidden:false,note:"⚠ Choose Dome OR Helix, not both! (Dome→Kabuto)"},
@@ -256,8 +256,8 @@ const AREAS = [
       {name:"Mankey",   method:"Grass",levels:"10–12",rate:"5%"},
     ],
     items:[
-      {name:"Great Ball",  hidden:true, note:"Corner west of northwest hill (★ Itemfinder)"},
-      {name:"Razz Berry",  hidden:true, note:"South-central area (★ Itemfinder)"},
+      {name:"Great Ball",  hidden:true, note:"Corner west of northwest hill (★ Itemfinder)",img:"screenshots/hidden/route4-east-0.png"},
+      {name:"Razz Berry",  hidden:true, note:"South-central area (★ Itemfinder)",img:"screenshots/hidden/route4-east-1.png"},
       {name:"TM05 Roar",   hidden:false,note:"Eastern hill — from the man by the hill"},
     ],
     trainers:[] },
@@ -266,7 +266,7 @@ const AREAS = [
     note:"Defeat Misty for TM03 Water Pulse. Blue battles you near the south bridge. A trade NPC offers Jynx for Poliwhirl.",
     pokemon:[{name:"Jynx",method:"Trade",levels:"any",note:"Trade Poliwhirl to the man near the Pokémon Center"}],
     items:[
-      {name:"Rare Candy",      hidden:true, note:"Backyard of northwest house (★ Itemfinder)"},
+      {name:"Rare Candy",      hidden:true, note:"Backyard of northwest house (★ Itemfinder)",img:"screenshots/hidden/cerulean-city-0.png"},
       {name:"Powder Jar",      hidden:false,note:"From the old man in the north-northwest house"},
       {name:"TM03 Water Pulse",hidden:false,note:"From Misty after defeating her"},
       {name:"Fame Checker",    hidden:false,note:"From Blue after the rival battle"},
@@ -295,7 +295,7 @@ const AREAS = [
     items:[
       {name:"Nugget",       hidden:false,note:"From the Team Rocket Grunt at the north end of Nugget Bridge"},
       {name:"TM45 Attract", hidden:false,note:"Northwest hill"},
-      {name:"Pecha Berry",  hidden:true, note:"Northeast hill, accessible via Route 25 (★ Itemfinder)"},
+      {name:"Pecha Berry",  hidden:true, note:"Northeast hill, accessible via Route 25 (★ Itemfinder)",img:"screenshots/hidden/route24-2.png"},
     ],
     trainers:[
       {class:"Bug Catcher",      name:"Cale",  team:[{name:"Caterpie",level:10},{name:"Weedle", level:10},{name:"Metapod",level:10},{name:"Kakuna",level:10}]},
@@ -320,11 +320,11 @@ const AREAS = [
       {name:"Kakuna",    method:"Grass",levels:"8",    rate:"4% FR / 1% LG"},
     ],
     items:[
-      {name:"Elixir",          hidden:true, note:"Northwest maze near Hiker Franklin (★ Itemfinder)"},
+      {name:"Elixir",          hidden:true, note:"Northwest maze near Hiker Franklin (★ Itemfinder)",img:"screenshots/hidden/route25-0.png"},
       {name:"TM43 Secret Power",hidden:false,note:"Northeast maze"},
-      {name:"Oran Berry",      hidden:true, note:"Southeast of maze (★ Itemfinder)"},
-      {name:"Bluk Berry",      hidden:true, note:"Northeast maze near fence end (★ Itemfinder)"},
-      {name:"Ether",           hidden:true, note:"Near Sea Cottage entrance (★ Itemfinder)"},
+      {name:"Oran Berry",      hidden:true, note:"Southeast of maze (★ Itemfinder)",img:"screenshots/hidden/route25-2.png"},
+      {name:"Bluk Berry",      hidden:true, note:"Northeast maze near fence end (★ Itemfinder)",img:"screenshots/hidden/route25-3.png"},
+      {name:"Ether",           hidden:true, note:"Near Sea Cottage entrance (★ Itemfinder)",img:"screenshots/hidden/route25-4.png"},
       {name:"S.S. Ticket",     hidden:false,note:"From Bill after restoring him from Pokémon form"},
     ],
     trainers:[
@@ -364,8 +364,8 @@ const AREAS = [
       {name:"Bellsprout",method:"Grass",levels:"13–16",rate:"25%",lgOnly:true},
     ],
     items:[
-      {name:"Rare Candy",  hidden:true,note:"Northeast hill, two steps north of gap between ledges (★ Itemfinder)"},
-      {name:"Sitrus Berry",hidden:true,note:"Northwest hill (★ Itemfinder)"},
+      {name:"Rare Candy",  hidden:true,note:"Northeast hill, two steps north of gap between ledges (★ Itemfinder)",img:"screenshots/hidden/route6-0.png"},
+      {name:"Sitrus Berry",hidden:true,note:"Northwest hill (★ Itemfinder)",img:"screenshots/hidden/route6-1.png"},
     ],
     trainers:[
       {class:"Bug Catcher",name:"Keigo",   team:[{name:"Weedle",    level:16},{name:"Caterpie",level:16},{name:"Weedle",level:16}]},
@@ -401,7 +401,7 @@ const AREAS = [
       {name:"Magikarp",  method:"Old Rod",levels:"5",  rate:"100%"},
     ],
     items:[
-      {name:"Max Ether",      hidden:true, note:"Four steps south, one step west of Pokémon Center entrance (★ Itemfinder)"},
+      {name:"Max Ether",      hidden:true, note:"Four steps south, one step west of Pokémon Center entrance (★ Itemfinder)",img:"screenshots/hidden/vermilion-city-0.png"},
       {name:"Vs. Seeker",     hidden:false,note:"Pokémon Center — from the female Ace Trainer at the counter"},
       {name:"Old Rod",        hidden:false,note:"Northwest house, from the Fishing Guru"},
       {name:"Bike Voucher",   hidden:false,note:"Pokémon Fan Club Chairman — exchange at Cerulean City Bike Shop for the Bicycle"},
@@ -429,9 +429,9 @@ const AREAS = [
         items:[
           {name:"TM31 Brick Break",hidden:false,note:"Second cabin from left"},
           {name:"Great Ball",      hidden:false,note:"Kitchen"},
-          {name:"Pecha Berry",     hidden:true, note:"Kitchen — nearest trash can to doorway (★ Itemfinder)"},
-          {name:"Cheri Berry",     hidden:true, note:"Kitchen — middle trash can (★ Itemfinder)"},
-          {name:"Chesto Berry",    hidden:true, note:"Kitchen — farthest trash can from doorway (★ Itemfinder)"},
+          {name:"Pecha Berry",     hidden:true, note:"Kitchen — nearest trash can to doorway (★ Itemfinder)",img:"screenshots/hidden/ss-anne-1f-2.png"},
+          {name:"Cheri Berry",     hidden:true, note:"Kitchen — middle trash can (★ Itemfinder)",img:"screenshots/hidden/ss-anne-1f-3.png"},
+          {name:"Chesto Berry",    hidden:true, note:"Kitchen — farthest trash can from doorway (★ Itemfinder)",img:"screenshots/hidden/ss-anne-1f-4.png"},
         ],
         trainers:[
           {class:"Gentleman",name:"Thomas",team:[{name:"Growlithe",level:18},{name:"Growlithe",level:18}]},
@@ -442,7 +442,7 @@ const AREAS = [
       { label:"B1F",
         pokemon:[],
         items:[
-          {name:"Hyper Potion",hidden:true, note:"Hallway trash can near stairs to 1F (★ Itemfinder)"},
+          {name:"Hyper Potion",hidden:true, note:"Hallway trash can near stairs to 1F (★ Itemfinder)",img:"screenshots/hidden/ss-anne-b1f-0.png"},
           {name:"Super Potion",hidden:false,note:"Rightmost cabin"},
           {name:"Ether",       hidden:false,note:"Middle cabin"},
           {name:"TM44 Rest",   hidden:false,note:"Second cabin from left"},
@@ -492,7 +492,7 @@ const AREAS = [
     items:[
       {name:"Awakening",   hidden:false,note:"Northwest part of the route"},
       {name:"X Defend",    hidden:false,note:"Middle of the route, in a grass patch"},
-      {name:"Escape Rope", hidden:true, note:"On a rock just north of the east gate (★ Itemfinder)"},
+      {name:"Escape Rope", hidden:true, note:"On a rock just north of the east gate (★ Itemfinder)",img:"screenshots/hidden/route11-2.png"},
       {name:"Great Ball",  hidden:false,note:"South of the east gate"},
       {name:"Itemfinder",  hidden:false,note:"East gate — from Oak's aide after catching 30 different species"},
     ],
@@ -536,10 +536,10 @@ const AREAS = [
     ],
     items:[
       {name:"TM40 Aerial Ace",hidden:false,note:"Southwest corner of the route"},
-      {name:"Ether",          hidden:true, note:"Northwest part of the route, on a rock (★ Itemfinder)"},
+      {name:"Ether",          hidden:true, note:"Northwest part of the route, on a rock (★ Itemfinder)",img:"screenshots/hidden/route9-1.png"},
       {name:"Burn Heal",      hidden:false,note:"Southeast corner of the route"},
-      {name:"Chesto Berry",   hidden:true, note:"Northeast part of the route (★ Itemfinder)"},
-      {name:"Rare Candy",     hidden:true, note:"Northeast part of the route, one step west and south from corner (★ Itemfinder)"},
+      {name:"Chesto Berry",   hidden:true, note:"Northeast part of the route (★ Itemfinder)",img:"screenshots/hidden/route9-3.png"},
+      {name:"Rare Candy",     hidden:true, note:"Northeast part of the route, one step west and south from corner (★ Itemfinder)",img:"screenshots/hidden/route9-4.png"},
     ],
     trainers:[
       {class:"Picnicker",  name:"Alicia",team:[{name:"Oddish",    level:18},{name:"Bellsprout",level:18},{name:"Oddish",level:18},{name:"Bellsprout",level:18}]},
@@ -564,9 +564,9 @@ const AREAS = [
     ],
     items:[
       {name:"Everstone",   hidden:false,note:"Pokémon Center — from Oak's aide after catching 20 different species"},
-      {name:"Persim Berry",hidden:true, note:"Southeast of Pokémon Center, corner of fencing (★ Itemfinder)"},
-      {name:"Cheri Berry", hidden:true, note:"Southwest of Pokémon Center, edge of dirt patch (★ Itemfinder)"},
-      {name:"Super Potion",hidden:true, note:"One step east of Rock Tunnel north entrance — requires Cut (★ Itemfinder)"},
+      {name:"Persim Berry",hidden:true, note:"Southeast of Pokémon Center, corner of fencing (★ Itemfinder)",img:"screenshots/hidden/route10-north-1.png"},
+      {name:"Cheri Berry", hidden:true, note:"Southwest of Pokémon Center, edge of dirt patch (★ Itemfinder)",img:"screenshots/hidden/route10-north-2.png"},
+      {name:"Super Potion",hidden:true, note:"One step east of Rock Tunnel north entrance — requires Cut (★ Itemfinder)",img:"screenshots/hidden/route10-north-3.png"},
     ],
     trainers:[
       {class:"Picnicker", name:"Heidi",team:[{name:"Pikachu", level:20},{name:"Clefairy",level:20}]},
@@ -632,7 +632,7 @@ const AREAS = [
       {name:"Magikarp", method:"Old Rod",levels:"5",    rate:"100%"},
     ],
     items:[
-      {name:"Nanab Berry",hidden:true,note:"East of Rock Tunnel exit (★ Itemfinder)"},
+      {name:"Nanab Berry",hidden:true,note:"East of Rock Tunnel exit (★ Itemfinder)",img:"screenshots/hidden/route10-south-0.png"},
     ],
     trainers:[
       {class:"Picnicker", name:"Carol",  team:[{name:"Pidgey",   level:21},{name:"Pidgeotto",level:21}]},
@@ -652,9 +652,9 @@ const AREAS = [
       {name:"Vulpix",   method:"Grass",levels:"15–18",rate:"20%",lgOnly:true},
     ],
     items:[
-      {name:"Leppa Berry", hidden:true, note:"Tall grass SE (requires Cut, ★ Itemfinder)"},
-      {name:"Lum Berry",   hidden:true, note:"Tall grass NW (requires Cut, ★ Itemfinder)"},
-      {name:"Rawst Berry", hidden:true, note:"Tall grass NE (requires Cut, ★ Itemfinder)"},
+      {name:"Leppa Berry", hidden:true, note:"Tall grass SE (requires Cut, ★ Itemfinder)",img:"screenshots/hidden/route8-0.png"},
+      {name:"Lum Berry",   hidden:true, note:"Tall grass NW (requires Cut, ★ Itemfinder)",img:"screenshots/hidden/route8-1.png"},
+      {name:"Rawst Berry", hidden:true, note:"Tall grass NE (requires Cut, ★ Itemfinder)",img:"screenshots/hidden/route8-2.png"},
     ],
     trainers:[
       {class:"Lass",      name:"Julia",   team:[{name:"Clefairy", level:22},{name:"Clefairy",  level:22}]},
@@ -682,7 +682,7 @@ const AREAS = [
       {name:"Vulpix",   method:"Grass",levels:"18–20",rate:"10%",lgOnly:true},
     ],
     items:[
-      {name:"Wepear Berry",hidden:true,note:"Southeast corner (★ Itemfinder)"},
+      {name:"Wepear Berry",hidden:true,note:"Southeast corner (★ Itemfinder)",img:"screenshots/hidden/route7-0.png"},
     ],
     trainers:[] },
 
@@ -706,7 +706,7 @@ const AREAS = [
       {name:"TM20 Safeguard",   hidden:false,note:"Rooftop vending machine exchange — give Soda Pop"},
       {name:"TM33 Reflect",     hidden:false,note:"Rooftop vending machine exchange — give Lemonade"},
       {name:"TM19 Giga Drain",  hidden:false,note:"Erika's reward for defeating her"},
-      {name:"PP Up",            hidden:true, note:"Northeast of the small tree, east side of city (★ Itemfinder)"},
+      {name:"PP Up",            hidden:true, note:"Northeast of the small tree, east side of city (★ Itemfinder)",img:"screenshots/hidden/celadon-city-7.png"},
     ],
     trainers:[
       {class:"Beauty",     name:"Tamia",  team:[{name:"Bellsprout",level:24},{name:"Bellsprout",level:24}]},
@@ -743,7 +743,7 @@ const AREAS = [
       { label:"B1F",
         pokemon:[],
         items:[
-          {name:"PP Up",       hidden:true, note:"Southeastern planter (★ Itemfinder)"},
+          {name:"PP Up",       hidden:true, note:"Southeastern planter (★ Itemfinder)",img:"screenshots/hidden/rocket-hideout-b1f-0.png"},
           {name:"Escape Rope", hidden:false,note:"Western room"},
           {name:"Hyper Potion",hidden:false,note:"East room (accessible via B2F south stairs)"},
         ],
@@ -769,7 +769,7 @@ const AREAS = [
         pokemon:[],
         items:[
           {name:"TM21 Frustration",hidden:false,note:"East-central room"},
-          {name:"Nugget",          hidden:true, note:"Northwest corner (★ Itemfinder)"},
+          {name:"Nugget",          hidden:true, note:"Northwest corner (★ Itemfinder)",img:"screenshots/hidden/rocket-hideout-b3f-1.png"},
           {name:"Rare Candy",      hidden:false,note:"Spinner maze, east side"},
           {name:"Black Glasses",   hidden:false,note:"Southeast corner"},
         ],
@@ -783,8 +783,8 @@ const AREAS = [
           {name:"Max Ether",  hidden:false,note:"Northwest room table"},
           {name:"TM49 Snatch",hidden:false,note:"Northwest room"},
           {name:"Calcium",    hidden:false,note:"Southeast, table west of elevator"},
-          {name:"Net Ball",   hidden:true, note:"Between potted plants SW of Giovanni (★ Itemfinder)"},
-          {name:"Nest Ball",  hidden:true, note:"Between potted plants SE of Giovanni (★ Itemfinder)"},
+          {name:"Net Ball",   hidden:true, note:"Between potted plants SW of Giovanni (★ Itemfinder)",img:"screenshots/hidden/rocket-hideout-b4f-3.png"},
+          {name:"Nest Ball",  hidden:true, note:"Between potted plants SE of Giovanni (★ Itemfinder)",img:"screenshots/hidden/rocket-hideout-b4f-4.png"},
           {name:"Lift Key",   hidden:false,note:"Dropped by northwest Grunt after defeat"},
           {name:"Silph Scope",hidden:false,note:"Dropped by Giovanni after defeat"},
         ],
@@ -836,7 +836,7 @@ const AREAS = [
           {name:"Great Ball",hidden:false,note:"4F"},
           {name:"Cleanse Tag",hidden:false,note:"5F"},
           {name:"Nugget",    hidden:false,note:"5F"},
-          {name:"Big Mushroom",hidden:true,note:"5F (★ Itemfinder)"},
+          {name:"Big Mushroom",hidden:true,note:"5F (★ Itemfinder)",img:"screenshots/hidden/pokemon-tower-4f-5f-6.png"},
         ],
         trainers:[
           {class:"Channeler",name:"Laurel",team:[{name:"Gastly",level:23},{name:"Gastly",level:23}]},
@@ -905,9 +905,9 @@ const AREAS = [
       {name:"TM27 Return",  hidden:false,note:"Girl on 2F of the Lavender Town gate building"},
       {name:"Super Rod",    hidden:false,note:"Fishing Guru's younger brother in the house on the route"},
       {name:"Net Ball",     hidden:false,note:"Gate building north of route"},
-      {name:"Hyper Potion", hidden:true, note:"5 east, 2 north of Fisherman Elliot (★ Itemfinder)"},
+      {name:"Hyper Potion", hidden:true, note:"5 east, 2 north of Fisherman Elliot (★ Itemfinder)",img:"screenshots/hidden/route12-3.png"},
       {name:"Iron",         hidden:false,note:"SW of Fishing Guru's house (requires Cut)"},
-      {name:"Rare Candy",   hidden:true, note:"In the tall grass patch (requires Cut, ★ Itemfinder)"},
+      {name:"Rare Candy",   hidden:true, note:"In the tall grass patch (requires Cut, ★ Itemfinder)",img:"screenshots/hidden/route12-5.png"},
       {name:"TM48 Skill Swap",hidden:false,note:"Southeast of Lavender Town gate (requires Surf)"},
     ],
     trainers:[
@@ -946,7 +946,7 @@ const AREAS = [
       {name:"Slowpoke",  method:"Super Rod",levels:"25–35",rate:"1%", lgOnly:true},
     ],
     items:[
-      {name:"PP Up",hidden:true,note:"Two steps east of the Trainer Tips sign (★ Itemfinder)"},
+      {name:"PP Up",hidden:true,note:"Two steps east of the Trainer Tips sign (★ Itemfinder)",img:"screenshots/hidden/route13-0.png"},
     ],
     trainers:[
       {class:"Picnicker", name:"Alma",      team:[{name:"Goldeen",   level:28},{name:"Poliwag",   level:28},{name:"Horsea",    level:28}]},
@@ -974,8 +974,8 @@ const AREAS = [
       {name:"Weepinbell",method:"Grass",levels:"30",   rate:"5%",lgOnly:true},
     ],
     items:[
-      {name:"Pinap Berry",hidden:true,note:"Southeast corner near Twins Kiri & Jan (★ Itemfinder)"},
-      {name:"Zinc",      hidden:true,note:"In the tall grass patch (★ Itemfinder)"},
+      {name:"Pinap Berry",hidden:true,note:"Southeast corner near Twins Kiri & Jan (★ Itemfinder)",img:"screenshots/hidden/route14-0.png"},
+      {name:"Zinc",      hidden:true,note:"In the tall grass patch (★ Itemfinder)",img:"screenshots/hidden/route14-1.png"},
     ],
     trainers:[
       {class:"Bird Keeper",name:"Carter", team:[{name:"Pidgey",    level:28},{name:"Doduo",    level:28},{name:"Pidgeotto",level:28}]},
@@ -1034,7 +1034,7 @@ const AREAS = [
       {name:"HM04 Strength",hidden:false,note:"Safari Zone Warden — return his Gold Teeth"},
       {name:"Rare Candy",  hidden:false,note:"Inside the Warden's house (requires Strength)"},
       {name:"TM06 Toxic",  hidden:false,note:"Koga's reward for defeating him"},
-      {name:"Max Revive",  hidden:true, note:"Backyard of Fishing Guru's house, one step east of the southernmost flower (★ Itemfinder)"},
+      {name:"Max Revive",  hidden:true, note:"Backyard of Fishing Guru's house, one step east of the southernmost flower (★ Itemfinder)",img:"screenshots/hidden/fuchsia-city-4.png"},
     ],
     trainers:[
       {class:"Juggler",name:"Nate",    team:[{name:"Drowzee",level:34},{name:"Kadabra",level:34}]},
@@ -1076,7 +1076,7 @@ const AREAS = [
         ],
         items:[
           {name:"Nugget",    hidden:false,note:"Central island (requires Surf)"},
-          {name:"Leaf Stone",hidden:true, note:"Central island, three steps east of the Nugget (★ Itemfinder, requires Surf)"},
+          {name:"Leaf Stone",hidden:true, note:"Central island, three steps east of the Nugget (★ Itemfinder, requires Surf)",img:"screenshots/hidden/safari-zone-center-1.png"},
         ],
         trainers:[]},
       { label:"Area 1",
@@ -1141,7 +1141,7 @@ const AREAS = [
         items:[
           {name:"Gold Teeth",      hidden:false,note:"Northeast of the rocky ridge — return to the Warden in Fuchsia City for HM04 Strength"},
           {name:"TM32 Double Team",hidden:false,note:"Southeast of the Secret House"},
-          {name:"Revive",          hidden:true, note:"In the dirt patch in front of the Secret House (★ Itemfinder)"},
+          {name:"Revive",          hidden:true, note:"In the dirt patch in front of the Secret House (★ Itemfinder)",img:"screenshots/hidden/safari-zone-area-3-2.png"},
           {name:"HM03 Surf",       hidden:false,note:"Secret House — received from a safari official"},
           {name:"Max Potion",      hidden:false,note:"In the tall grass patch (requires Surf)"},
           {name:"Max Revive",      hidden:false,note:"Southeast side of the rocky ridge (requires Surf)"},
@@ -1161,7 +1161,7 @@ const AREAS = [
     items:[
       {name:"HM02 Fly",    hidden:false,note:"Girl's house (northwest, requires Cut to enter)"},
       {name:"Amulet Coin", hidden:false,note:"Oak's aide at the gate — show 40 caught species"},
-      {name:"Leftovers",   hidden:true, note:"Where Snorlax was sleeping (★ Itemfinder)"},
+      {name:"Leftovers",   hidden:true, note:"Where Snorlax was sleeping (★ Itemfinder)",img:"screenshots/hidden/route16-2.png"},
     ],
     trainers:[
       {class:"Young Couple",name:"Lea & Jed",team:[{name:"Rapidash",level:29},{name:"Ninetales",level:29}]},
@@ -1183,11 +1183,11 @@ const AREAS = [
       {name:"Doduo",   method:"Grass",levels:"24–28",rate:"35%"},
     ],
     items:[
-      {name:"Full Restore",hidden:true,note:"1W, 6N of northernmost signboard (★ Itemfinder)"},
-      {name:"PP Up",       hidden:true,note:"Middle bridge's west road, aligned with 2nd signboard from north (★ Itemfinder)"},
-      {name:"Rare Candy",  hidden:true,note:"East road, aligned with 3rd signboard from north (★ Itemfinder)"},
-      {name:"Max Revive",  hidden:true,note:"Small grass bridge connecting west and east segments (★ Itemfinder)"},
-      {name:"Max Elixir",  hidden:true,note:"3E of southernmost sign (★ Itemfinder)"},
+      {name:"Full Restore",hidden:true,note:"1W, 6N of northernmost signboard (★ Itemfinder)",img:"screenshots/hidden/route17-0.png"},
+      {name:"PP Up",       hidden:true,note:"Middle bridge's west road, aligned with 2nd signboard from north (★ Itemfinder)",img:"screenshots/hidden/route17-1.png"},
+      {name:"Rare Candy",  hidden:true,note:"East road, aligned with 3rd signboard from north (★ Itemfinder)",img:"screenshots/hidden/route17-2.png"},
+      {name:"Max Revive",  hidden:true,note:"Small grass bridge connecting west and east segments (★ Itemfinder)",img:"screenshots/hidden/route17-3.png"},
+      {name:"Max Elixir",  hidden:true,note:"3E of southernmost sign (★ Itemfinder)",img:"screenshots/hidden/route17-4.png"},
     ],
     trainers:[
       {class:"Cue Ball",name:"Isaiah",team:[{name:"Machop",  level:29},{name:"Machamp", level:29}]},
@@ -1223,7 +1223,7 @@ const AREAS = [
     note:"Tea from Celadon Mansion required for gate guards. TM29 Psychic is a free gift from Mr. Psychic in the SE house.",
     pokemon:[],
     items:[
-      {name:"Nugget",      hidden:true, note:"Copycat's house (NW) — on the desk in her room (★ Itemfinder)"},
+      {name:"Nugget",      hidden:true, note:"Copycat's house (NW) — on the desk in her room (★ Itemfinder)",img:"screenshots/hidden/saffron-city-0.png"},
       {name:"TM29 Psychic",hidden:false,note:"From Mr. Psychic in the SE house"},
     ],
     trainers:[] },
@@ -1234,7 +1234,7 @@ const AREAS = [
       { label:"2F",
         pokemon:[],
         items:[
-          {name:"Ultra Ball",hidden:true,note:"SW room, southern potted plant (★ Itemfinder)"},
+          {name:"Ultra Ball",hidden:true,note:"SW room, southern potted plant (★ Itemfinder)",img:"screenshots/hidden/silph-co-2f-0.png"},
         ],
         trainers:[
           {class:"Team Rocket Grunt",name:"Grunt 1", team:[{name:"Golbat",level:25},{name:"Zubat",level:25},{name:"Zubat",level:25},{name:"Raticate",level:25},{name:"Zubat",level:25}]},
@@ -1246,7 +1246,7 @@ const AREAS = [
         pokemon:[],
         items:[
           {name:"Hyper Potion",hidden:false,note:"NE of the Scientist"},
-          {name:"Protein",     hidden:true, note:"SE corner, middle of three potted plants (★ Itemfinder)"},
+          {name:"Protein",     hidden:true, note:"SE corner, middle of three potted plants (★ Itemfinder)",img:"screenshots/hidden/silph-co-3f-1.png"},
         ],
         trainers:[
           {class:"Team Rocket Grunt",name:"Grunt 3",team:[{name:"Raticate",level:28},{name:"Hypno",level:28},{name:"Raticate",level:28}]},
@@ -1259,7 +1259,7 @@ const AREAS = [
           {name:"Max Revive",   hidden:false,note:"NW room"},
           {name:"Escape Rope",  hidden:false,note:"NW room"},
           {name:"TM41 Torment", hidden:false,note:"SE room"},
-          {name:"Iron",         hidden:true, note:"SE room, southern of three potted plants (★ Itemfinder)"},
+          {name:"Iron",         hidden:true, note:"SE room, southern of three potted plants (★ Itemfinder)",img:"screenshots/hidden/silph-co-4f-4.png"},
         ],
         trainers:[
           {class:"Team Rocket Grunt",name:"Grunt 4", team:[{name:"Ekans",level:28},{name:"Zubat",level:28},{name:"Cubone",level:28}]},
@@ -1272,8 +1272,8 @@ const AREAS = [
           {name:"Card Key",         hidden:false,note:"South hallway — unlocks all card-locked doors"},
           {name:"Protein",          hidden:false,note:"NW room (requires Card Key)"},
           {name:"TM01 Focus Punch", hidden:false,note:"SW room"},
-          {name:"PP Up",            hidden:true, note:"Larger central room, potted plant (★ Itemfinder)"},
-          {name:"Elixir",           hidden:true, note:"Smaller central room, potted plant (★ Itemfinder, requires Card Key)"},
+          {name:"PP Up",            hidden:true, note:"Larger central room, potted plant (★ Itemfinder)",img:"screenshots/hidden/silph-co-5f-3.png"},
+          {name:"Elixir",           hidden:true, note:"Smaller central room, potted plant (★ Itemfinder, requires Card Key)",img:"screenshots/hidden/silph-co-5f-4.png"},
         ],
         trainers:[
           {class:"Team Rocket Grunt",name:"Grunt 6", team:[{name:"Hypno",level:33}]},
@@ -1286,7 +1286,7 @@ const AREAS = [
         items:[
           {name:"HP Up",     hidden:false,note:"SW room (requires Card Key)"},
           {name:"X Sp. Atk", hidden:false,note:"SW room (requires Card Key)"},
-          {name:"Carbos",    hidden:true, note:"NW room, western potted plant (★ Itemfinder)"},
+          {name:"Carbos",    hidden:true, note:"NW room, western potted plant (★ Itemfinder)",img:"screenshots/hidden/silph-co-6f-2.png"},
         ],
         trainers:[
           {class:"Team Rocket Grunt",name:"Grunt 8",  team:[{name:"Machop",level:29},{name:"Machoke",level:29}]},
@@ -1300,7 +1300,7 @@ const AREAS = [
         items:[
           {name:"TM08 Bulk Up",hidden:false,note:"East-central room (requires Card Key)"},
           {name:"Calcium",     hidden:false,note:"SW room"},
-          {name:"Zinc",        hidden:true, note:"East-central room, southern potted plant (★ Itemfinder)"},
+          {name:"Zinc",        hidden:true, note:"East-central room, southern potted plant (★ Itemfinder)",img:"screenshots/hidden/silph-co-7f-2.png"},
         ],
         trainers:[
           {class:"Team Rocket Grunt",name:"Grunt 10", team:[{name:"Cubone",level:29},{name:"Cubone",level:29}]},
@@ -1314,7 +1314,7 @@ const AREAS = [
         pokemon:[],
         items:[
           {name:"Iron",   hidden:false,note:"East-central room, east of the two beds"},
-          {name:"Nugget", hidden:true, note:"East-central room, northern potted plant (★ Itemfinder)"},
+          {name:"Nugget", hidden:true, note:"East-central room, northern potted plant (★ Itemfinder)",img:"screenshots/hidden/silph-co-8f-1.png"},
         ],
         trainers:[
           {class:"Team Rocket Grunt",name:"Grunt 13", team:[{name:"Raticate",level:26},{name:"Golbat",level:26},{name:"Arbok",level:26},{name:"Koffing",level:26}]},
@@ -1325,7 +1325,7 @@ const AREAS = [
         pokemon:[],
         items:[
           {name:"Max Potion",hidden:true,note:"S-SW room, corner near the boxes (★ Itemfinder)"},
-          {name:"Calcium",   hidden:true,note:"Western room, eastern potted plant (★ Itemfinder)"},
+          {name:"Calcium",   hidden:true,note:"Western room, eastern potted plant (★ Itemfinder)",img:"screenshots/hidden/silph-co-9f-1.png"},
         ],
         trainers:[
           {class:"Team Rocket Grunt",name:"Grunt 15", team:[{name:"Golbat",level:28},{name:"Drowzee",level:28},{name:"Hypno",level:28}]},
@@ -1338,7 +1338,7 @@ const AREAS = [
           {name:"Carbos",    hidden:false,note:"SW room"},
           {name:"Rare Candy",hidden:false,note:"SW room"},
           {name:"Ultra Ball",hidden:false,note:"SW room"},
-          {name:"HP Up",     hidden:true, note:"NE room, potted plant (★ Itemfinder)"},
+          {name:"HP Up",     hidden:true, note:"NE room, potted plant (★ Itemfinder)",img:"screenshots/hidden/silph-co-10f-3.png"},
         ],
         trainers:[
           {class:"Team Rocket Grunt",name:"Grunt 17", team:[{name:"Machoke",level:33}]},
@@ -1348,7 +1348,7 @@ const AREAS = [
         pokemon:[],
         items:[
           {name:"Zinc",       hidden:false,note:"East side, SE corner"},
-          {name:"Revive",     hidden:true, note:"West side, middle of three potted plants outside president's office (★ Itemfinder)"},
+          {name:"Revive",     hidden:true, note:"West side, middle of three potted plants outside president's office (★ Itemfinder)",img:"screenshots/hidden/silph-co-11f-1.png"},
           {name:"Master Ball",hidden:false,note:"⚠ From the president after defeating Giovanni — only ONE in the game!"},
         ],
         trainers:[
@@ -1520,7 +1520,7 @@ const AREAS = [
           {name:"Slowpoke",method:"Super Rod",levels:"15–25",rate:"4%", lgOnly:true},
         ],
         items:[
-          {name:"Nugget",hidden:true,note:"Southwest corner of the western rocky ridge (★ Itemfinder)"},
+          {name:"Nugget",hidden:true,note:"Southwest corner of the western rocky ridge (★ Itemfinder)",img:"screenshots/hidden/seafoam-islands-b3f-0.png"},
         ],
         trainers:[]},
       { label:"B4F",
@@ -1552,7 +1552,7 @@ const AREAS = [
           {name:"Slowpoke",method:"Super Rod",levels:"15–25",rate:"4%", lgOnly:true},
         ],
         items:[
-          {name:"Water Stone",hidden:true,  note:"On a rock near the western ladder (★ Itemfinder)"},
+          {name:"Water Stone",hidden:true,  note:"On a rock near the western ladder (★ Itemfinder)",img:"screenshots/hidden/seafoam-islands-b4f-0.png"},
           {name:"Ultra Ball", hidden:false, note:"South side, east of the sign near Articuno"},
         ],
         trainers:[]},
@@ -1631,7 +1631,7 @@ const AREAS = [
           {name:"Muk",      method:"Cave", levels:"32",    rate:"5%",  lgOnly:true},
         ],
         items:[
-          {name:"Moon Stone",  hidden:true,  note:"1F – Northwest pillar"},
+          {name:"Moon Stone",  hidden:true,  note:"1F – Northwest pillar",img:"screenshots/hidden/pokemon-mansion-1f-3f-0.png"},
           {name:"Escape Rope", hidden:false, note:"1F – Near the pillars"},
           {name:"Protein",     hidden:false, note:"1F – Northeast room"},
           {name:"Carbos",      hidden:false, note:"1F – Among potted plants"},
@@ -1639,7 +1639,7 @@ const AREAS = [
           {name:"Calcium",     hidden:false, note:"2F – Northeast room"},
           {name:"HP Up",       hidden:false, note:"2F – East room"},
           {name:"Iron",        hidden:false, note:"3F – Northeast room"},
-          {name:"Rare Candy",  hidden:true,  note:"3F – East-central hallway"},
+          {name:"Rare Candy",  hidden:true,  note:"3F – East-central hallway",img:"screenshots/hidden/pokemon-mansion-1f-3f-8.png"},
           {name:"Max Potion",  hidden:false, note:"3F – Southwest room"},
         ],
         trainers:[
@@ -1665,7 +1665,7 @@ const AREAS = [
         ],
         items:[
           {name:"Full Restore",   hidden:false, note:"Southwest corner"},
-          {name:"Elixir",         hidden:true,  note:"Northeast room"},
+          {name:"Elixir",         hidden:true,  note:"Northeast room",img:"screenshots/hidden/pokemon-mansion-b1f-1.png"},
           {name:"TM14 Blizzard",  hidden:false, note:"North-central room"},
           {name:"Secret Key",     hidden:false, note:"Northwest room — opens Cinnabar Gym"},
           {name:"TM22 SolarBeam", hidden:false, note:"West-central room"},
@@ -1824,9 +1824,9 @@ const AREAS = [
     ],
     items:[
       {name:"Dire Hit",   hidden:false, note:"Lower east side, northeast of eastern grass"},
-      {name:"Ultra Ball", hidden:true,  note:"Southwest dead-end near Pokémon Ranger Logan"},
+      {name:"Ultra Ball", hidden:true,  note:"Southwest dead-end near Pokémon Ranger Logan",img:"screenshots/hidden/mt-ember-1.png"},
       {name:"Ultra Ball", hidden:true,  note:"Upper west summit entrance dead-end"},
-      {name:"Fire Stone", hidden:true,  note:"Southeast summit entrance (requires Rock Smash and Strength)"},
+      {name:"Fire Stone", hidden:true,  note:"Southeast summit entrance (requires Rock Smash and Strength)",img:"screenshots/hidden/mt-ember-3.png"},
       {name:"Fire Stone", hidden:true,  note:"Southwest lone rock"},
     ],
     trainers:[
@@ -1874,8 +1874,8 @@ const AREAS = [
     note:"Accessible from Two Island. The Move Maniac re-teaches forgotten moves for 2 Tiny Mushroom or 1 Big Mushroom.",
     pokemon:[],
     items:[
-      {name:"PP Max",     hidden:true, note:"East lake sandy spot (requires Surf and Itemfinder)"},
-      {name:"Rare Candy", hidden:true, note:"Behind Move Tutor house"},
+      {name:"PP Max",     hidden:true, note:"East lake sandy spot (requires Surf and Itemfinder)",img:"screenshots/hidden/cape-brink-0.png"},
+      {name:"Rare Candy", hidden:true, note:"Behind Move Tutor house",img:"screenshots/hidden/cape-brink-1.png"},
     ],
     trainers:[]},
 
@@ -1891,7 +1891,7 @@ const AREAS = [
     note:"A cave through Three Island, initially controlled by Team Rocket. No wild Pokémon inside.",
     pokemon:[],
     items:[
-      {name:"Nugget", hidden:true,  note:"On a rock southeast of the stairs"},
+      {name:"Nugget", hidden:true,  note:"On a rock southeast of the stairs",img:"screenshots/hidden/three-isle-path-0.png"},
       {name:"Nugget", hidden:false, note:"From the man after clearing Team Rocket"},
     ],
     trainers:[]},
@@ -1927,7 +1927,7 @@ const AREAS = [
       {name:"Slowpoke",   method:"Super Rod", levels:"25–35", rate:"1%",  lgOnly:true},
     ],
     items:[
-      {name:"Max Repel", hidden:true, note:"Northwest of Aroma Lady Violet"},
+      {name:"Max Repel", hidden:true, note:"Northwest of Aroma Lady Violet",img:"screenshots/hidden/bond-bridge-0.png"},
       {name:"Pearl",     hidden:true, note:"Southwest corner near Tuber Alexis"},
       {name:"Stardust",  hidden:true, note:"One square west, two north of bridge's northwest corner"},
     ],
@@ -1972,16 +1972,16 @@ const AREAS = [
     ],
     items:[
       {name:"Razz Berry",  hidden:true, note:"Southwest of first cuttable tree"},
-      {name:"Oran Berry",  hidden:true, note:"Northwest of first cuttable tree"},
-      {name:"Persim Berry",hidden:true, note:"Northeast of ledge near entrance"},
-      {name:"Pinap Berry", hidden:true, note:"Northeast of Oran Berry"},
+      {name:"Oran Berry",  hidden:true, note:"Northwest of first cuttable tree",img:"screenshots/hidden/berry-forest-1.png"},
+      {name:"Persim Berry",hidden:true, note:"Northeast of ledge near entrance",img:"screenshots/hidden/berry-forest-2.png"},
+      {name:"Pinap Berry", hidden:true, note:"Northeast of Oran Berry",img:"screenshots/hidden/berry-forest-3.png"},
       {name:"Chesto Berry",hidden:true, note:"Northeastern corner"},
-      {name:"Aspear Berry",hidden:true, note:"Northeast of northernmost water"},
+      {name:"Aspear Berry",hidden:true, note:"Northeast of northernmost water",img:"screenshots/hidden/berry-forest-5.png"},
       {name:"Rawst Berry", hidden:true, note:"Northwest of Aspear Berry"},
-      {name:"Bluk Berry",  hidden:true, note:"Southeast of cuttable tree"},
+      {name:"Bluk Berry",  hidden:true, note:"Southeast of cuttable tree",img:"screenshots/hidden/berry-forest-7.png"},
       {name:"Nanab Berry", hidden:true, note:"Northeast of middle water"},
-      {name:"Cheri Berry", hidden:true, note:"North of middle water"},
-      {name:"Wepear Berry",hidden:true, note:"North of middle water"},
+      {name:"Cheri Berry", hidden:true, note:"North of middle water",img:"screenshots/hidden/berry-forest-9.png"},
+      {name:"Wepear Berry",hidden:true, note:"North of middle water",img:"screenshots/hidden/berry-forest-10.png"},
       {name:"Pecha Berry", hidden:true, note:"North of southernmost water"},
       {name:"Lum Berry",   hidden:true, note:"Northwest area"},
       {name:"Full Heal",   hidden:false,note:"North of northernmost water"},
@@ -2043,8 +2043,8 @@ const AREAS = [
       {name:"Elixir",       hidden:false, note:"Central corridor"},
       {name:"TM25 Thunder", hidden:false, note:"Southeast room"},
       {name:"Thunder Stone",hidden:false, note:"Northeast room, northeast corner"},
-      {name:"Thunder Stone",hidden:true,  note:"One step south, three steps east of Zapdos' location"},
-      {name:"Max Elixir",   hidden:true,  note:"Central room, in front of the eastern machine"},
+      {name:"Thunder Stone",hidden:true,  note:"One step south, three steps east of Zapdos' location",img:"screenshots/hidden/power-plant-5.png"},
+      {name:"Max Elixir",   hidden:true,  note:"Central room, in front of the eastern machine",img:"screenshots/hidden/power-plant-6.png"},
       {name:"Electrode",    hidden:false, note:"Fake item — south-central room (starts a battle when grabbed)"},
       {name:"Electrode",    hidden:false, note:"Fake item — northeast room, northwest corner (starts a battle when grabbed)"},
     ],
@@ -2074,14 +2074,14 @@ const AREAS = [
       {name:"Slowpoke", method:"Super Rod", levels:"15–35",  rate:"5%",  lgOnly:true},
     ],
     items:[
-      {name:"Leppa Berry",  hidden:true, note:"Northwest of Thunder Badge checkpoint"},
-      {name:"Max Ether",    hidden:true, note:"Northeast island area"},
-      {name:"Ultra Ball",   hidden:true, note:"Northeast of lake"},
-      {name:"Aspear Berry", hidden:true, note:"Southwest of Volcano Badge checkpoint"},
-      {name:"Full Restore", hidden:true, note:"East of northern grass patch"},
-      {name:"Sitrus Berry", hidden:true, note:"West-southwest of Victory Road entrance"},
-      {name:"Lum Berry",    hidden:true, note:"Southwest of the stone maze (north section)"},
-      {name:"Max Elixir",   hidden:true, note:"Northwest of the stone maze (north section)"},
+      {name:"Leppa Berry",  hidden:true, note:"Northwest of Thunder Badge checkpoint",img:"screenshots/hidden/route23-0.png"},
+      {name:"Max Ether",    hidden:true, note:"Northeast island area",img:"screenshots/hidden/route23-1.png"},
+      {name:"Ultra Ball",   hidden:true, note:"Northeast of lake",img:"screenshots/hidden/route23-2.png"},
+      {name:"Aspear Berry", hidden:true, note:"Southwest of Volcano Badge checkpoint",img:"screenshots/hidden/route23-3.png"},
+      {name:"Full Restore", hidden:true, note:"East of northern grass patch",img:"screenshots/hidden/route23-4.png"},
+      {name:"Sitrus Berry", hidden:true, note:"West-southwest of Victory Road entrance",img:"screenshots/hidden/route23-5.png"},
+      {name:"Lum Berry",    hidden:true, note:"Southwest of the stone maze (north section)",img:"screenshots/hidden/route23-6.png"},
+      {name:"Max Elixir",   hidden:true, note:"Northwest of the stone maze (north section)",img:"screenshots/hidden/route23-7.png"},
     ],
     trainers:[]},
 
@@ -2103,8 +2103,8 @@ const AREAS = [
         items:[
           {name:"TM02 Dragon Claw",hidden:false, note:"North area (requires Strength)"},
           {name:"Rare Candy",      hidden:false, note:"North area (requires Strength)"},
-          {name:"Full Restore",    hidden:true,  note:"On rock east of TM02"},
-          {name:"Ultra Ball",      hidden:true,  note:"Near center of floor"},
+          {name:"Full Restore",    hidden:true,  note:"On rock east of TM02",img:"screenshots/hidden/victory-road-1f-2.png"},
+          {name:"Ultra Ball",      hidden:true,  note:"Near center of floor",img:"screenshots/hidden/victory-road-1f-3.png"},
         ],
         trainers:[
           {class:"Cooltrainer",name:"Naomi",  team:[{name:"Persian",  level:42},{name:"Ponyta",   level:42},{name:"Rapidash", level:42},{name:"Vulpix",   level:42},{name:"Ninetales",level:42}]},
@@ -2186,7 +2186,7 @@ const AREAS = [
     note:"Giovanni's Ground-type gym — spinner tile maze. Defeating Giovanni earns the Earth Badge. TM26 Earthquake is already tracked in Viridian City (Part 2).",
     pokemon:[],
     items:[
-      {name:"Macho Brace", hidden:true, note:"On the spot where Giovanni stood (requires Itemfinder)"},
+      {name:"Macho Brace", hidden:true, note:"On the spot where Giovanni stood (requires Itemfinder)",img:"screenshots/hidden/viridian-gym-0.png"},
     ],
     trainers:[
       {class:"Tamer",       name:"Cole",    team:[{name:"Arbok",    level:39},{name:"Tauros",   level:39}]},
