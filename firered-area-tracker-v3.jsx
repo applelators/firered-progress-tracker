@@ -2260,6 +2260,65 @@ const C = {
   text:"#ede0d4", muted:"#8a7a6a", panel:"#231a12",
 };
 
+// ─── 100% COMPLETION CHECKLIST DATA ──────────────────────────────────────────
+const COMPLETION_SECTIONS = [
+  {
+    id:"trainer-card", title:"Trainer Card Stars", color:"#d4b840",
+    items:[
+      { id:"star-hof",   label:"★   Hall of Fame",             note:"Defeat Elite Four + Champion Blue → Bronze card" },
+      { id:"star-kanto", label:"★★  Kanto Pokédex",             note:"Own all 150 Kanto Pokémon (Mew excluded) → Copper card", auto:"kanto-dex" },
+      { id:"star-natl",  label:"★★★  National Pokédex",         note:"Out of scope — requires Pokémon from many Gen III games", disabled:true },
+      { id:"star-mini",  label:"★★★★  Pokémon Jump / Dodrio",   note:"Requires multiplayer + GBA Wireless Adapter", disabled:true },
+    ],
+  },
+  {
+    id:"sevii", title:"Sevii Islands Quests", color:"#5ab0d8",
+    items:[
+      { id:"sevii-123", label:"Unlocked Islands 1–3",           note:"Automatic after Bill escorts you post-Blaine" },
+      { id:"ruby",      label:"Delivered Ruby to Celio",        note:"Find Ruby at Mt. Ember summit — One Island" },
+      { id:"lostelle",  label:"Rescued Lostelle with Bill",     note:"Berry Forest — Three Island" },
+      { id:"sapphire",  label:"Retrieved Sapphire",             note:"Dotted Hole — Five Island" },
+      { id:"sevii-47",  label:"Unlocked Islands 4–7",           note:"Automatic after delivering Sapphire to Celio" },
+      { id:"lorelei",   label:"Helped Lorelei at Icefall Cave", note:"Defeat Rockets — Four Island" },
+    ],
+  },
+  {
+    id:"diploma", title:"Diploma", color:C.green,
+    items:[
+      { id:"diploma", label:"Received Diploma", note:"Talk to Game Freak developer at Celadon Condominiums — requires owning all 150 Kanto Pokémon (Mew excluded)" },
+    ],
+  },
+  {
+    id:"hms", title:"HMs", color:"#a87acc",
+    items:[
+      { id:"hm-cut",        label:"Cut",        note:"Cap'n's gift aboard S.S. Anne" },
+      { id:"hm-fly",        label:"Fly",        note:"Girl on Route 16" },
+      { id:"hm-surf",       label:"Surf",       note:"Safari Zone warden" },
+      { id:"hm-strength",   label:"Strength",   note:"Safari Zone warden — after returning his Gold Teeth" },
+      { id:"hm-flash",      label:"Flash",      note:"Professor Oak's aide on Route 2 (10 Pokémon seen)" },
+      { id:"hm-rock-smash", label:"Rock Smash", note:"Man on One Island" },
+      { id:"hm-waterfall",  label:"Waterfall",  note:"Found in Icefall Cave — Four Island" },
+    ],
+  },
+  {
+    id:"trades", title:"In-Game Trades (required for Pokédex)", color:C.gold,
+    items:[
+      { id:"trade-farfetchd", label:"Farfetch'd", note:"Trade Spearow → Farfetch'd — man inside building in Vermilion City", auto:"farfetchd" },
+      { id:"trade-jynx",      label:"Jynx",       note:"Trade Poliwhirl → Jynx — woman in Cerulean City house",              auto:"jynx" },
+      { id:"trade-mr-mime",   label:"Mr. Mime",   note:"Trade Clefairy → Mr. Mime — Route 2 gate house",                     auto:"mr-mime" },
+    ],
+  },
+  {
+    id:"trainer-tower", title:"Trainer Tower (Seven Island)", color:"#c85252",
+    items:[
+      { id:"tt-single",   label:"Single mode cleared",   note:"7F tower, timed — best time recorded", reward:"Up-Grade" },
+      { id:"tt-double",   label:"Double mode cleared",   note:"7F tower, timed — 2v2 battles",        reward:"Dragon Scale" },
+      { id:"tt-knockout", label:"Knockout mode cleared", note:"7F tower, timed — elimination format",  reward:"Metal Coat" },
+      { id:"tt-mixed",    label:"Mixed mode cleared",    note:"7F tower, timed — alternating formats", reward:"King's Rock" },
+    ],
+  },
+];
+
 // ─── AREA TYPE ────────────────────────────────────────────────────────────────
 function getAreaType(area) {
   const n = area.name.toLowerCase();
@@ -2740,6 +2799,7 @@ function FireRedTracker() {
   const [booted, setBooted]     = useState(false);
   const [version, setVersion]   = useState("fr");   // "fr" | "lg"
   const [badges, setBadges]     = useState({});      // {badgeId: true}
+  const [checklist, setChecklist] = useState({});   // {itemId: true}
 
 
   useEffect(() => {
@@ -2748,7 +2808,8 @@ function FireRedTracker() {
       try { const r = localStorage.getItem("fr-items5");    if (r) setItems(JSON.parse(r));    } catch {}
       try { const r = localStorage.getItem("fr-trainers1"); if (r) setTrainers(JSON.parse(r)); } catch {}
       try { const r = localStorage.getItem("frlg-version"); if (r) setVersion(r);              } catch {}
-      try { const r = localStorage.getItem("frlg-badges");  if (r) setBadges(JSON.parse(r));   } catch {}
+      try { const r = localStorage.getItem("frlg-badges");     if (r) setBadges(JSON.parse(r));    } catch {}
+      try { const r = localStorage.getItem("frlg-checklist"); if (r) setChecklist(JSON.parse(r)); } catch {}
 
       setBooted(true);
     })();
@@ -2761,11 +2822,12 @@ function FireRedTracker() {
 
   const handleExport = () => {
     const data = {
-      caught:   localStorage.getItem("fr-caught5"),
-      items:    localStorage.getItem("fr-items5"),
-      trainers: localStorage.getItem("fr-trainers1"),
-      version:  localStorage.getItem("frlg-version"),
-      badges:   localStorage.getItem("frlg-badges"),
+      caught:    localStorage.getItem("fr-caught5"),
+      items:     localStorage.getItem("fr-items5"),
+      trainers:  localStorage.getItem("fr-trainers1"),
+      version:   localStorage.getItem("frlg-version"),
+      badges:    localStorage.getItem("frlg-badges"),
+      checklist: localStorage.getItem("frlg-checklist"),
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type:"application/json" });
     const url = URL.createObjectURL(blob);
@@ -2790,8 +2852,9 @@ function FireRedTracker() {
           if (data.caught)   localStorage.setItem("fr-caught5",   data.caught);
           if (data.items)    localStorage.setItem("fr-items5",    data.items);
           if (data.trainers) localStorage.setItem("fr-trainers1", data.trainers);
-          if (data.version)  localStorage.setItem("frlg-version", data.version);
-          if (data.badges)   localStorage.setItem("frlg-badges",  data.badges);
+          if (data.version)    localStorage.setItem("frlg-version",   data.version);
+          if (data.badges)     localStorage.setItem("frlg-badges",    data.badges);
+          if (data.checklist)  localStorage.setItem("frlg-checklist", data.checklist);
           window.location.reload();
         } catch { alert("Invalid save file — could not restore data."); }
       };
@@ -2805,6 +2868,15 @@ function FireRedTracker() {
       const next = { ...prev };
       if (next[id]) delete next[id]; else next[id] = true;
       try { localStorage.setItem("frlg-badges", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }, []);
+
+  const toggleChecklist = useCallback((id) => {
+    setChecklist(prev => {
+      const next = { ...prev };
+      if (next[id]) delete next[id]; else next[id] = true;
+      try { localStorage.setItem("frlg-checklist", JSON.stringify(next)); } catch {}
       return next;
     });
   }, []);
@@ -2904,7 +2976,7 @@ function FireRedTracker() {
 
         {/* Tabs */}
         <div style={{ display:"flex", gap:2, marginTop:10 }}>
-          {[["areas","Areas"],["dex","Pokédex"],["calc","Catch Calc"],["hunt","Hunt"]].map(([t,label]) => (
+          {[["areas","Areas"],["dex","Pokédex"],["calc","Catch Calc"],["hunt","Hunt"],["completion","100%"]].map(([t,label]) => (
             <button key={t} onClick={() => setTab(t)} style={{
               padding:"8px 20px", border:"none", borderRadius:"6px 6px 0 0", cursor:"pointer",
               fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:13, fontWeight:"600",
@@ -2928,6 +3000,9 @@ function FireRedTracker() {
 
       {/* ── Tab: Hunt ── */}
       {tab === "hunt" && <HuntTab version={version} isMobile={isMobile} />}
+
+      {/* ── Tab: 100% Completion ── */}
+      {tab === "completion" && <CompletionTab caught={caught} checklist={checklist} toggleChecklist={toggleChecklist} isMobile={isMobile} />}
     </div>
   );
 }
@@ -3349,6 +3424,143 @@ function HuntTab({ version, isMobile }) {
                     padding:"16px", maxWidth:960, margin:"0 auto" }}>
         {listPanel}
         {resultsPanel}
+      </div>
+    </div>
+  );
+}
+
+// ─── COMPLETION TAB ───────────────────────────────────────────────────────────
+function CompletionTab({ caught, checklist, toggleChecklist, isMobile }) {
+  const kantoDexCount = useMemo(() =>
+    DEX.filter(p => !p.event && caught[p.name]).length, [caught]);
+
+  const autoState = {
+    "kanto-dex": kantoDexCount >= 150,
+    "farfetchd":  !!caught["Farfetch'd"],
+    "jynx":       !!caught["Jynx"],
+    "mr-mime":    !!caught["Mr. Mime"],
+  };
+
+  let totalItems = 0, doneItems = 0;
+  for (const sec of COMPLETION_SECTIONS) {
+    for (const item of sec.items) {
+      if (item.disabled) continue;
+      totalItems++;
+      if (item.auto ? autoState[item.auto] : !!checklist[item.id]) doneItems++;
+    }
+  }
+
+  const overallPct = totalItems ? Math.round((doneItems / totalItems) * 100) : 0;
+
+  return (
+    <div style={{ flex:1, overflowY:"auto" }}>
+      <div style={{ maxWidth:680, margin:"0 auto", padding:"16px" }}>
+
+        {/* Overall progress */}
+        <div style={{ background:C.card, border:`1px solid ${C.border}`, borderRadius:10,
+                      padding:"14px 18px", marginBottom:16 }}>
+          <div style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline", marginBottom:8 }}>
+            <span style={{ fontSize:13, fontWeight:"700", color:C.text }}>Overall Completion</span>
+            <span style={{ fontSize:12, color: doneItems===totalItems ? C.green : C.muted }}>
+              <span style={{ fontWeight:"700", color: doneItems===totalItems ? C.green : C.text }}>{doneItems}</span>
+              /{totalItems} · {overallPct}%
+            </span>
+          </div>
+          <div style={{ height:7, background:"rgba(0,0,0,0.3)", borderRadius:99, overflow:"hidden" }}>
+            <div style={{ height:"100%", width:`${overallPct}%`,
+                          background: doneItems===totalItems ? C.green : "var(--frlg-accent)",
+                          borderRadius:99, transition:"width 0.3s" }} />
+          </div>
+          {doneItems===totalItems && totalItems>0 && (
+            <div style={{ marginTop:8, fontSize:11, color:C.green, fontWeight:"600", textAlign:"center" }}>
+              ✓ 100% complete!
+            </div>
+          )}
+        </div>
+
+        {/* Sections */}
+        <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+          {COMPLETION_SECTIONS.map(sec => {
+            const countable = sec.items.filter(i => !i.disabled);
+            const secDone   = countable.filter(i => i.auto ? autoState[i.auto] : !!checklist[i.id]).length;
+            const allDone   = secDone === countable.length && countable.length > 0;
+
+            return (
+              <div key={sec.id} style={{ background:C.card, border:`1px solid ${C.border}`, borderRadius:10, overflow:"hidden" }}>
+                <div style={{ padding:"9px 14px", background:"rgba(0,0,0,0.15)",
+                              borderBottom:`1px solid ${C.border}`,
+                              display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                  <span style={{ fontSize:12, fontWeight:"700", color:sec.color }}>{sec.title}</span>
+                  <span style={{ fontSize:11, color: allDone ? C.green : C.muted }}>
+                    {secDone}/{countable.length}
+                  </span>
+                </div>
+                <div style={{ padding:"4px 0" }}>
+                  {sec.items.map(item => {
+                    const isDone     = !item.disabled && (item.auto ? autoState[item.auto] : !!checklist[item.id]);
+                    const isAuto     = !!item.auto;
+                    const isDisabled = !!item.disabled;
+                    const clickable  = !isAuto && !isDisabled;
+
+                    return (
+                      <div key={item.id}
+                        onClick={clickable ? () => toggleChecklist(item.id) : undefined}
+                        style={{ display:"flex", alignItems:"flex-start", gap:10,
+                                 padding:"8px 14px", cursor: clickable ? "pointer" : "default",
+                                 opacity: isDisabled ? 0.4 : 1 }}
+                        onMouseEnter={clickable ? e => e.currentTarget.style.background="rgba(255,255,255,0.04)" : undefined}
+                        onMouseLeave={clickable ? e => e.currentTarget.style.background="transparent" : undefined}
+                      >
+                        {/* Checkbox */}
+                        <div style={{ width:17, height:17, borderRadius:4, flexShrink:0, marginTop:2,
+                                      border: isDone ? `2px solid ${C.green}` : `2px solid ${isDisabled ? C.border : C.muted}`,
+                                      background: isDone ? C.green : "transparent",
+                                      display:"flex", alignItems:"center", justifyContent:"center" }}>
+                          {isDone && <span style={{ color:"#0d0a07", fontSize:10, fontWeight:"900", lineHeight:1 }}>✓</span>}
+                        </div>
+
+                        {/* Text */}
+                        <div style={{ flex:1, minWidth:0 }}>
+                          <div style={{ fontSize:12, fontWeight:"600",
+                                        color: isDone ? C.muted : C.text,
+                                        textDecoration: isDone ? "line-through" : "none",
+                                        display:"flex", alignItems:"center", flexWrap:"wrap", gap:6 }}>
+                            {item.label}
+                            {item.reward && (
+                              <span style={{ fontSize:10, fontWeight:"700", color:C.gold,
+                                             background:"rgba(200,150,10,0.12)",
+                                             border:"1px solid rgba(200,150,10,0.3)",
+                                             padding:"1px 6px", borderRadius:4, whiteSpace:"nowrap" }}>
+                                → {item.reward}
+                              </span>
+                            )}
+                            {isAuto && !isDisabled && (
+                              <span style={{ fontSize:9, color:C.muted, fontStyle:"italic", fontWeight:"400" }}>auto</span>
+                            )}
+                          </div>
+                          <div style={{ fontSize:10, color:C.muted, marginTop:2, lineHeight:1.5 }}>
+                            {item.note}
+                            {item.auto === "kanto-dex" && (
+                              <span style={{ marginLeft:5, fontWeight:"600",
+                                             color: kantoDexCount >= 150 ? C.green : C.gold }}>
+                                ({kantoDexCount}/150)
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div style={{ marginTop:12, fontSize:10, color:C.muted, textAlign:"center", lineHeight:1.7 }}>
+          Items marked <em>auto</em> update automatically from your Pokédex data.
+          Disabled items (★★★ and ★★★★) are out of scope for this tracker.
+        </div>
       </div>
     </div>
   );
