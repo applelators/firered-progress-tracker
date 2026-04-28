@@ -1,6 +1,6 @@
-# Pokémon FireRed Progress Tracker
+# FRLG Tracker
 
-An interactive tracker built to support a **100% completion + Living Dex** run of Pokémon FireRed Version (Game Boy Advance).
+An interactive tracker built to support a **100% completion + Living Dex** run of Pokémon FireRed & LeafGreen (Game Boy Advance).
 
 ---
 

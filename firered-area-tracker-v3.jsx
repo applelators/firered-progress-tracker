@@ -2983,7 +2983,7 @@ function FireRedTracker() {
               <span style={{ color:C.muted }}>·</span>
               <span style={{ color:C.lgGreen, fontWeight:"700", opacity: version==="lg" ? 1 : 0.4, transition:"opacity 0.2s" }}>LeafGreen</span>
             </div>
-            <div style={{ fontSize:18, fontWeight:"700", letterSpacing:0.5, color:"#f5e8dc" }}>Complete Tracker</div>
+            <div style={{ fontSize:18, fontWeight:"700", letterSpacing:0.5, color:"#f5e8dc" }}>FRLG Tracker</div>
           </div>
           <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:7 }}>
             {/* FR / LG version toggle */}
