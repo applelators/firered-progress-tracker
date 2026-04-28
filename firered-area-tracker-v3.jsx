@@ -4089,13 +4089,30 @@ function MethodDivider({ label }) {
 }
 
 function renderPokemonList(pokemon, caught, toggleCaught, version) {
+  // Sort within each consecutive method block by effective rate descending.
+  // Method block order is preserved; only intra-group ordering changes.
+  const getPct = p => {
+    const m = p.rate && p.rate.match(/^(\S+)\s+FR\s*\/\s*(\S+)\s+LG$/i);
+    if (m) return (version === "fr" ? parseRatePct(m[1]) : parseRatePct(m[2])) || 0;
+    return parseRatePct(p.rate) || 0;
+  };
+  const sorted = [];
+  let i = 0;
+  while (i < pokemon.length) {
+    const method = pokemon[i].method;
+    let j = i;
+    while (j < pokemon.length && pokemon[j].method === method) j++;
+    sorted.push(...pokemon.slice(i, j).slice().sort((a, b) => getPct(b) - getPct(a)));
+    i = j;
+  }
+
   const items = [];
   let lastGroup = null;
-  pokemon.forEach((p, i) => {
+  sorted.forEach((p, idx) => {
     const group = METHOD_GROUP(p.method);
-    if (group && group !== lastGroup) items.push({ type:"divider", label:group, key:`div-${i}` });
+    if (group && group !== lastGroup) items.push({ type:"divider", label:group, key:`div-${idx}` });
     lastGroup = group;
-    items.push({ type:"pokemon", p, key:i });
+    items.push({ type:"pokemon", p, key:`${idx}-${p.name}` });
   });
   return items.map(item =>
     item.type === "divider"
