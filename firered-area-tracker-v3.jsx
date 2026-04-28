@@ -25,7 +25,7 @@ const DEX = [
   {id:29, name:"Nidoran♀"},   {id:30, name:"Nidorina"},     {id:31, name:"Nidoqueen"},
   {id:32, name:"Nidoran♂"},   {id:33, name:"Nidorino"},     {id:34, name:"Nidoking"},
   {id:35, name:"Clefairy"},    {id:36, name:"Clefable"},
-  {id:37, name:"Vulpix",  frOnly:true}, {id:38, name:"Ninetales",frOnly:true},
+  {id:37, name:"Vulpix",  lgOnly:true}, {id:38, name:"Ninetales",lgOnly:true},
   {id:39, name:"Jigglypuff"}, {id:40, name:"Wigglytuff"},
   {id:41, name:"Zubat"},       {id:42, name:"Golbat"},
   {id:43, name:"Oddish",  frOnly:true}, {id:44, name:"Gloom",   frOnly:true}, {id:45, name:"Vileplume",frOnly:true},
