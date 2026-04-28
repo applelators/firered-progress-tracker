@@ -2016,6 +2016,7 @@ const AREAS = [
       {name:"Magneton",  method:"Cave", levels:"31–34", rate:"10%", frOnly:true},
       {name:"Magneton",  method:"Cave", levels:"31–34", rate:"15%", lgOnly:true},
       {name:"Electabuzz",method:"Cave", levels:"32–35", rate:"5%",  frOnly:true},
+      {name:"Electrode", method:"Cave", levels:"30",    note:"Two static encounters disguised as item balls — caught with a regular Poké Ball"},
     ],
     items:[
       {name:"Max Potion",   hidden:false, note:"North of the entrance room"},
@@ -2193,6 +2194,43 @@ for (const area of AREAS) {
     LOCATION_MAP[p.name].push({ areaId: area.id, areaName: area.name, part: area.part, method: p.method, levels: p.levels, rate: p.rate });
   }
 }
+
+// ─── CATCH CONSTRAINT MAP ─────────────────────────────────────────────────────
+// Identifies Pokémon that cannot be caught with a regular Poké Ball:
+//   "safari"     → only catchable in the Safari Zone (Safari Ball forced)
+//   method-string → only obtainable via Gift / Trade / Fossil / Game Corner / Event
+// Computed from AREAS data; Pokémon with any normal wild catch outside the Safari Zone
+// are excluded (no constraint).
+const SAFARI_BALL_AREA_IDS = new Set(["safari-zone"]);
+const _NO_POKEBALL_METHODS = new Set(["Gift","Trade","Fossil","Event","Game Corner"]);
+const _WILD_METHODS = new Set(["Grass","Cave","Surf","Old Rod","Good Rod","Super Rod"]);
+
+const _catchFlags = {};
+for (const area of AREAS) {
+  for (const p of _allPokemon(area)) {
+    if (!_catchFlags[p.name]) _catchFlags[p.name] = { wn:false, ws:false, sp:null };
+    const f = _catchFlags[p.name];
+    if (_WILD_METHODS.has(p.method)) {
+      if (SAFARI_BALL_AREA_IDS.has(area.id)) f.ws = true;
+      else f.wn = true;
+    } else if (_NO_POKEBALL_METHODS.has(p.method) && !f.sp) {
+      f.sp = p.method;
+    }
+  }
+}
+const CATCH_CONSTRAINT_MAP = {};
+for (const [name, f] of Object.entries(_catchFlags)) {
+  if (!f.wn) CATCH_CONSTRAINT_MAP[name] = f.ws ? "safari" : (f.sp || null);
+}
+
+const CONSTRAINT_STYLE = {
+  "safari":      { label:"Safari",  color:"#4aaf74", desc:"Safari Zone only — Safari Ball required, not a regular Poké Ball" },
+  "Gift":        { label:"Gift",    color:"#5b8dd9", desc:"Gift — received from an NPC, cannot be caught in the wild" },
+  "Trade":       { label:"Trade",   color:"#9b6fd4", desc:"Trade only — obtained via in-game trade, cannot be caught in the wild" },
+  "Fossil":      { label:"Fossil",  color:"#b09060", desc:"Fossil revival — restored at Cinnabar Lab, cannot be caught in the wild" },
+  "Game Corner": { label:"Prize",   color:"#c8960a", desc:"Game Corner prize — redeemed with coins, cannot be caught in the wild" },
+  "Event":       { label:"Event",   color:"#a87acc", desc:"Event only — not normally obtainable in-game" },
+};
 
 // ─── COLORS ──────────────────────────────────────────────────────────────────
 const C = {
@@ -3121,7 +3159,7 @@ function CatchCalcTab({ isMobile }) {
 // ─── POKÉDEX TAB ──────────────────────────────────────────────────────────────
 function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, setDexSelected, version, isMobile }) {
   const caughtCount = Object.keys(caught).length;
-  const filters = [["all","All"],["caught","Caught"],["missing","Missing"],["fr","FR Only"],["lg","LG Only"],["event","Event"]];
+  const filters = [["all","All"],["caught","Caught"],["missing","Missing"],["fr","FR Only"],["lg","LG Only"],["event","Event"],["noball","No Poké Ball"]];
   const isOtherVersionDex = (p) => (version === "fr" && p.lgOnly) || (version === "lg" && p.frOnly);
 
   const filtered = DEX.filter(p => {
@@ -3130,6 +3168,7 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
     if (dexFilter === "fr")      return p.frOnly;
     if (dexFilter === "lg")      return p.lgOnly;
     if (dexFilter === "event")   return p.event;
+    if (dexFilter === "noball")  return !!CATCH_CONSTRAINT_MAP[p.name];
     return !isOtherVersionDex(p);
   });
 
@@ -3189,6 +3228,7 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
                   <img src={pokeSpriteUrl(p.id)} alt={p.name} style={{ width:48, height:48, imageRendering:"pixelated", display:"block", margin:"0 auto", opacity: isCaught ? 1 : 0.7, filter: isCaught ? "none" : "brightness(0)" }} />
                   <div style={{ fontSize:9, color:C.muted, marginBottom:1, fontFamily:"'Courier New',monospace" }}>#{String(p.id).padStart(3,"0")}</div>
                   <div style={{ fontSize:10, color: isCaught ? C.green : C.text, fontWeight:isCaught?"600":"400", lineHeight:1.3, wordBreak:"break-word" }}>{p.name}</div>
+                  {(() => { const cs = CONSTRAINT_STYLE[CATCH_CONSTRAINT_MAP[p.name]]; return cs ? <div style={{ fontSize:8, fontWeight:"700", color:cs.color, marginTop:1, letterSpacing:"0.02em" }}>{cs.label.toUpperCase()}</div> : null; })()}
                 </div>
               );
             })}
@@ -3223,6 +3263,7 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
                 </div>
                 {selected.frOnly && <div style={{ fontSize:10, color:"#c85252", fontWeight:"500" }}>FireRed exclusive</div>}
                 {selected.lgOnly && <div style={{ fontSize:10, color:C.lgGreen, fontWeight:"500" }}>LeafGreen exclusive</div>}
+                {(() => { const cs = CONSTRAINT_STYLE[CATCH_CONSTRAINT_MAP[selected.name]]; return cs ? <div style={{ fontSize:10, color:cs.color, fontWeight:"500" }}>⚠ {cs.label}</div> : null; })()}
               </div>
             </div>
             <button onClick={() => setDexSelected(null)} style={{ background:"transparent", border:`1px solid ${C.border}`, color:C.muted, borderRadius:6, cursor:"pointer", padding:"4px 12px", fontSize:15 }}>✕</button>
@@ -3250,6 +3291,7 @@ function DexDetail({ selected, caught, locs, compact }) {
           {selected.frOnly && <div style={{ fontSize:10, color:"#c85252", marginTop:4, fontWeight:"500" }}>FireRed exclusive</div>}
           {selected.lgOnly && <div style={{ fontSize:10, color:C.lgGreen, marginTop:4, fontWeight:"500" }}>LeafGreen exclusive</div>}
           {selected.event  && <div style={{ fontSize:10, color:"#a87acc", marginTop:4, fontWeight:"500" }}>Event — not in-game obtainable</div>}
+          {(() => { const cs = CONSTRAINT_STYLE[CATCH_CONSTRAINT_MAP[selected.name]]; return cs ? <div style={{ fontSize:10, color:cs.color, marginTop:4, fontWeight:"500" }}>⚠ {cs.desc}</div> : null; })()}
         </div>
       )}
       <div style={{ fontSize:10, letterSpacing:2, color:C.muted, marginBottom:6, textTransform:"uppercase" }}>Where to find</div>
