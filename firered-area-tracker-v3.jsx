@@ -2618,6 +2618,47 @@ function FireRedTracker() {
     try { localStorage.setItem("frlg-version", v); } catch {}
   };
 
+  const handleExport = () => {
+    const data = {
+      caught:   localStorage.getItem("fr-caught5"),
+      items:    localStorage.getItem("fr-items5"),
+      trainers: localStorage.getItem("fr-trainers1"),
+      version:  localStorage.getItem("frlg-version"),
+      badges:   localStorage.getItem("frlg-badges"),
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type:"application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `firered-save-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImport = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
+    input.onchange = e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try {
+          const data = JSON.parse(ev.target.result);
+          if (data.caught)   localStorage.setItem("fr-caught5",   data.caught);
+          if (data.items)    localStorage.setItem("fr-items5",    data.items);
+          if (data.trainers) localStorage.setItem("fr-trainers1", data.trainers);
+          if (data.version)  localStorage.setItem("frlg-version", data.version);
+          if (data.badges)   localStorage.setItem("frlg-badges",  data.badges);
+          window.location.reload();
+        } catch { alert("Invalid save file — could not restore data."); }
+      };
+      reader.readAsText(file);
+    };
+    input.click();
+  };
+
   const toggleBadge = useCallback((id) => {
     setBadges(prev => {
       const next = { ...prev };
@@ -2699,6 +2740,20 @@ function FireRedTracker() {
             <div style={{ display:"flex", gap:18, fontSize:11, alignItems:"center" }}>
               <span><span style={{ color:C.green, fontWeight:"700", fontSize:13 }}>{caughtCount}</span><span style={{ color:C.muted }}> / 151 caught</span></span>
               <span><span style={{ color:C.gold, fontWeight:"700", fontSize:13 }}>{Object.keys(items).length}</span><span style={{ color:C.muted }}> items</span></span>
+              <div style={{ display:"flex", gap:4 }}>
+                {[["↓ Export", handleExport, "Export save data to a JSON file"],
+                  ["↑ Import", handleImport, "Import save data from a JSON file"]].map(([label, fn, title]) => (
+                  <button key={label} onClick={fn} title={title} style={{
+                    padding:"2px 8px", fontSize:10, fontWeight:"600", cursor:"pointer",
+                    background:"rgba(0,0,0,0.3)", color:C.muted,
+                    border:`1px solid ${C.border}`, borderRadius:4,
+                    fontFamily:"'DM Sans',sans-serif", transition:"all 0.15s",
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.color=C.text; e.currentTarget.style.borderColor="var(--frlg-accent)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.color=C.muted; e.currentTarget.style.borderColor=C.border; }}
+                  >{label}</button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -2733,15 +2788,16 @@ function FireRedTracker() {
 // ─── POKÉDEX TAB ──────────────────────────────────────────────────────────────
 function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, setDexSelected, version, isMobile }) {
   const caughtCount = Object.keys(caught).length;
-  const filters = [["all","All 151"],["caught","Caught"],["missing","Missing"],["fr","FR Only"],["lg","LG Only"],["event","Event"]];
+  const filters = [["all","All"],["caught","Caught"],["missing","Missing"],["fr","FR Only"],["lg","LG Only"],["event","Event"]];
+  const isOtherVersionDex = (p) => (version === "fr" && p.lgOnly) || (version === "lg" && p.frOnly);
 
   const filtered = DEX.filter(p => {
     if (dexFilter === "caught")  return caught[p.name];
-    if (dexFilter === "missing") return !caught[p.name];
+    if (dexFilter === "missing") return !caught[p.name] && !isOtherVersionDex(p);
     if (dexFilter === "fr")      return p.frOnly;
     if (dexFilter === "lg")      return p.lgOnly;
     if (dexFilter === "event")   return p.event;
-    return true;
+    return !isOtherVersionDex(p);
   });
 
   const selected = dexSelected ? DEX.find(p => p.name === dexSelected) : null;
@@ -3203,10 +3259,10 @@ function renderPokemonList(pokemon, caught, toggleCaught, version) {
 
 function PokemonEntry({ p, caught, toggleCaught, version }) {
   const isCaught = !!caught[p.name];
-  // Dim rows that don't apply to the selected version
-  const isOtherVersion = (version === "fr" && p.lgOnly) || (version === "lg" && p.frOnly);
+  // Hide encounters that don't exist in the selected version
+  if ((version === "fr" && p.lgOnly) || (version === "lg" && p.frOnly)) return null;
   return (
-    <Row done={isCaught} onClick={() => toggleCaught(p.name)} style={isOtherVersion ? { opacity:0.35 } : {}}>
+    <Row done={isCaught} onClick={() => toggleCaught(p.name)}>
       {DEX_ID[p.name] && <img src={pokeSpriteUrl(DEX_ID[p.name])} alt={p.name} style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0, opacity:isCaught?1:0.65, filter:isCaught?"none":"brightness(0)" }} />}
       <div style={{ flex:1 }}>
         <span style={{ color:isCaught?C.green:p.lgOnly?C.lgGreen:p.frOnly?"#c85252":C.text, fontWeight:"600", fontSize:12 }}>
