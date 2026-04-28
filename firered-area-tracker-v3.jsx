@@ -66,7 +66,7 @@ const DEX = [
   {id:120,name:"Staryu",lgOnly:true},   {id:121,name:"Starmie",lgOnly:true},
   {id:122,name:"Mr. Mime"},    {id:123,name:"Scyther",frOnly:true},
   {id:124,name:"Jynx"},
-  {id:125,name:"Electabuzz",frOnly:true},{id:126,name:"Magmar",frOnly:true},
+  {id:125,name:"Electabuzz",frOnly:true},{id:126,name:"Magmar",lgOnly:true},
   {id:127,name:"Pinsir",lgOnly:true},   {id:128,name:"Tauros"},
   {id:129,name:"Magikarp"},    {id:130,name:"Gyarados"},
   {id:131,name:"Lapras"},      {id:132,name:"Ditto"},
