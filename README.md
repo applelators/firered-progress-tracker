@@ -77,7 +77,8 @@ Area data is being audited part by part against the [Bulbapedia FireRed & LeafGr
 | Part 12 | Route 19 · Route 20 (East) · Seafoam Islands · Route 20 (West) | Audited |
 | Part 13 | Cinnabar Island · Pokémon Mansion · Cinnabar Gym | Audited |
 | Part 14 | One Island · Treasure Beach · Kindle Road · Mt. Ember · Two Island · Cape Brink · Three Isle Port · Three Isle Path · Bond Bridge · Berry Forest | Audited |
-| Part 15–21 | Viridian City (Return) through Sevii Islands | Pending audit |
+| Part 15 | Route 21 · Power Plant · Viridian Gym | Audited |
+| Part 16–21 | Route 22 (Return) through Sevii Islands | Pending audit |
 
 ---
 

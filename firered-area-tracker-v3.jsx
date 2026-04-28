@@ -1952,6 +1952,83 @@ const AREAS = [
     ],
     trainers:[]},
 
+  { part:"Part 15", id:"route21", name:"Route 21",
+    note:"Connects Cinnabar Island to Pallet Town. Tangela is the only grass encounter.",
+    pokemon:[
+      {name:"Tangela",    method:"Grass",    levels:"17–28", rate:"100%"},
+      {name:"Tentacool",  method:"Surf",      levels:"5–40",  rate:"100%"},
+      {name:"Magikarp",   method:"Old Rod",   levels:"5",     rate:"100%"},
+      {name:"Horsea",     method:"Good Rod",  levels:"5–15",  rate:"60%", frOnly:true},
+      {name:"Krabby",     method:"Good Rod",  levels:"5–15",  rate:"20%", frOnly:true},
+      {name:"Krabby",     method:"Good Rod",  levels:"5–15",  rate:"60%", lgOnly:true},
+      {name:"Horsea",     method:"Good Rod",  levels:"5–15",  rate:"20%", lgOnly:true},
+      {name:"Magikarp",   method:"Good Rod",  levels:"5–15",  rate:"20%"},
+      {name:"Horsea",     method:"Super Rod", levels:"15–25", rate:"80%", frOnly:true},
+      {name:"Krabby",     method:"Super Rod", levels:"15–25", rate:"80%", lgOnly:true},
+      {name:"Gyarados",   method:"Super Rod", levels:"15–25", rate:"15%"},
+      {name:"Seadra",     method:"Super Rod", levels:"25–35", rate:"4%",  frOnly:true},
+      {name:"Kingler",    method:"Super Rod", levels:"25–35", rate:"4%",  lgOnly:true},
+      {name:"Psyduck",    method:"Super Rod", levels:"25–35", rate:"1%",  frOnly:true},
+      {name:"Slowpoke",   method:"Super Rod", levels:"25–35", rate:"1%",  lgOnly:true},
+    ],
+    items:[
+      {name:"Pearl", hidden:true, note:"Small island near Swimmer Spencer (recurring pickup)"},
+    ],
+    trainers:[
+      {class:"Fisherman",   name:"Wade",     team:[{name:"Magikarp",level:27},{name:"Magikarp",level:27},{name:"Magikarp",level:27},{name:"Magikarp",level:27},{name:"Magikarp",level:27},{name:"Magikarp",level:27}]},
+      {class:"Fisherman",   name:"Ronald",   team:[{name:"Seaking",level:28},{name:"Goldeen",level:28},{name:"Seaking",level:28},{name:"Seaking",level:28}]},
+      {class:"Sis and Bro", name:"Lil & Ian",team:[{name:"Seadra",level:33},{name:"Starmie",level:33}]},
+      {class:"Swimmer♂",   name:"Spencer",  team:[{name:"Seadra",level:33},{name:"Tentacruel",level:33}]},
+      {class:"Fisherman",   name:"Claude",   team:[{name:"Shellder",level:31},{name:"Cloyster",level:31}]},
+      {class:"Fisherman",   name:"Nolan",    team:[{name:"Seaking",level:33},{name:"Goldeen",level:33}]},
+      {class:"Swimmer♂",   name:"Jack",     team:[{name:"Starmie",level:37}]},
+      {class:"Swimmer♂",   name:"Roland",   team:[{name:"Poliwhirl",level:32},{name:"Tentacool",level:32},{name:"Seadra",level:32}]},
+      {class:"Swimmer♂",   name:"Jerome",   team:[{name:"Staryu",level:33},{name:"Wartortle",level:33}]},
+    ]},
+
+  { part:"Part 15", id:"power-plant", name:"Power Plant",
+    note:"Accessible from Route 10 (North) via Surf. Two item spots are Electrode in disguise — approaching them starts a battle. Zapdos waits at the far end.",
+    pokemon:[
+      {name:"Zapdos",    method:"Cave", warn:true, note:"One-time encounter at the back of the Power Plant"},
+      {name:"Magnemite", method:"Cave", levels:"22–25", rate:"30%"},
+      {name:"Voltorb",   method:"Cave", levels:"22–25", rate:"30%"},
+      {name:"Pikachu",   method:"Cave", levels:"22–26", rate:"25%"},
+      {name:"Magneton",  method:"Cave", levels:"31–34", rate:"10%", frOnly:true},
+      {name:"Magneton",  method:"Cave", levels:"31–34", rate:"15%", lgOnly:true},
+      {name:"Electabuzz",method:"Cave", levels:"32–35", rate:"5%",  frOnly:true},
+    ],
+    items:[
+      {name:"Max Potion",   hidden:false, note:"North of the entrance room"},
+      {name:"TM17 Protect", hidden:false, note:"Central corridor"},
+      {name:"Elixir",       hidden:false, note:"Central corridor"},
+      {name:"TM25 Thunder", hidden:false, note:"Southeast room"},
+      {name:"Thunder Stone",hidden:false, note:"Northeast room, northeast corner"},
+      {name:"Thunder Stone",hidden:true,  note:"One step south, three steps east of Zapdos' location"},
+      {name:"Max Elixir",   hidden:true,  note:"Central room, in front of the eastern machine"},
+      {name:"Electrode",    hidden:false, note:"Fake item — south-central room (starts a battle when grabbed)"},
+      {name:"Electrode",    hidden:false, note:"Fake item — northeast room, northwest corner (starts a battle when grabbed)"},
+    ],
+    trainers:[]},
+
+  { part:"Part 15", id:"viridian-gym", name:"Viridian Gym",
+    note:"Giovanni's Ground-type gym — spinner tile maze. Defeating Giovanni earns the Earth Badge. TM26 Earthquake is already tracked in Viridian City (Part 2).",
+    pokemon:[],
+    items:[
+      {name:"Macho Brace", hidden:true, note:"On the spot where Giovanni stood (requires Itemfinder)"},
+    ],
+    trainers:[
+      {class:"Tamer",       name:"Cole",    team:[{name:"Arbok",    level:39},{name:"Tauros",   level:39}]},
+      {class:"Black Belt",  name:"Kiyo",    team:[{name:"Machoke",  level:43}]},
+      {class:"Cooltrainer", name:"Samuel",  team:[{name:"Sandslash",level:37},{name:"Sandslash",level:37},{name:"Rhyhorn",  level:38},{name:"Nidorino",level:39},{name:"Nidoking", level:39}]},
+      {class:"Cooltrainer", name:"Yuji",    team:[{name:"Sandslash",level:38},{name:"Graveler", level:38},{name:"Onix",     level:38},{name:"Graveler", level:38},{name:"Marowak",  level:38}]},
+      {class:"Black Belt",  name:"Atsushi", team:[{name:"Machop",   level:40},{name:"Machoke",  level:40},{name:"Machoke",  level:40}]},
+      {class:"Tamer",       name:"Jason",   team:[{name:"Rhyhorn",  level:43}]},
+      {class:"Cooltrainer", name:"Warren",  team:[{name:"Marowak",  level:37},{name:"Marowak",  level:37},{name:"Rhyhorn",  level:38},{name:"Nidorina", level:39},{name:"Nidoqueen",level:39}]},
+      {class:"Black Belt",  name:"Takashi", team:[{name:"Machoke",  level:38},{name:"Machop",   level:38},{name:"Machoke",  level:38}]},
+      {class:"Gym Leader",  name:"Giovanni",note:"Earth Badge · TM26 Earthquake",
+        team:[{name:"Rhyhorn",level:45},{name:"Dugtrio",level:42},{name:"Nidoqueen",level:44},{name:"Nidoking",level:45},{name:"Rhyhorn",level:50}]},
+    ]},
+
 ];
 
 // ─── BUILD LOCATION MAP ── (which areas each Pokémon appears in)
@@ -2074,7 +2151,7 @@ const MAP_CONNECTIONS = [
 ];
 
 // Parts that have been fully audited against the Bulbapedia walkthrough — extend as each part is verified.
-const AUDITED_PARTS = new Set(["Part 1", "Part 2", "Part 3", "Part 4", "Part 5", "Part 6", "Part 7", "Part 8", "Part 9", "Part 10", "Part 11", "Part 12", "Part 13", "Part 14"]);
+const AUDITED_PARTS = new Set(["Part 1", "Part 2", "Part 3", "Part 4", "Part 5", "Part 6", "Part 7", "Part 8", "Part 9", "Part 10", "Part 11", "Part 12", "Part 13", "Part 14", "Part 15"]);
 
 // ─── SPRITES ─────────────────────────────────────────────────────────────────
 const DEX_ID = Object.fromEntries(DEX.map(p => [p.name, p.id]));
@@ -2135,6 +2212,8 @@ const ITEM_SPRITE = {
   "PP Max":"pp-max","Max Repel":"max-repel","Dire Hit":"dire-hit",
   "Fire Stone":"fire-stone","HM06 Rock Smash":"hm06",
   "Iapapa Berry":"iapapa-berry","Aspear Berry":"aspear-berry",
+  "Thunder Stone":"thunder-stone","TM17 Protect":"tm-normal","TM25 Thunder":"tm-electric",
+  "Macho Brace":"macho-brace",
 };
 const itemSpriteUrl = name => { const s = ITEM_SPRITE[name]; return s ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/${s}.png` : null; };
 const METHOD_SPRITE_URL = {
