@@ -3862,7 +3862,7 @@ function EvoChainDisplay({ name, caught }) {
     return (
       <div style={{ marginBottom:14 }}>
         <div style={{ fontSize:10, letterSpacing:2, color:C.muted, marginBottom:8, textTransform:"uppercase" }}>Evolution</div>
-        <div style={{ display:"flex", alignItems:"center", gap:5, flexWrap:"wrap" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:5, flexWrap:"nowrap", overflowX:"auto", paddingBottom:4 }}>
           {chain.map((n, i) => (
             <React.Fragment key={n}>
               {i > 0 && <EvoArrow />}
