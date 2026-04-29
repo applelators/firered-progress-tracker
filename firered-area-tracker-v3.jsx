@@ -4440,7 +4440,7 @@ function Section({ title, count, color, children, onMarkAll, allDone }) {
           )}
         </div>
       </div>
-      <div style={{ maxHeight:460, overflowY:"auto" }}>{children}</div>
+      <div>{children}</div>
     </div>
   );
 }
