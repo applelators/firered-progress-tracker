@@ -2734,6 +2734,21 @@ function getDreamMoves(name, suppressedMoves, hms) {
 
 // For each contested one-time TM, pick the single best recipient on the team.
 // Priority: (1) earlier position in DT_TM_TIPS for that Pokémon (it matters more to them),
+// Move types used to evaluate STAB for assignment priority
+const DT_MOVE_TYPE = {
+  "Cut":"Normal","Fly":"Flying","Surf":"Water","Strength":"Normal",
+  "Rock Smash":"Fighting","Waterfall":"Water",
+  "Earthquake":"Ground","SolarBeam":"Grass","Sludge Bomb":"Poison",
+  "Brick Break":"Fighting","Iron Tail":"Steel",
+};
+function hasSTAB(pokémonName, moveName) {
+  const moveType = DT_MOVE_TYPE[moveName];
+  if (!moveType) return false;
+  const form = DT_FINAL_FORM[pokémonName] || pokémonName;
+  const cand = DT_CANDIDATES.find(c => c.name === form);
+  return cand ? cand.types.includes(moveType) : false;
+}
+
 // (2) fewer total TM tips (less flexibility), (3) earlier in team order.
 function assignOneTimeTMs(team) {
   const wanted = {}; // moveName → [{name, tipIndex, totalTips}]
@@ -2749,6 +2764,8 @@ function assignOneTimeTMs(team) {
   const winners = {};
   Object.entries(wanted).forEach(([move, candidates]) => {
     const sorted = [...candidates].sort((a, b) => {
+      const aSTAB = hasSTAB(a.name, move), bSTAB = hasSTAB(b.name, move);
+      if (aSTAB !== bSTAB) return aSTAB ? -1 : 1;
       if (a.tipIndex !== b.tipIndex) return a.tipIndex - b.tipIndex;
       if (a.totalTips !== b.totalTips) return a.totalTips - b.totalTips;
       return team.indexOf(a.name) - team.indexOf(b.name);
@@ -2793,6 +2810,8 @@ function assignHMs(team) {
   for (const hm of sorted) {
     const avail = candidates[hm];
     const winner = avail.reduce((best, cur) => {
+      const curSTAB = hasSTAB(cur, hm), bestSTAB = hasSTAB(best, hm);
+      if (curSTAB !== bestSTAB) return curSTAB ? cur : best;
       if (load[cur] !== load[best]) return load[cur] > load[best] ? cur : best;
       const curCap = canLearn[cur].size, bestCap = canLearn[best].size;
       if (curCap !== bestCap) return curCap > bestCap ? cur : best;
