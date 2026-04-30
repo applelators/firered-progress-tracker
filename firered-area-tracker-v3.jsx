@@ -86,7 +86,7 @@ const DEX = [
 const AREAS = [
   { part:"Part 1", id:"pallet-town", name:"Pallet Town",
     note:"Choose one starter from Professor Oak — Blue takes the one with a type advantage over yours.",
-    pokemon:[{name:"Bulbasaur",method:"Gift",levels:"5",note:"Choose one of three from Professor Oak"},{name:"Charmander",method:"Gift",levels:"5",note:"Choose one of three from Professor Oak"},{name:"Squirtle",method:"Gift",levels:"5",note:"Choose one of three from Professor Oak"}],
+    pokemon:[{name:"Bulbasaur",method:"Gift",levels:"5",note:"Choose one of three from Professor Oak",choiceGroup:"starter",choiceId:"bulbasaur"},{name:"Charmander",method:"Gift",levels:"5",note:"Choose one of three from Professor Oak",choiceGroup:"starter",choiceId:"charmander"},{name:"Squirtle",method:"Gift",levels:"5",note:"Choose one of three from Professor Oak",choiceGroup:"starter",choiceId:"squirtle"}],
     items:[{name:"Potion",hidden:false,note:"From the PC in your bedroom"},{name:"Pokédex",hidden:false,note:"From Professor Oak after choosing your starter"},{name:"Poké Ball ×5",hidden:false,note:"From Oak's aide after receiving the Pokédex"},{name:"Town Map",hidden:false,note:"From Daisy (Blue's sister) after receiving the Pokédex"}],
     trainers:[{class:"Rival",name:"Blue",note:"Has the starter with a type advantage over yours — one of these three.",team:[{name:"Charmander",level:5},{name:"Squirtle",level:5},{name:"Bulbasaur",level:5}]}] },
 
@@ -224,8 +224,8 @@ const AREAS = [
           {name:"Geodude", method:"Cave",levels:"9–10", rate:"30%"},
           {name:"Paras",   method:"Cave",levels:"10–12",rate:"15%"},
           {name:"Clefairy",method:"Cave",levels:"10–12",rate:"6%"},
-          {name:"Kabuto",  method:"Fossil",levels:"5",  note:"Restore Dome Fossil at Cinnabar Lab"},
-          {name:"Omanyte", method:"Fossil",levels:"5",  note:"Restore Helix Fossil at Cinnabar Lab"},
+          {name:"Kabuto",  method:"Fossil",levels:"5",  note:"Restore Dome Fossil at Cinnabar Lab",  choiceGroup:"fossil",choiceId:"dome"},
+          {name:"Omanyte", method:"Fossil",levels:"5",  note:"Restore Helix Fossil at Cinnabar Lab", choiceGroup:"fossil",choiceId:"helix"},
         ],
         items:[
           {name:"Star Piece",  hidden:false,note:"South section"},
@@ -234,8 +234,8 @@ const AREAS = [
           {name:"Moon Stone",  hidden:true, note:"Near fossils (★ Itemfinder)",img:"screenshots/hidden/mt-moon-b2f-3.png"},
           {name:"Revive",      hidden:false,note:"North of center ladder"},
           {name:"Antidote",    hidden:false,note:"Southwest of northwest ladder"},
-          {name:"Dome Fossil", hidden:false,note:"⚠ Choose Dome OR Helix, not both! (Dome→Kabuto)"},
-          {name:"Helix Fossil",hidden:false,note:"⚠ Choose Dome OR Helix, not both! (Helix→Omanyte)"},
+          {name:"Dome Fossil", hidden:false,note:"Pick one — Dome Fossil → Kabuto", choiceGroup:"fossil",choiceId:"dome"},
+          {name:"Helix Fossil",hidden:false,note:"Pick one — Helix Fossil → Omanyte",choiceGroup:"fossil",choiceId:"helix"},
         ],
         trainers:[
           {class:"Team Rocket Grunt",name:"Grunt 1",team:[{name:"Sandshrew",level:11},{name:"Rattata",  level:11},{name:"Zubat",   level:11}]},
@@ -1361,8 +1361,8 @@ const AREAS = [
   { part:"Part 11", id:"fighting-dojo", name:"Fighting Dojo",
     note:"Defeat all Black Belts, then the Karate Master. Choose EITHER Hitmonlee OR Hitmonchan as your reward — trade for the other!",
     pokemon:[
-      {name:"Hitmonlee", method:"Gift",levels:"25",note:"⚠ One-time choice — pick Hitmonlee OR Hitmonchan",warn:true},
-      {name:"Hitmonchan",method:"Gift",levels:"25",note:"⚠ One-time choice — pick Hitmonlee OR Hitmonchan",warn:true},
+      {name:"Hitmonlee", method:"Gift",levels:"25",note:"⚠ One-time choice — pick Hitmonlee OR Hitmonchan",warn:true,choiceGroup:"dojo",choiceId:"hitmonlee"},
+      {name:"Hitmonchan",method:"Gift",levels:"25",note:"⚠ One-time choice — pick Hitmonlee OR Hitmonchan",warn:true,choiceGroup:"dojo",choiceId:"hitmonchan"},
     ],
     items:[],
     trainers:[
@@ -1587,8 +1587,8 @@ const AREAS = [
   { part:"Part 13", id:"cinnabar-island", name:"Cinnabar Island",
     note:"Cinnabar Lab restores fossils and hosts three one-time NPC trades.",
     pokemon:[
-      {name:"Omanyte",   method:"Fossil",   note:"Restore Helix Fossil at Cinnabar Lab",                  warn:true},
-      {name:"Kabuto",    method:"Fossil",   note:"Restore Dome Fossil at Cinnabar Lab",                   warn:true},
+      {name:"Omanyte",   method:"Fossil",   note:"Restore Helix Fossil at Cinnabar Lab",  warn:true,choiceGroup:"fossil",choiceId:"helix"},
+      {name:"Kabuto",    method:"Fossil",   note:"Restore Dome Fossil at Cinnabar Lab",   warn:true,choiceGroup:"fossil",choiceId:"dome"},
       {name:"Aerodactyl",method:"Fossil",   note:"Restore Old Amber at Cinnabar Lab",                     warn:true},
       {name:"Electrode", method:"Trade",    note:"Trade Raichu with Old man in Cinnabar Lab",              warn:true},
       {name:"Tangela",   method:"Trade",    note:"Trade Venonat with woman in Cinnabar Lab (holds Stardust)", warn:true},
@@ -3111,6 +3111,7 @@ function FireRedTracker() {
   const [version, setVersion]   = useState("fr");   // "fr" | "lg"
   const [badges, setBadges]     = useState({});      // {badgeId: true}
   const [checklist, setChecklist] = useState({});   // {itemId: true}
+  const [choiceGroups, setChoiceGroups] = useState({});  // {groupId: choiceId}
 
 
   useEffect(() => {
@@ -3119,8 +3120,9 @@ function FireRedTracker() {
       try { const r = localStorage.getItem("fr-items5");    if (r) setItems(JSON.parse(r));    } catch {}
       try { const r = localStorage.getItem("fr-trainers1"); if (r) setTrainers(JSON.parse(r)); } catch {}
       try { const r = localStorage.getItem("frlg-version"); if (r) setVersion(r);              } catch {}
-      try { const r = localStorage.getItem("frlg-badges");     if (r) setBadges(JSON.parse(r));    } catch {}
-      try { const r = localStorage.getItem("frlg-checklist"); if (r) setChecklist(JSON.parse(r)); } catch {}
+      try { const r = localStorage.getItem("frlg-badges");     if (r) setBadges(JSON.parse(r));       } catch {}
+      try { const r = localStorage.getItem("frlg-checklist"); if (r) setChecklist(JSON.parse(r));    } catch {}
+      try { const r = localStorage.getItem("frlg-choices");   if (r) setChoiceGroups(JSON.parse(r)); } catch {}
 
       setBooted(true);
     })();
@@ -3139,6 +3141,7 @@ function FireRedTracker() {
       version:   localStorage.getItem("frlg-version"),
       badges:    localStorage.getItem("frlg-badges"),
       checklist: localStorage.getItem("frlg-checklist"),
+      choices:   localStorage.getItem("frlg-choices"),
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type:"application/json" });
     const url = URL.createObjectURL(blob);
@@ -3166,6 +3169,7 @@ function FireRedTracker() {
           if (data.version)    localStorage.setItem("frlg-version",   data.version);
           if (data.badges)     localStorage.setItem("frlg-badges",    data.badges);
           if (data.checklist)  localStorage.setItem("frlg-checklist", data.checklist);
+          if (data.choices)    localStorage.setItem("frlg-choices",   data.choices);
           window.location.reload();
         } catch { alert("Invalid save file — could not restore data."); }
       };
@@ -3194,23 +3198,43 @@ function FireRedTracker() {
 
 
 
-  const toggleCaught = useCallback((name) => {
+  const toggleCaught = useCallback((name, meta) => {
+    const wasCaught = !!caught[name];
     setCaught(prev => {
       const next = { ...prev };
       if (next[name]) delete next[name]; else next[name] = true;
       try { localStorage.setItem("fr-caught5", JSON.stringify(next)); } catch {}
       return next;
     });
-  }, []);
+    if (meta?.choiceGroup && meta?.choiceId) {
+      setChoiceGroups(prev => {
+        const next = { ...prev };
+        if (!wasCaught) { next[meta.choiceGroup] = meta.choiceId; }
+        else if (prev[meta.choiceGroup] === meta.choiceId) { delete next[meta.choiceGroup]; }
+        try { localStorage.setItem("frlg-choices", JSON.stringify(next)); } catch {}
+        return next;
+      });
+    }
+  }, [caught]);
 
-  const toggleItem = useCallback((key) => {
+  const toggleItem = useCallback((key, meta) => {
+    const wasChecked = !!items[key];
     setItems(prev => {
       const next = { ...prev };
       if (next[key]) delete next[key]; else next[key] = true;
       try { localStorage.setItem("fr-items5", JSON.stringify(next)); } catch {}
       return next;
     });
-  }, []);
+    if (meta?.choiceGroup && meta?.choiceId) {
+      setChoiceGroups(prev => {
+        const next = { ...prev };
+        if (!wasChecked) { next[meta.choiceGroup] = meta.choiceId; }
+        else if (prev[meta.choiceGroup] === meta.choiceId) { delete next[meta.choiceGroup]; }
+        try { localStorage.setItem("frlg-choices", JSON.stringify(next)); } catch {}
+        return next;
+      });
+    }
+  }, [items]);
 
   const toggleTrainer = useCallback((key) => {
     setTrainers(prev => {
@@ -3330,7 +3354,7 @@ function FireRedTracker() {
       {tab === "dex" && <DexTab caught={caught} toggleCaught={toggleCaught} dexFilter={dexFilter} setDexFilter={setDexFilter} dexSelected={dexSelected} setDexSelected={setDexSelected} version={version} isMobile={isMobile} />}
 
       {/* ── Tab: Areas ── */}
-      {tab === "areas" && <AreasTab caught={caught} toggleCaught={toggleCaught} items={items} toggleItem={toggleItem} trainers={trainers} toggleTrainer={toggleTrainer} areaId={areaId} setAreaId={setAreaId} area={area} search={search} setSearch={setSearch} version={version} isMobile={isMobile} />}
+      {tab === "areas" && <AreasTab caught={caught} toggleCaught={toggleCaught} items={items} toggleItem={toggleItem} trainers={trainers} toggleTrainer={toggleTrainer} areaId={areaId} setAreaId={setAreaId} area={area} search={search} setSearch={setSearch} version={version} isMobile={isMobile} choiceGroups={choiceGroups} />}
 
       {/* ── Tab: Catch Calc ── */}
       {tab === "calc" && <CatchCalcTab isMobile={isMobile} />}
@@ -4201,7 +4225,9 @@ function countItemsDone(area, areaId, itemsState) {
 }
 
 // ─── AREAS TAB ────────────────────────────────────────────────────────────────
-function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTrainer, areaId, setAreaId, area, search, setSearch, version, isMobile }) {
+function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTrainer, areaId, setAreaId, area, search, setSearch, version, isMobile, choiceGroups }) {
+  const isPassedPokemon = p  => !!(p.choiceGroup  && choiceGroups?.[p.choiceGroup]  && choiceGroups[p.choiceGroup]  !== p.choiceId);
+  const isPassedItem    = it => !!(it.choiceGroup && choiceGroups?.[it.choiceGroup] && choiceGroups[it.choiceGroup] !== it.choiceId);
   const visibleAreas = useMemo(() => AREAS.filter(a => AUDITED_PARTS.has(a.part)), []);
   const groups = useMemo(() => groupByPart(visibleAreas), [visibleAreas]);
   const filtered = useMemo(() => search.trim() ? visibleAreas.filter(a => a.name.toLowerCase().includes(search.toLowerCase())) : null, [search, visibleAreas]);
@@ -4211,21 +4237,25 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
   const areaPokemon  = area ? flattenPokemon(area)  : [];
   const areaItems    = area ? flattenItems(area)    : [];
   const areaTrainers = area ? flattenTrainers(area) : [];
-  const verPokemon   = areaPokemon.filter(p => !(version === "fr" && p.lgOnly) && !(version === "lg" && p.frOnly));
-  const pokeDone    = verPokemon.filter(p => caught[p.name]).length;
-  const itemDone    = countItemsDone(area, areaId, items);
-  const trainerDone = areaTrainers.filter(t => trainers[`${areaId}|${t.class}|${t.name}`]).length;
+  const verPokemon      = areaPokemon.filter(p => !(version === "fr" && p.lgOnly) && !(version === "lg" && p.frOnly));
+  const relevantPokemon = verPokemon.filter(p => !isPassedPokemon(p));
+  const pokeDone        = relevantPokemon.filter(p => caught[p.name]).length;
+  const relevantItems   = areaItems.filter(it => !isPassedItem(it));
+  const itemDone        = area && !area.floors
+    ? areaItems.reduce((n, it, i) => n + (!isPassedItem(it) && items[flatItemKey(areaId, i)] ? 1 : 0), 0)
+    : area?.floors?.reduce((n, floor) => n + (floor.items||[]).reduce((m, it, i) => m + (!isPassedItem(it) && items[floorItemKey(areaId, floor.label, i)] ? 1 : 0), 0), 0) ?? 0;
+  const trainerDone     = areaTrainers.filter(t => trainers[`${areaId}|${t.class}|${t.name}`]).length;
 
   // Prev / Next navigation
   const currentIdx = areaId ? visibleAreas.findIndex(a => a.id === areaId) : -1;
   const prevArea = currentIdx > 0 ? visibleAreas[currentIdx - 1] : null;
   const nextArea = currentIdx >= 0 && currentIdx < visibleAreas.length - 1 ? visibleAreas[currentIdx + 1] : null;
 
-  // Mark-all helpers
-  const markAllPokemon = (poks) => poks.forEach(p => { if (!caught[p.name]) toggleCaught(p.name); });
-  const clearAllPokemon = (poks) => poks.forEach(p => { if (caught[p.name]) toggleCaught(p.name); });
-  const markAllItems = (its, keyFn) => its.forEach((it, i) => { const k = keyFn(it, i); if (!items[k]) toggleItem(k); });
-  const clearAllItems = (its, keyFn) => its.forEach((it, i) => { const k = keyFn(it, i); if (items[k]) toggleItem(k); });
+  // Mark-all helpers (skip passed choice-group entries)
+  const markAllPokemon  = (poks) => poks.forEach(p  => { if (!caught[p.name] && !isPassedPokemon(p)) toggleCaught(p.name, p.choiceGroup ? {choiceGroup:p.choiceGroup, choiceId:p.choiceId} : undefined); });
+  const clearAllPokemon = (poks) => poks.forEach(p  => { if (caught[p.name]  && !isPassedPokemon(p)) toggleCaught(p.name, p.choiceGroup ? {choiceGroup:p.choiceGroup, choiceId:p.choiceId} : undefined); });
+  const markAllItems    = (its, keyFn) => its.forEach((it, i) => { if (isPassedItem(it)) return; const k = keyFn(it, i); if (!items[k]) toggleItem(k, it.choiceGroup ? {choiceGroup:it.choiceGroup, choiceId:it.choiceId} : undefined); });
+  const clearAllItems   = (its, keyFn) => its.forEach((it, i) => { if (isPassedItem(it)) return; const k = keyFn(it, i); if (items[k])  toggleItem(k, it.choiceGroup ? {choiceGroup:it.choiceGroup, choiceId:it.choiceId} : undefined); });
   const markAllTrainers = (trns) => trns.forEach(t => { const k = `${areaId}|${t.class}|${t.name}`; if (!trainers[k]) toggleTrainer(k); });
   const clearAllTrainers = (trns) => trns.forEach(t => { const k = `${areaId}|${t.class}|${t.name}`; if (trainers[k]) toggleTrainer(k); });
 
@@ -4273,8 +4303,8 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
               const atype = getAreaType(area);
               const tint = AREA_TINT[atype];
               const typeLabel = { route:"Route", cave:"Cave / Dungeon", water:"Water / Ship", safari:"Safari Zone", special:"Special", city:"City / Town" }[atype] || atype;
-              const allDone = verPokemon.length + areaItems.length + areaTrainers.length > 0 &&
-                pokeDone === verPokemon.length && itemDone === areaItems.length && trainerDone === areaTrainers.length;
+              const allDone = relevantPokemon.length + relevantItems.length + areaTrainers.length > 0 &&
+                pokeDone === relevantPokemon.length && itemDone === relevantItems.length && trainerDone === areaTrainers.length;
               return (
                 <div style={{ position:"sticky", top:0, zIndex:10, background:C.bg, borderBottom:`1px solid ${C.border}`, padding:"12px 20px 10px", boxShadow:"0 2px 8px rgba(0,0,0,0.3)" }}>
                   {/* Mobile back button */}
@@ -4305,8 +4335,8 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                   </div>
                   {/* Progress bars */}
                   <div style={{ display:"flex", gap:10, marginTop:10, flexWrap:"wrap" }}>
-                    <MiniBar label="Pokémon"  done={pokeDone}    total={verPokemon.length}    color={C.green} />
-                    <MiniBar label="Items"    done={itemDone}    total={areaItems.length}     color={C.gold} />
+                    <MiniBar label="Pokémon"  done={pokeDone}    total={relevantPokemon.length} color={C.green} />
+                    <MiniBar label="Items"    done={itemDone}    total={relevantItems.length}   color={C.gold} />
                     {areaTrainers.length > 0 && <MiniBar label="Trainers" done={trainerDone} total={areaTrainers.length} color="#a87acc" />}
                   </div>
                 </div>
@@ -4334,11 +4364,13 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                   const hasItms = (floor.items    || []).length > 0;
                   const hasTrns = (floor.trainers || []).length > 0;
                   if (!hasPoks && !hasItms && !hasTrns) return null;
-                  const floorVerPoks = (floor.pokemon || []).filter(p => !(version === "fr" && p.lgOnly) && !(version === "lg" && p.frOnly));
-                  const pokDone = floorVerPoks.filter(p => caught[p.name]).length;
-                  const itmDone = (floor.items    || []).filter((_, i) => items[floorItemKey(areaId, floor.label, i)]).length;
-                  const trnDone = (floor.trainers || []).filter(t => trainers[`${areaId}|${t.class}|${t.name}`]).length;
-                  const floorTotal = floorVerPoks.length + (floor.items||[]).length + (floor.trainers||[]).length;
+                  const floorVerPoks    = (floor.pokemon || []).filter(p => !(version === "fr" && p.lgOnly) && !(version === "lg" && p.frOnly));
+                  const relevFloorPoks  = floorVerPoks.filter(p => !isPassedPokemon(p));
+                  const pokDone         = relevFloorPoks.filter(p => caught[p.name]).length;
+                  const relevFloorItems = (floor.items || []).filter(it => !isPassedItem(it));
+                  const itmDone         = (floor.items || []).reduce((n, it, i) => n + (!isPassedItem(it) && items[floorItemKey(areaId, floor.label, i)] ? 1 : 0), 0);
+                  const trnDone         = (floor.trainers || []).filter(t => trainers[`${areaId}|${t.class}|${t.name}`]).length;
+                  const floorTotal = relevFloorPoks.length + relevFloorItems.length + (floor.trainers||[]).length;
                   const floorDone  = pokDone + itmDone + trnDone;
                   const floorKey = `${areaId}|${floor.label}`;
                   const isCollapsed = collapsedFloors.has(floorKey);
@@ -4355,17 +4387,17 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                         <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap:12, marginBottom:12 }}>
                           {/* Wild Pokémon left */}
                           <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
-                            <Section title="Wild Pokémon" count={`${pokDone}/${floorVerPoks.length}`} color={C.green}
-                              allDone={pokDone===floorVerPoks.length && floorVerPoks.length>0}
-                              onMarkAll={() => pokDone===floorVerPoks.length ? clearAllPokemon(floorVerPoks) : markAllPokemon(floorVerPoks)}>
-                              {!hasPoks ? <Empty text="No wild Pokémon here" /> : renderPokemonList(floor.pokemon, caught, toggleCaught, version, isMobile)}
+                            <Section title="Wild Pokémon" count={`${pokDone}/${relevFloorPoks.length}`} color={C.green}
+                              allDone={pokDone===relevFloorPoks.length && relevFloorPoks.length>0}
+                              onMarkAll={() => pokDone===relevFloorPoks.length ? clearAllPokemon(floorVerPoks) : markAllPokemon(floorVerPoks)}>
+                              {!hasPoks ? <Empty text="No wild Pokémon here" /> : renderPokemonList(floor.pokemon, caught, toggleCaught, version, isMobile, choiceGroups)}
                             </Section>
-                            <Section title="Items" count={`${itmDone}/${(floor.items||[]).length}`} color={C.gold}
-                              allDone={itmDone===(floor.items||[]).length && (floor.items||[]).length>0}
-                              onMarkAll={() => { const kfn = (it,i) => floorItemKey(areaId,floor.label,i); itmDone===(floor.items||[]).length ? clearAllItems(floor.items||[],kfn) : markAllItems(floor.items||[],kfn); }}>
+                            <Section title="Items" count={`${itmDone}/${relevFloorItems.length}`} color={C.gold}
+                              allDone={itmDone===relevFloorItems.length && relevFloorItems.length>0}
+                              onMarkAll={() => { const kfn = (it,i) => floorItemKey(areaId,floor.label,i); itmDone===relevFloorItems.length ? clearAllItems(floor.items||[],kfn) : markAllItems(floor.items||[],kfn); }}>
                               {!hasItms ? <Empty text="No items here" /> : floor.items.map((it,i) => {
                                 const key = floorItemKey(areaId, floor.label, i);
-                                return <ItemEntry key={i} it={it} itemKey={key} done={!!items[key]} toggleItem={toggleItem} isMobile={isMobile} />;
+                                return <ItemEntry key={i} it={it} itemKey={key} done={!!items[key]} toggleItem={toggleItem} isMobile={isMobile} choiceGroups={choiceGroups} />;
                               })}
                             </Section>
                           </div>
@@ -4387,20 +4419,20 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                 <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap:12 }}>
                   {/* Wild Pokémon + Items left */}
                   <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
-                    <Section title="Wild Pokémon" count={`${pokeDone}/${verPokemon.length}`} color={C.green}
-                      allDone={pokeDone===verPokemon.length && verPokemon.length>0}
-                      onMarkAll={() => pokeDone===verPokemon.length ? clearAllPokemon(verPokemon) : markAllPokemon(verPokemon)}>
+                    <Section title="Wild Pokémon" count={`${pokeDone}/${relevantPokemon.length}`} color={C.green}
+                      allDone={pokeDone===relevantPokemon.length && relevantPokemon.length>0}
+                      onMarkAll={() => pokeDone===relevantPokemon.length ? clearAllPokemon(verPokemon) : markAllPokemon(verPokemon)}>
                       {areaPokemon.length === 0 ? <Empty text="No wild Pokémon here" /> :
-                        renderPokemonList(areaPokemon, caught, toggleCaught, version, isMobile)
+                        renderPokemonList(areaPokemon, caught, toggleCaught, version, isMobile, choiceGroups)
                       }
                     </Section>
-                    <Section title="Items" count={`${itemDone}/${areaItems.length}`} color={C.gold}
-                      allDone={itemDone===areaItems.length && areaItems.length>0}
-                      onMarkAll={() => { const kfn = (_,i) => flatItemKey(areaId,i); itemDone===areaItems.length ? clearAllItems(areaItems,kfn) : markAllItems(areaItems,kfn); }}>
+                    <Section title="Items" count={`${itemDone}/${relevantItems.length}`} color={C.gold}
+                      allDone={itemDone===relevantItems.length && relevantItems.length>0}
+                      onMarkAll={() => { const kfn = (_,i) => flatItemKey(areaId,i); itemDone===relevantItems.length ? clearAllItems(areaItems,kfn) : markAllItems(areaItems,kfn); }}>
                       {areaItems.length === 0 ? <Empty text="No items here" /> :
                         areaItems.map((it,i) => {
                           const key = flatItemKey(areaId, i);
-                          return <ItemEntry key={i} it={it} itemKey={key} done={!!items[key]} toggleItem={toggleItem} isMobile={isMobile} />;
+                          return <ItemEntry key={i} it={it} itemKey={key} done={!!items[key]} toggleItem={toggleItem} isMobile={isMobile} choiceGroups={choiceGroups} />;
                         })
                       }
                     </Section>
@@ -4482,7 +4514,7 @@ function MethodDivider({ label }) {
   );
 }
 
-function renderPokemonList(pokemon, caught, toggleCaught, version, isMobile) {
+function renderPokemonList(pokemon, caught, toggleCaught, version, isMobile, choiceGroups) {
   // Sort within each consecutive method block by effective rate descending.
   // Method block order is preserved; only intra-group ordering changes.
   const getPct = p => {
@@ -4511,13 +4543,15 @@ function renderPokemonList(pokemon, caught, toggleCaught, version, isMobile) {
   return items.map(item =>
     item.type === "divider"
       ? <MethodDivider key={item.key} label={item.label} />
-      : <PokemonEntry key={item.key} p={item.p} caught={caught} toggleCaught={toggleCaught} version={version} isMobile={isMobile} />
+      : <PokemonEntry key={item.key} p={item.p} caught={caught} toggleCaught={toggleCaught} version={version} isMobile={isMobile} choiceGroups={choiceGroups} />
   );
 }
 
-function PokemonEntry({ p, caught, toggleCaught, version, isMobile }) {
+function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups }) {
   const isCaught = !!caught[p.name];
   if ((version === "fr" && p.lgOnly) || (version === "lg" && p.frOnly)) return null;
+
+  const isPassed = !!(p.choiceGroup && choiceGroups?.[p.choiceGroup] && choiceGroups[p.choiceGroup] !== p.choiceId);
 
   // Determine if a better-rate area exists for this Pokémon
   const splitMatch = p.rate && p.rate.match(/^(\S+)\s+FR\s*\/\s*(\S+)\s+LG$/i);
@@ -4528,7 +4562,7 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile }) {
   const hasBetter = !isCaught && currentPct && best && best.pct > currentPct;
 
   return (
-    <Row done={isCaught} onClick={() => toggleCaught(p.name)}>
+    <Row done={isCaught} passed={isPassed} onClick={isPassed ? undefined : () => toggleCaught(p.name, p.choiceGroup ? {choiceGroup:p.choiceGroup, choiceId:p.choiceId} : undefined)}>
       {DEX_ID[p.name] && <img src={pokeSpriteUrl(DEX_ID[p.name])} alt={p.name} style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0, opacity:isCaught?1:0.65, filter:isCaught?"none":"brightness(0)" }} />}
       <div style={{ flex:1 }}>
         <span style={{ color:isCaught?C.green:p.lgOnly?C.lgGreen:p.frOnly?"#c85252":C.text, fontWeight:"600", fontSize:12 }}>
@@ -4552,7 +4586,8 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile }) {
   );
 }
 
-function ItemEntry({ it, itemKey, done, toggleItem, isMobile }) {
+function ItemEntry({ it, itemKey, done, toggleItem, isMobile, choiceGroups }) {
+  const isPassed = !!(it.choiceGroup && choiceGroups?.[it.choiceGroup] && choiceGroups[it.choiceGroup] !== it.choiceId);
   const [showLightbox, setShowLightbox] = React.useState(false);
   const [hoverPos, setHoverPos]         = React.useState(null);
   const btnRef = React.useRef(null);
@@ -4572,7 +4607,7 @@ function ItemEntry({ it, itemKey, done, toggleItem, isMobile }) {
 
   return (
     <>
-      <Row done={done} onClick={() => toggleItem(itemKey)}>
+      <Row done={done} passed={isPassed} onClick={isPassed ? undefined : () => toggleItem(itemKey, it.choiceGroup ? {choiceGroup:it.choiceGroup, choiceId:it.choiceId} : undefined)}>
         {itemSpriteUrl(it.name)&&<img src={itemSpriteUrl(it.name)} alt={it.name} style={{ width:24, height:24, imageRendering:"pixelated", flexShrink:0 }} />}
         <div style={{ flex:1 }}>
           <span style={{ fontSize:12, fontWeight:"600", color:it.hidden?C.gold:C.text }}>
@@ -4678,7 +4713,15 @@ function Section({ title, count, color, children, onMarkAll, allDone }) {
   );
 }
 
-function Row({ done, onClick, children }) {
+function Row({ done, passed, onClick, children }) {
+  if (passed) return (
+    <div style={{ display:"flex", alignItems:"flex-start", gap:10, padding:"10px 14px", minHeight:44, borderBottom:`1px solid ${C.border}20`, opacity:0.3, cursor:"default" }}>
+      <div style={{ width:18, height:18, border:`2px solid ${C.border}`, borderRadius:4, flexShrink:0, marginTop:1, display:"flex", alignItems:"center", justifyContent:"center" }}>
+        <span style={{ color:C.muted, fontSize:13, lineHeight:1, fontWeight:"700" }}>—</span>
+      </div>
+      <div style={{ display:"flex", justifyContent:"space-between", flex:1 }}>{children}</div>
+    </div>
+  );
   return (
     <div onClick={onClick} style={{ display:"flex", alignItems:"flex-start", gap:10, padding:"10px 14px", minHeight:44, cursor:"pointer", borderBottom:`1px solid ${C.border}20`, background: done?"rgba(74,175,116,0.05)":"transparent", transition:"background 0.1s" }}
       onMouseEnter={e => e.currentTarget.style.background = done?"rgba(74,175,116,0.09)":"rgba(255,255,255,0.025)"}
