@@ -2530,6 +2530,7 @@ const DT_HM_COMPAT = {
   "Strength":   new Set(["Bulbasaur","Ivysaur","Venusaur","Charmander","Charmeleon","Charizard","Squirtle","Wartortle","Blastoise","Sandshrew","Sandslash","Nidorina","Nidoqueen","Nidorino","Nidoking","Mankey","Primeape","Poliwag","Poliwhirl","Poliwrath","Machop","Machoke","Geodude","Graveler","Golem","Slowpoke","Slowbro","Drowzee","Hypno","Krabby","Kingler","Marowak","Hitmonlee","Hitmonchan","Rhyhorn","Rhydon","Chansey","Kangaskhan","Starmie","Tauros","Gyarados","Lapras","Snorlax","Dratini","Dragonair","Dragonite","Arcanine","Dewgong","Cloyster","Seel"]),
   "Flash":      new Set(["Butterfree","Pikachu","Raichu","Clefairy","Clefable","Jigglypuff","Wigglytuff","Abra","Kadabra","Slowpoke","Slowbro","Gastly","Haunter","Gengar","Drowzee","Hypno","Magnemite","Magneton","Doduo","Dodrio","Electrode","Starmie","Jynx","Electabuzz","Porygon","Vaporeon","Jolteon","Flareon"]),
   "Rock Smash": new Set(["Squirtle","Wartortle","Blastoise","Poliwag","Poliwhirl","Poliwrath","Machop","Machoke","Geodude","Graveler","Golem","Primeape","Hitmonlee","Hitmonchan","Rhyhorn","Rhydon","Snorlax","Krabby","Kingler","Kabutops","Aerodactyl"]),
+  "Waterfall":  new Set(["Squirtle","Wartortle","Blastoise","Psyduck","Golduck","Poliwag","Poliwhirl","Poliwrath","Tentacool","Tentacruel","Slowpoke","Slowbro","Seel","Dewgong","Shellder","Cloyster","Krabby","Kingler","Horsea","Seadra","Goldeen","Seaking","Staryu","Starmie","Lapras","Vaporeon","Dratini","Dragonair","Dragonite","Jynx","Omanyte","Omastar","Kabuto","Kabutops","Gyarados"]),
 };
 
 // Neutral Pokémon are listed first so they always outrank version-exclusive picks
@@ -2537,20 +2538,20 @@ const DT_HM_COMPAT = {
 // FR-exclusive follow neutral, LG-exclusive come last.
 const DT_CANDIDATES = [
   // ── Neutral (catchable in both versions) ───────────────────────────────────
-  {name:"Lapras",    types:["Water","Ice"],          hms:["Surf","Strength"]},
+  {name:"Lapras",    types:["Water","Ice"],          hms:["Surf","Waterfall","Strength"]},
   {name:"Snorlax",   types:["Normal"],               hms:["Strength","Rock Smash"]},
-  {name:"Gyarados",  types:["Water","Flying"],       hms:["Surf","Strength"]},
+  {name:"Gyarados",  types:["Water","Flying"],       hms:["Surf","Waterfall","Strength"]},
   {name:"Nidoking",  types:["Poison","Ground"],      hms:["Cut","Rock Smash","Strength"]},
   {name:"Nidoqueen", types:["Poison","Ground"],      hms:["Cut","Rock Smash","Strength"]},
   {name:"Vaporeon",  types:["Water"],                hms:["Surf"]},
   {name:"Jolteon",   types:["Electric"],             hms:[]},
   {name:"Charizard", types:["Fire","Flying"],        hms:["Cut","Fly","Strength"]},
-  {name:"Blastoise", types:["Water"],                hms:["Surf","Strength"]},
+  {name:"Blastoise", types:["Water"],                hms:["Surf","Waterfall","Strength"]},
   {name:"Venusaur",  types:["Grass","Poison"],       hms:["Cut","Strength"]},
   {name:"Exeggutor", types:["Grass","Psychic"],      hms:[]},
   {name:"Raichu",    types:["Electric"],             hms:[]},
   {name:"Aerodactyl",types:["Rock","Flying"],        hms:["Fly","Rock Smash","Strength"]},
-  {name:"Poliwrath", types:["Water","Fighting"],     hms:["Surf","Strength","Rock Smash"]},
+  {name:"Poliwrath", types:["Water","Fighting"],     hms:["Surf","Waterfall","Strength","Rock Smash"]},
   {name:"Pidgeot",   types:["Normal","Flying"],      hms:["Fly"]},
   {name:"Fearow",    types:["Normal","Flying"],      hms:["Fly","Cut"]},
   {name:"Hypno",     types:["Psychic"],              hms:[]},
@@ -2558,27 +2559,27 @@ const DT_CANDIDATES = [
   {name:"Electrode", types:["Electric"],             hms:[]},
   {name:"Hitmonlee", types:["Fighting"],             hms:["Strength","Rock Smash"]},
   {name:"Hitmonchan",types:["Fighting"],             hms:["Strength","Rock Smash"]},
-  {name:"Dewgong",   types:["Water","Ice"],          hms:["Surf","Strength"]},
-  {name:"Tentacruel",types:["Water","Poison"],       hms:["Surf","Cut"]},
-  {name:"Kabutops",  types:["Rock","Water"],         hms:["Surf","Cut","Rock Smash","Strength"]},
-  {name:"Omastar",   types:["Rock","Water"],         hms:["Surf","Strength"]},
+  {name:"Dewgong",   types:["Water","Ice"],          hms:["Surf","Waterfall","Strength"]},
+  {name:"Tentacruel",types:["Water","Poison"],       hms:["Surf","Waterfall","Cut"]},
+  {name:"Kabutops",  types:["Rock","Water"],         hms:["Surf","Waterfall","Cut","Rock Smash","Strength"]},
+  {name:"Omastar",   types:["Rock","Water"],         hms:["Surf","Waterfall","Strength"]},
   {name:"Rhydon",    types:["Ground","Rock"],        hms:["Strength","Rock Smash"]},
   {name:"Flareon",   types:["Fire"],                 hms:[]},
   {name:"Tauros",    types:["Normal"],               hms:["Strength"]},
   {name:"Kangaskhan",types:["Normal"],               hms:["Strength"]},
   {name:"Weezing",   types:["Poison"],               hms:[]},
-  {name:"Kingler",   types:["Water"],                hms:["Surf","Cut","Strength","Rock Smash"]},
+  {name:"Kingler",   types:["Water"],                hms:["Surf","Waterfall","Cut","Strength","Rock Smash"]},
   {name:"Dodrio",    types:["Normal","Flying"],      hms:["Fly"]},
   // ── FireRed exclusive ──────────────────────────────────────────────────────
   {name:"Arcanine",  types:["Fire"],                 hms:["Strength"],                  frOnly:true},
   {name:"Electabuzz",types:["Electric"],             hms:[],                            frOnly:true},
-  {name:"Cloyster",  types:["Water","Ice"],          hms:["Surf"],                      frOnly:true},
-  {name:"Golduck",   types:["Water"],                hms:["Surf","Cut","Strength"],     frOnly:true},
+  {name:"Cloyster",  types:["Water","Ice"],          hms:["Surf","Waterfall"],          frOnly:true},
+  {name:"Golduck",   types:["Water"],                hms:["Surf","Waterfall","Cut","Strength"],frOnly:true},
   {name:"Scyther",   types:["Bug","Flying"],         hms:["Cut"],                       frOnly:true},
   {name:"Vileplume", types:["Grass","Poison"],       hms:[],                            frOnly:true},
   // ── LeafGreen exclusive ────────────────────────────────────────────────────
-  {name:"Starmie",   types:["Water","Psychic"],      hms:["Surf","Strength"],           lgOnly:true},
-  {name:"Slowbro",   types:["Water","Psychic"],      hms:["Surf","Strength"],           lgOnly:true},
+  {name:"Starmie",   types:["Water","Psychic"],      hms:["Surf","Waterfall","Strength"],lgOnly:true},
+  {name:"Slowbro",   types:["Water","Psychic"],      hms:["Surf","Waterfall","Strength"],lgOnly:true},
   {name:"Sandslash", types:["Ground"],               hms:["Cut","Rock Smash","Strength"],lgOnly:true},
   {name:"Ninetales", types:["Fire"],                 hms:[],                            lgOnly:true},
   {name:"Victreebel",types:["Grass","Poison"],       hms:[],                            lgOnly:true},
@@ -2657,7 +2658,7 @@ function buildDreamTeam(favoriteName, version) {
   const inTeam = new Set([finalFav]);
   const isDragoniteLine = ["Dratini","Dragonair","Dragonite"].includes(favoriteName);
   if (!isDragoniteLine) { team.push("Dragonite"); inTeam.add("Dragonite"); }
-  const requiredHMs = ["Fly","Surf","Strength","Cut","Rock Smash"];
+  const requiredHMs = ["Fly","Surf","Waterfall","Strength","Cut","Rock Smash"];
   const getCoverage = () => {
     const s = new Set();
     for (const n of team) {
@@ -2766,7 +2767,7 @@ function getDreamHMs(name) {
 // Strategy: process rarest coverage first; consolidate onto whichever team member
 // is already the HM carrier, tiebroken by total HM capability then team order.
 function assignHMs(team) {
-  const ALL_HMs = ["Fly","Surf","Strength","Cut","Rock Smash"];
+  const ALL_HMs = ["Fly","Surf","Waterfall","Strength","Cut","Rock Smash"];
   const canLearn = {};
   team.forEach(name => { canLearn[name] = new Set(getDreamHMs(name)); });
 
@@ -2777,10 +2778,12 @@ function assignHMs(team) {
   const load = {};
   team.forEach(n => { load[n] = 0; });
 
-  // Priority override: Lapras always carries Surf when present
-  if (team.includes("Lapras") && (candidates["Surf"] || []).includes("Lapras")) {
-    assignments["Surf"] = "Lapras";
-    load["Lapras"]++;
+  // Priority override: Lapras always carries both water HMs when present
+  for (const waterHM of ["Surf", "Waterfall"]) {
+    if (team.includes("Lapras") && (candidates[waterHM] || []).includes("Lapras")) {
+      assignments[waterHM] = "Lapras";
+      load["Lapras"]++;
+    }
   }
 
   // Process remaining HMs — fewest carriers first so forced assignments win
