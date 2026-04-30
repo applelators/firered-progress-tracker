@@ -2585,40 +2585,40 @@ const DT_CANDIDATES = [
 ];
 
 const DT_TM_TIPS = {
-  "Charizard":  [{move:"Flamethrower",src:"TM35 — Game Corner, Celadon City"},{move:"Earthquake",src:"TM26 — Viridian Gym reward (one-time)"}],
+  "Charizard":  [{move:"Flamethrower",src:"TM35 — Game Corner, Celadon City"},{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true}],
   "Blastoise":  [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Venusaur":   [{move:"Sludge Bomb",src:"TM36 — Rocket Hideout B4F (one-time)"},{move:"SolarBeam",src:"TM22 — Safari Zone Area 3 (one-time)"}],
-  "Nidoking":   [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Earthquake",src:"TM26 — Viridian Gym reward (one-time)"}],
-  "Nidoqueen":  [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Earthquake",src:"TM26 — Viridian Gym reward (one-time)"}],
+  "Venusaur":   [{move:"Sludge Bomb",src:"TM36 — Rocket Hideout B4F",oneTime:true},{move:"SolarBeam",src:"TM22 — Safari Zone Area 3",oneTime:true}],
+  "Nidoking":   [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true}],
+  "Nidoqueen":  [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true}],
   "Raichu":     [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Thunder",src:"TM25 — Game Corner, Celadon City"}],
-  "Starmie":    [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Psychic",src:"TM29 — Game Corner or Route 7 (one-time)"}],
+  "Starmie":    [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Psychic",src:"TM29 — Game Corner or Route 7 (free copy)"}],
   "Lapras":     [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
   "Gyarados":   [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Snorlax":    [{move:"Earthquake",src:"TM26 — Viridian Gym reward (one-time)"}],
+  "Snorlax":    [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true}],
   "Vaporeon":   [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
   "Jolteon":    [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Thunder",src:"TM25 — Game Corner, Celadon City"}],
   "Flareon":    [{move:"Fire Blast",src:"TM38 — Celadon Dept. Store (buyable)"}],
   "Arcanine":   [{move:"Flamethrower",src:"TM35 — Game Corner, Celadon City"},{move:"ExtremeSpeed",src:"Lv. 49 as Growlithe — evolve after learning it"}],
-  "Slowbro":    [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Psychic",src:"TM29 — Game Corner or Route 7 (one-time)"}],
-  "Exeggutor":  [{move:"Psychic",src:"TM29 — Game Corner or Route 7 (one-time)"},{move:"SolarBeam",src:"TM22 — Safari Zone Area 3 (one-time)"}],
-  "Hypno":      [{move:"Psychic",src:"TM29 — Game Corner or Route 7 (one-time)"}],
+  "Slowbro":    [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Psychic",src:"TM29 — Game Corner or Route 7 (free copy)"}],
+  "Exeggutor":  [{move:"Psychic",src:"TM29 — Game Corner or Route 7 (free copy)"},{move:"SolarBeam",src:"TM22 — Safari Zone Area 3",oneTime:true}],
+  "Hypno":      [{move:"Psychic",src:"TM29 — Game Corner or Route 7 (free copy)"}],
   "Electabuzz": [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Thunder",src:"TM25 — Game Corner, Celadon City"}],
   "Magneton":   [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Thunder",src:"TM25 — Game Corner, Celadon City"}],
   "Electrode":  [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Thunder",src:"TM25 — Game Corner, Celadon City"}],
-  "Sandslash":  [{move:"Earthquake",src:"TM26 — Viridian Gym reward (one-time)"}],
-  "Aerodactyl": [{move:"Iron Tail",src:"TM23 — Silph Co. (one-time)"}],
+  "Sandslash":  [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true}],
+  "Aerodactyl": [{move:"Iron Tail",src:"TM23 — Silph Co.",oneTime:true}],
   "Pidgeot":    [{move:"Hyper Beam",src:"TM15 — Game Corner, Celadon City"}],
-  "Poliwrath":  [{move:"Brick Break",src:"TM31 — Silph Co. 7F (one-time)"}],
+  "Poliwrath":  [{move:"Brick Break",src:"TM31 — Silph Co. 7F",oneTime:true}],
   "Cloyster":   [{move:"Blizzard",src:"TM14 — Celadon Dept. Store (buyable)"}],
   "Omastar":    [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Rhydon":     [{move:"Earthquake",src:"TM26 — Viridian Gym reward (one-time)"}],
-  "Golduck":    [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Psychic",src:"TM29 — Game Corner or Route 7 (one-time)"}],
+  "Rhydon":     [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true}],
+  "Golduck":    [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"},{move:"Psychic",src:"TM29 — Game Corner or Route 7 (free copy)"}],
   "Ninetales":  [{move:"Flamethrower",src:"TM35 — Game Corner, Celadon City"}],
-  "Vileplume":  [{move:"SolarBeam",src:"TM22 — Safari Zone Area 3 (one-time)"}],
-  "Victreebel": [{move:"SolarBeam",src:"TM22 — Safari Zone Area 3 (one-time)"}],
-  "Tauros":     [{move:"Earthquake",src:"TM26 — Viridian Gym reward (one-time)"}],
+  "Vileplume":  [{move:"SolarBeam",src:"TM22 — Safari Zone Area 3",oneTime:true}],
+  "Victreebel": [{move:"SolarBeam",src:"TM22 — Safari Zone Area 3",oneTime:true}],
+  "Tauros":     [{move:"Earthquake",src:"TM26 — Viridian Gym reward",oneTime:true}],
   "Dewgong":    [{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
-  "Tentacruel": [{move:"Sludge Bomb",src:"TM36 — Rocket Hideout B4F (one-time)"}],
+  "Tentacruel": [{move:"Sludge Bomb",src:"TM36 — Rocket Hideout B4F",oneTime:true}],
   "Hitmonchan": [{move:"Ice Punch",src:"Level 46 (level-up)"}],
   "Hitmonlee":  [{move:"Hi Jump Kick",src:"Level 41 (level-up)"}],
 };
@@ -2703,7 +2703,7 @@ function getDreamMoves(name) {
   const result = [], used = new Set();
   for (const t of tmTips) {
     if (result.length >= 4) break;
-    result.push({ move:t.move, src:t.src, kind:"tm" });
+    result.push({ move:t.move, src:t.src, kind:"tm", oneTime:!!t.oneTime });
     used.add(t.move);
   }
   const goodMoves = [...learnset].filter(m => MOVE_TIERS && MOVE_TIERS.good && MOVE_TIERS.good.has(m.move)).sort((a,b) => b.lv - a.lv);
@@ -3350,6 +3350,12 @@ function FireRedTracker() {
     })();
   }, []);
 
+  useEffect(() => {
+    if (areaId) {
+      try { localStorage.setItem("frlg-active-area", areaId); } catch {}
+    }
+  }, [areaId]);
+
   const handleSetVersion = (v) => {
     setVersion(v);
     try { localStorage.setItem("frlg-version", v); } catch {}
@@ -3647,6 +3653,19 @@ function DreamTeamTab({ isMobile, version }) {
     return (version === "FR" && cand.lgOnly) || (version === "LG" && cand.frOnly);
   };
 
+  // Map of one-time TM move name → [team member names that want it]
+  const oneTimeConflicts = {};
+  if (team) {
+    team.forEach(n => {
+      getDreamMoves(n).forEach(m => {
+        if (m.kind === "tm" && m.oneTime) {
+          if (!oneTimeConflicts[m.move]) oneTimeConflicts[m.move] = [];
+          if (!oneTimeConflicts[m.move].includes(n)) oneTimeConflicts[m.move].push(n);
+        }
+      });
+    });
+  }
+
   return (
     <div style={{ flex:1, overflowY:"auto", padding:"16px 20px" }}>
       <div style={{ marginBottom:16 }}>
@@ -3710,12 +3729,24 @@ function DreamTeamTab({ isMobile, version }) {
                 )}
                 <div>
                   <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:5 }}>Moveset{isPreEvo ? ` (as ${finalForm})` : ""}</div>
-                  {moves.map((m, i) => (
-                    <div key={i} style={{ display:"flex", alignItems:"baseline", gap:6, marginBottom:3 }}>
-                      <span style={{ fontSize:11, fontWeight:"600", minWidth:0, color:m.kind === "tm" ? C.gold : (MOVE_TIERS && MOVE_TIERS.good && MOVE_TIERS.good.has(m.move)) ? C.green : C.text }}>{m.move}</span>
-                      <span style={{ fontSize:9, color:C.muted, flex:1, lineHeight:1.4 }}>{m.src}</span>
-                    </div>
-                  ))}
+                  {moves.map((m, i) => {
+                    const isOneTime = m.kind === "tm" && m.oneTime;
+                    const conflicts = isOneTime && oneTimeConflicts[m.move] && oneTimeConflicts[m.move].length > 1
+                      ? oneTimeConflicts[m.move].filter(n => n !== name)
+                      : null;
+                    return (
+                      <div key={i} style={{ marginBottom:3 }}>
+                        <div style={{ display:"flex", alignItems:"baseline", gap:6 }}>
+                          <span style={{ fontSize:11, fontWeight:"600", minWidth:0, color: isOneTime ? "#e8a020" : m.kind === "tm" ? C.gold : (MOVE_TIERS && MOVE_TIERS.good && MOVE_TIERS.good.has(m.move)) ? C.green : C.text }}>{m.move}</span>
+                          <span style={{ fontSize:9, color:C.muted, flex:1, lineHeight:1.4 }}>{m.src}</span>
+                          {isOneTime && <span style={{ fontSize:8, color:"#e8a020", background:"rgba(232,160,32,0.12)", border:"1px solid rgba(232,160,32,0.3)", borderRadius:3, padding:"0 4px", flexShrink:0, whiteSpace:"nowrap" }}>1× only</span>}
+                        </div>
+                        {conflicts && (
+                          <div style={{ fontSize:9, color:"#e8a020", marginTop:1 }}>⚠ Also wanted by {conflicts.join(", ")}</div>
+                        )}
+                      </div>
+                    );
+                  })}
                   {moves.length === 0 && <div style={{ fontSize:10, color:C.muted }}>No moveset data available.</div>}
                 </div>
                 <div>
@@ -5285,4 +5316,11 @@ function MiniBar({ label, done, total, color }) {
       </div>
     </div>
   );
+}
+
+// Expose data for overlay.html
+if (typeof window !== 'undefined') {
+  window.__FRLG_AREAS      = AREAS;
+  window.__FRLG_DEX_ID     = DEX_ID;
+  window.__FRLG_ITEM_SPRITE = ITEM_SPRITE;
 }
