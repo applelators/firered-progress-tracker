@@ -179,7 +179,7 @@ const AREAS = [
     trainers:[
       {class:"Rival",name:"Blue",note:"Early visit — Lv. 9 Pidgey + the starter that counters yours.",
         team:[{name:"Pidgey",level:9}]},
-      {class:"Rival",name:"Blue",note:"Pre-League return — team varies by starter. Shown: vs Bulbasaur.",
+      {class:"Rival",name:"Blue (Pre-League)",note:"Pre-League return — team varies by starter. Shown: vs Bulbasaur.",
         team:[{name:"Pidgeot",level:47},{name:"Rhyhorn",level:45},{name:"Exeggcute",level:45},{name:"Gyarados",level:45},{name:"Alakazam",level:47},{name:"Charizard",level:53}]},
     ]},
 
