@@ -621,6 +621,7 @@ const AREAS = [
       {name:"Persim Berry",hidden:true, note:"Southeast of Pokémon Center, corner of fencing (★ Itemfinder)",img:"screenshots/hidden/route10-north-1.png"},
       {name:"Cheri Berry", hidden:true, note:"Southwest of Pokémon Center, edge of dirt patch (★ Itemfinder)",img:"screenshots/hidden/route10-north-2.png"},
       {name:"Super Potion",hidden:true, note:"One step east of Rock Tunnel north entrance — requires Cut (★ Itemfinder)",img:"screenshots/hidden/route10-north-3.png"},
+      {name:"Max Ether",  hidden:true, note:"One step west, four steps north of PokéManiac Mark (requires Surf)"},
     ],
     trainers:[
       {class:"Picnicker", name:"Heidi",team:[{name:"Pikachu", level:20},{name:"Clefairy",level:20}]},
@@ -986,6 +987,7 @@ const AREAS = [
       {name:"Net Ball",       hidden:false,optional:true,note:"From the Fishing Guru's younger brother, for showing him a record-breaking Magikarp (repeatable)"},
       {name:"Iron",           hidden:false,note:"Southwest of the Fishing Guru's house (requires Cut)"},
       {name:"Rare Candy",     hidden:true, note:"In the tall grass patch (requires Cut)",img:"screenshots/hidden/route12-5.png"},
+      {name:"Leftovers",     hidden:true, note:"Where Snorlax was sleeping (★ Itemfinder)"},
     ],
     trainers:[
       {class:"Fisherman",   name:"Ned",    team:[{name:"Goldeen", level:22},{name:"Poliwag",level:22},{name:"Goldeen",level:22}]},
@@ -1895,6 +1897,7 @@ const AREAS = [
       {name:"Ultra Ball", hidden:true,  note:"Upper west summit entrance dead-end"},
       {name:"Fire Stone", hidden:true,  note:"Southeast summit entrance (requires Rock Smash and Strength)",img:"screenshots/hidden/mt-ember-3.png"},
       {name:"Fire Stone", hidden:true,  note:"Southwest lone rock"},
+      {name:"Ruby",       hidden:false, note:"Cave behind two Team Rocket Grunts (requires Strength) — needed to unlock the deeper Sevii Islands via Celio"},
     ],
     trainers:[
       {class:"Pokémon Ranger", name:"Beth",   team:[{name:"Bellsprout",level:38},{name:"Gloom",level:38},{name:"Gloom",level:38}]},
@@ -2392,6 +2395,7 @@ const AREAS = [
       {name:"Dragon Scale", hidden:false, note:"Small land mass southeast of Aspear Berry (requires Surf)"},
       {name:"Oran Berry",   hidden:true,  note:"Northwest of northern house (requires Surf)"},
       {name:"Elixir",       hidden:false, note:"Small land east of southern house (requires Surf)"},
+      {name:"Nest Ball",   hidden:false, optional:true, note:"From the woman in the northern house for showing a record-breaking Heracross (requires Surf, repeatable)"},
     ],
     trainers:[
       {class:"Juggler",    name:"Edward",   team:[{name:"Voltorb",level:46},{name:"Voltorb",level:46},{name:"Electrode",level:47},{name:"Mr. Mime",level:48}]},
@@ -2647,7 +2651,7 @@ const AREAS = [
     ] },
 
   { part:"Part 19", id:"lost-cave", name:"Lost Cave",
-    note:"Fourteen-room maze cave south of Resort Gorgeous on Five Island. Navigate through the rooms to find Lady Selphy. Ghost-type Pokémon throughout. Murkrow appears in FireRed; Misdreavus in LeafGreen.",
+    note:"Fourteen-room maze cave south of Resort Gorgeous on Five Island. Navigate through the rooms to find Lady Selphy — five items are hidden along the paths. The Silk Scarf requires a second visit (first visit triggers the Selphy battle). Ghost-type Pokémon throughout. Murkrow appears in FireRed; Misdreavus in LeafGreen.",
     pokemon:[
       {name:"Gastly",     method:"Cave", levels:"25–35", rate:"35%"},
       {name:"Zubat",      method:"Cave", levels:"25–35", rate:"25%"},
@@ -2656,7 +2660,13 @@ const AREAS = [
       {name:"Murkrow",    method:"Cave", levels:"28–32", rate:"5%",  frOnly:true},
       {name:"Misdreavus", method:"Cave", levels:"23–27", rate:"5%",  lgOnly:true},
     ],
-    items:[],
+    items:[
+      {name:"Lax Incense", hidden:false, note:"East → south"},
+      {name:"Sea Incense",  hidden:false, note:"East → north → south → north"},
+      {name:"Max Revive",   hidden:false, note:"East → north → south → south → east → east"},
+      {name:"Rare Candy",   hidden:false, note:"East → north → south → south → east → west → south → west"},
+      {name:"Silk Scarf",   hidden:false, note:"East → north → south → south → east → west → south → east → north (second visit)"},
+    ],
     trainers:[] },
 
   { part:"Part 19", id:"seven-island", name:"Seven Island",
@@ -2732,7 +2742,9 @@ const AREAS = [
     pokemon:[
       {name:"Unown", method:"Cave", levels:"25", rate:"1–99%", note:"All 26 letter forms + ! distributed across the seven chambers"},
     ],
-    items:[],
+    items:[
+      {name:"Heart Scale", hidden:true, recurring:true, note:"×4 — hidden on rocks around the exterior of the ruins chambers (requires Surf)"},
+    ],
     trainers:[] },
 
   { part:"Part 19", id:"trainer-tower", name:"Trainer Tower",
