@@ -5148,17 +5148,19 @@ function TypeChartTab({ isMobile }) {
                   <th key={def} onClick={() => toggleCol(def)}
                     style={{ width:CELL, minWidth:CELL, padding:0, cursor:"pointer" }}>
                     <div style={{
-                      writingMode:"vertical-rl", textOrientation:"mixed",
-                      transform:"rotate(180deg)",
-                      fontSize:8, fontWeight:"700",
-                      color: isHL ? "#fff" : tc,
-                      padding:"4px 2px", height:isMobile ? 52 : 62,
+                      height: isMobile ? 52 : 62,
                       display:"flex", alignItems:"center", justifyContent:"center",
                       background: isHL ? tc : `${tc}28`,
                       borderRadius:"4px 4px 0 0",
                       transition:"color 0.15s, background 0.15s",
                       outline: isHL ? `2px solid ${tc}` : "none",
-                    }}>{def}</div>
+                      overflow:"hidden",
+                    }}>
+                      <div style={{ display:"flex", alignItems:"center", gap:3, transform:"rotate(-90deg)", whiteSpace:"nowrap" }}>
+                        <span style={{ display:"inline-block", width:6, height:6, borderRadius:1, background: isHL ? "#fff" : tc, flexShrink:0 }} />
+                        <span style={{ fontSize:8, fontWeight:"700", color: isHL ? "#fff" : tc }}>{def}</span>
+                      </div>
+                    </div>
                   </th>
                 );
               })}
