@@ -353,7 +353,7 @@ const AREAS = [
     ],
     trainers:[
       {class:"Bug Catcher",      name:"Cale",  team:[{name:"Caterpie",level:10},{name:"Weedle", level:10},{name:"Metapod",level:10},{name:"Kakuna",level:10}]},
-      {class:"Lass",             name:"Ali",   team:[{name:"Pidgey",  level:12},{name:"Oddish", level:12}]},
+      {class:"Lass",             name:"Ali",   team:[{name:"Pidgey",  level:12},{name:"Oddish", level:12},{name:"Bellsprout",level:12}]},
       {class:"Youngster",        name:"Timmy", team:[{name:"Sandshrew",level:14},{name:"Ekans",  level:14}]},
       {class:"Lass",             name:"Reli",  team:[{name:"Nidoran♂",level:16},{name:"Nidoran♀",level:16}]},
       {class:"Camper",           name:"Ethan", team:[{name:"Mankey",  level:18}]},
@@ -1259,7 +1259,7 @@ const AREAS = [
     ],
     items:[],
     trainers:[
-      {class:"Bird Keeper",name:"Jacob", team:[{name:"Spearow",level:26},{name:"Spearow",level:26},{name:"Fearow", level:26}]},
+      {class:"Bird Keeper",name:"Jacob", team:[{name:"Spearow",level:26},{name:"Spearow",level:26},{name:"Spearow",level:26},{name:"Fearow", level:26}]},
       {class:"Bird Keeper",name:"Wilton",team:[{name:"Spearow",level:29},{name:"Fearow", level:29}]},
       {class:"Bird Keeper",name:"Ramiro",team:[{name:"Dodrio", level:34}]},
     ] },
@@ -1406,7 +1406,7 @@ const AREAS = [
           {class:"Scientist",        name:"Joshua",   team:[{name:"Electrode",level:29},{name:"Muk",level:29}]},
           {class:"Team Rocket Grunt",name:"Grunt 12", team:[{name:"Sandshrew",level:29},{name:"Sandslash",level:29}]},
           {class:"Rival",            name:"Blue",     note:"NW room. Team varies by starter — shown here for Bulbasaur start.",
-            team:[{name:"Pidgeot",level:37},{name:"Exeggcute",level:38},{name:"Gyarados",level:35},{name:"Alakazam",level:35}]},
+            team:[{name:"Pidgeot",level:37},{name:"Exeggcute",level:38},{name:"Gyarados",level:35},{name:"Alakazam",level:35},{name:"Charizard",level:40}]},
         ]},
       { label:"8F",
         pokemon:[],
@@ -1930,6 +1930,8 @@ const AREAS = [
       {class:"Pokémon Ranger", name:"Beth",   team:[{name:"Bellsprout",level:38},{name:"Gloom",level:38},{name:"Gloom",level:38}]},
       {class:"Crush Girl",     name:"Jocelyn",team:[{name:"Hitmonchan",level:38},{name:"Hitmonchan",level:38}]},
       {class:"Pokémon Ranger", name:"Logan",  team:[{name:"Exeggcute",level:37},{name:"Exeggutor",level:40}]},
+      {class:"Team Rocket Grunt",name:"Grunt 1",note:"Guards the Ruby cave — must be defeated to proceed.",team:[{name:"Cubone",level:37},{name:"Marowak",level:37}]},
+      {class:"Team Rocket Grunt",name:"Grunt 2",note:"Guards the Ruby cave — must be defeated to proceed.",team:[{name:"Rattata",level:35},{name:"Raticate",level:35},{name:"Sandshrew",level:35},{name:"Sandslash",level:35}]},
     ]},
 
   { part:"Part 14", id:"two-island", name:"Two Island",
@@ -2250,7 +2252,7 @@ const AREAS = [
           {name:"TM50 Overheat",hidden:false, note:"Northwest area"},
         ],
         trainers:[
-          {class:"Cooltrainer",name:"Colby",    team:[{name:"Kingler",   level:41},{name:"Poliwhirl",level:41},{name:"Tentacruel",level:41},{name:"Seadra",   level:41},{name:"Blastoise",level:43}]},
+          {class:"Cooltrainer",name:"Colby",    team:[{name:"Kingler",   level:41},{name:"Poliwhirl",level:42},{name:"Tentacruel",level:42},{name:"Seadra",   level:42},{name:"Blastoise",level:43}]},
           {class:"Cooltrainer",name:"Caroline", team:[{name:"Bellsprout",level:42},{name:"Weepinbell",level:42},{name:"Victreebel",level:42},{name:"Paras",    level:42},{name:"Parasect", level:42}]},
           {class:"Cool Couple",name:"Ray & Tyra",team:[{name:"Nidoking", level:45},{name:"Nidoqueen",level:45}]},
         ]},
@@ -2289,7 +2291,7 @@ const AREAS = [
       {class:"Black Belt",  name:"Kiyo",    team:[{name:"Machoke",  level:43}]},
       {class:"Cooltrainer", name:"Samuel",  team:[{name:"Sandslash",level:37},{name:"Sandslash",level:37},{name:"Rhyhorn",  level:38},{name:"Nidorino",level:39},{name:"Nidoking", level:39}]},
       {class:"Cooltrainer", name:"Yuji",    team:[{name:"Sandslash",level:38},{name:"Graveler", level:38},{name:"Onix",     level:38},{name:"Graveler", level:38},{name:"Marowak",  level:38}]},
-      {class:"Black Belt",  name:"Atsushi", team:[{name:"Machop",   level:40},{name:"Machoke",  level:40},{name:"Machoke",  level:40}]},
+      {class:"Black Belt",  name:"Atsushi", team:[{name:"Machop",   level:40},{name:"Machoke",  level:40}]},
       {class:"Tamer",       name:"Jason",   team:[{name:"Rhyhorn",  level:43}]},
       {class:"Cooltrainer", name:"Warren",  team:[{name:"Marowak",  level:37},{name:"Marowak",  level:37},{name:"Rhyhorn",  level:38},{name:"Nidorina", level:39},{name:"Nidoqueen",level:39}]},
       {class:"Black Belt",  name:"Takashi", team:[{name:"Machoke",  level:38},{name:"Machop",   level:38},{name:"Machoke",  level:38}]},
@@ -2674,6 +2676,7 @@ const AREAS = [
       {class:"Painter",   name:"Celina",  team:[{name:"Smeargle",level:50}]},
       {class:"Lady",      name:"Gillian", team:[{name:"Mareep",level:47},{name:"Mareep",level:48},{name:"Flaaffy",level:49}]},
       {class:"Youngster", name:"Destin",  team:[{name:"Raticate",level:48},{name:"Pidgeotto",level:48}]},
+      {class:"Painter",   name:"Daisy",   team:[{name:"Smeargle",level:50}]},
       {class:"Swimmer♂",  name:"Toby",   team:[{name:"Poliwhirl",level:48},{name:"Tentacool",level:48},{name:"Tentacruel",level:48}]},
     ] },
 
@@ -2694,7 +2697,11 @@ const AREAS = [
       {name:"Rare Candy",   hidden:false, note:"East → north → south → south → east → west → south → west"},
       {name:"Silk Scarf",   hidden:false, note:"East → north → south → south → east → west → south → east → north (second visit)"},
     ],
-    trainers:[] },
+    trainers:[
+      {class:"Ruin Maniac", name:"Lawson", note:"Near the cave entrance.", team:[{name:"Onix",level:47},{name:"Graveler",level:48},{name:"Marowak",level:49}]},
+      {class:"Psychic",     name:"Laura",  team:[{name:"Natu",level:48},{name:"Natu",level:48},{name:"Xatu",level:49}]},
+      {class:"Lady",        name:"Selphy", note:"Find her in the tenth room and escort her back to Resort Gorgeous.", team:[{name:"Persian",level:49},{name:"Persian",level:49}]},
+    ] },
 
   { part:"Part 19", id:"seven-island", name:"Seven Island",
     note:"Navel Rock Island — hub for Seven Island. Sevault Canyon, Tanoby Key, and Trainer Tower are all accessed from here.",
@@ -2897,11 +2904,11 @@ const AREAS = [
       {class:"Elite Four",name:"Lance",  note:"Dragon-type specialist — Round 2",
         team:[{name:"Gyarados",level:68},{name:"Dragonite",level:66},{name:"Kingdra",level:66},{name:"Aerodactyl",level:70},{name:"Dragonite",level:72}]},
       {class:"Rival",name:"Blue",note:"Champion Round 2 — vs Bulbasaur starter",
-        team:[{name:"Heracross",level:72},{name:"Alakazam",level:73},{name:"Tyranitar",level:72},{name:"Exeggutor",level:72},{name:"Gyarados",level:72},{name:"Charizard",level:75}]},
+        team:[{name:"Heracross",level:72},{name:"Alakazam",level:73},{name:"Tyranitar",level:72},{name:"Exeggutor",level:73},{name:"Gyarados",level:73},{name:"Charizard",level:75}]},
       {class:"Rival",name:"Blue",note:"Champion Round 2 — vs Charmander starter",
-        team:[{name:"Heracross",level:72},{name:"Alakazam",level:73},{name:"Tyranitar",level:72},{name:"Exeggutor",level:72},{name:"Gyarados",level:72},{name:"Blastoise",level:75}]},
+        team:[{name:"Heracross",level:72},{name:"Alakazam",level:73},{name:"Tyranitar",level:72},{name:"Arcanine",level:73},{name:"Exeggutor",level:73},{name:"Blastoise",level:75}]},
       {class:"Rival",name:"Blue",note:"Champion Round 2 — vs Squirtle starter",
-        team:[{name:"Heracross",level:72},{name:"Alakazam",level:73},{name:"Tyranitar",level:72},{name:"Exeggutor",level:72},{name:"Gyarados",level:72},{name:"Venusaur",level:75}]},
+        team:[{name:"Heracross",level:72},{name:"Alakazam",level:73},{name:"Tyranitar",level:72},{name:"Gyarados",level:73},{name:"Arcanine",level:73},{name:"Venusaur",level:75}]},
     ] },
 
 ];
@@ -3822,6 +3829,44 @@ const MAP_CONNECTIONS = [
   ["route9","cerulean-city"],
 ];
 
+// ─── TYPE CHART (Gen III — FireRed / LeafGreen) ───────────────────────────────
+const TYPE_COLORS = {
+  Normal:"#A8A878",Fire:"#F08030",Water:"#6890F0",Electric:"#F8D030",
+  Grass:"#78C850",Ice:"#98D8D8",Fighting:"#C03028",Poison:"#A040A0",
+  Ground:"#E0C068",Flying:"#A890F0",Psychic:"#F85888",Bug:"#A8B820",
+  Rock:"#B8A038",Ghost:"#705898",Dragon:"#7038F8",Dark:"#705848",Steel:"#B8B8D0",
+};
+const TYPES_17 = ["Normal","Fire","Water","Electric","Grass","Ice","Fighting","Poison","Ground","Flying","Psychic","Bug","Rock","Ghost","Dragon","Dark","Steel"];
+// TYPE_CHART[attacking][defending] = multiplier — only non-1× entries stored
+const TYPE_CHART = {
+  Normal:   {Ghost:0,  Rock:0.5, Steel:0.5},
+  Fire:     {Fire:0.5, Water:0.5,Rock:0.5, Dragon:0.5,Grass:2,  Ice:2,    Bug:2,  Steel:2},
+  Water:    {Water:0.5,Grass:0.5,Dragon:0.5,             Fire:2,  Ground:2, Rock:2},
+  Electric: {Ground:0, Electric:0.5,Grass:0.5,Dragon:0.5,Water:2, Flying:2},
+  Grass:    {Fire:0.5, Grass:0.5,Poison:0.5,Flying:0.5,Bug:0.5,Dragon:0.5,Steel:0.5,Water:2,Ground:2,Rock:2},
+  Ice:      {Fire:0.5, Water:0.5,Ice:0.5,  Steel:0.5,   Grass:2, Ground:2, Flying:2,Dragon:2},
+  Fighting: {Ghost:0,  Poison:0.5,Bug:0.5,Psychic:0.5,Flying:0.5,Normal:2,Rock:2,Steel:2,Ice:2,Dark:2},
+  Poison:   {Steel:0,  Poison:0.5,Ground:0.5,Rock:0.5,Ghost:0.5, Grass:2},
+  Ground:   {Flying:0, Grass:0.5,Bug:0.5,              Fire:2,  Electric:2,Poison:2,Rock:2,Steel:2},
+  Flying:   {Electric:0.5,Rock:0.5,Steel:0.5,           Grass:2, Fighting:2,Bug:2},
+  Psychic:  {Dark:0,   Psychic:0.5,Steel:0.5,           Fighting:2,Poison:2},
+  Bug:      {Fire:0.5, Fighting:0.5,Flying:0.5,Ghost:0.5,Steel:0.5,Grass:2,Psychic:2,Dark:2},
+  Rock:     {Fighting:0.5,Ground:0.5,Steel:0.5,          Fire:2,  Ice:2,   Flying:2, Bug:2},
+  Ghost:    {Normal:0, Dark:0.5,                          Ghost:2, Psychic:2},
+  Dragon:   {Steel:0.5,                                   Dragon:2},
+  Dark:     {Fighting:0.5,Dark:0.5,Steel:0.5,             Ghost:2, Psychic:2},
+  Steel:    {Fire:0.5, Water:0.5,Electric:0.5,Steel:0.5,  Ice:2,   Rock:2},
+};
+function getDefensiveChart(types) {
+  const chart = {};
+  for (const atk of TYPES_17) {
+    let m = 1;
+    for (const def of types) { const row = TYPE_CHART[atk]||{}; m *= row[def]!==undefined ? row[def] : 1; }
+    chart[atk] = m;
+  }
+  return chart;
+}
+
 // Parts that have been fully audited against the Bulbapedia walkthrough — extend as each part is verified.
 const AUDITED_PARTS = new Set(["Part 1", "Part 2", "Part 3", "Part 4", "Part 5", "Part 6", "Part 7", "Part 8", "Part 9", "Part 10", "Part 11", "Part 12", "Part 13", "Part 14", "Part 15", "Part 16", "Part 17", "Part 18", "Part 19", "Part 20"]);
 
@@ -4573,7 +4618,7 @@ function FireRedTracker() {
 
         {/* Tabs */}
         <div style={{ display:"flex", gap:2, marginTop:10 }}>
-          {[["areas","Areas"],["dex","Pokédex"],["team","Dream Team"],["calc","Catch Calc"],["hunt","Hunt"],["tms","TMs"],["completion","100%"]].map(([t,label]) => (
+          {[["areas","Areas"],["dex","Pokédex"],["team","Dream Team"],["types","Types"],["calc","Catch Calc"],["hunt","Hunt"],["tms","TMs"],["completion","100%"]].map(([t,label]) => (
             <button key={t} onClick={() => setTab(t)} style={{
               padding:"8px 20px", border:"none", borderRadius:"6px 6px 0 0", cursor:"pointer",
               fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:13, fontWeight:"600",
@@ -4594,6 +4639,8 @@ function FireRedTracker() {
 
       {/* ── Tab: Dream Team ── */}
       {tab === "team" && <DreamTeamTab isMobile={isMobile} version={version} />}
+
+      {tab === "types" && <TypeChartTab isMobile={isMobile} />}
 
       {/* ── Tab: Catch Calc ── */}
       {tab === "calc" && <CatchCalcTab isMobile={isMobile} />}
@@ -4763,6 +4810,42 @@ function DreamTeamTab({ isMobile, version }) {
                     ⏳ {evoNote}
                   </div>
                 )}
+                {candInfo && (() => {
+                  const chart = getDefensiveChart(candInfo.types);
+                  const imm  = TYPES_17.filter(t => chart[t] === 0);
+                  const res2 = TYPES_17.filter(t => chart[t] === 0.25);
+                  const res  = TYPES_17.filter(t => chart[t] === 0.5);
+                  const weak = TYPES_17.filter(t => chart[t] === 2);
+                  const weak4= TYPES_17.filter(t => chart[t] === 4);
+                  const TypePill = ({type, bg}) => (
+                    <span style={{ fontSize:8, color:"#fff", background: bg || TYPE_COLORS[type] || "#888", padding:"1px 5px", borderRadius:3, fontWeight:"700", letterSpacing:0.3 }}>{type}</span>
+                  );
+                  return (
+                    <div style={{ display:"flex", flexDirection:"column", gap:3 }}>
+                      <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase" }}>Type Matchups</div>
+                      {weak4.length > 0 && <div style={{ display:"flex", gap:3, flexWrap:"wrap", alignItems:"center" }}>
+                        <span style={{ fontSize:9, color:"#e83030", fontWeight:"700", minWidth:22 }}>4×</span>
+                        {weak4.map(t => <TypePill key={t} type={t} bg="#c02020" />)}
+                      </div>}
+                      {weak.length > 0 && <div style={{ display:"flex", gap:3, flexWrap:"wrap", alignItems:"center" }}>
+                        <span style={{ fontSize:9, color:"#e07b3a", fontWeight:"700", minWidth:22 }}>2×</span>
+                        {weak.map(t => <TypePill key={t} type={t} />)}
+                      </div>}
+                      {res.length > 0 && <div style={{ display:"flex", gap:3, flexWrap:"wrap", alignItems:"center" }}>
+                        <span style={{ fontSize:9, color:"#4a8fc4", fontWeight:"700", minWidth:22 }}>½×</span>
+                        {res.map(t => <TypePill key={t} type={t} />)}
+                      </div>}
+                      {res2.length > 0 && <div style={{ display:"flex", gap:3, flexWrap:"wrap", alignItems:"center" }}>
+                        <span style={{ fontSize:9, color:"#4a8fc4", fontWeight:"700", minWidth:22 }}>¼×</span>
+                        {res2.map(t => <TypePill key={t} type={t} />)}
+                      </div>}
+                      {imm.length > 0 && <div style={{ display:"flex", gap:3, flexWrap:"wrap", alignItems:"center" }}>
+                        <span style={{ fontSize:9, color:"#7a5ab0", fontWeight:"700", minWidth:22 }}>0×</span>
+                        {imm.map(t => <TypePill key={t} type={t} bg="#5a3a8a" />)}
+                      </div>}
+                    </div>
+                  );
+                })()}
               </div>
             );
           })}
@@ -4774,6 +4857,117 @@ function DreamTeamTab({ isMobile, version }) {
           <div style={{ fontSize:12, maxWidth:380, lineHeight:1.8 }}>Pick your favourite and hit <strong style={{ color:C.text }}>Build Team</strong> to get a complete, HM-ready team with recommended movesets.</div>
         </div>
       )}
+    </div>
+  );
+}
+
+// ─── TYPE CHART TAB ───────────────────────────────────────────────────────────
+function TypeChartTab({ isMobile }) {
+  const [highlightCol, setHighlightCol] = useState(null);
+
+  const cellColor = (m) => {
+    if (m === 0)    return { bg:"#3a1a6a", text:"#a07acc" };
+    if (m === 0.25) return { bg:"#0e2c4a", text:"#4a8fc4" };
+    if (m === 0.5)  return { bg:"#0a2040", text:"#5aa0d8" };
+    if (m === 2)    return { bg:"#4a2200", text:"#e07b3a" };
+    if (m === 4)    return { bg:"#5a0000", text:"#e83030" };
+    return { bg:"transparent", text:"#444" };
+  };
+
+  const cellLabel = (m) => {
+    if (m === 0)    return "0";
+    if (m === 0.25) return "¼";
+    if (m === 0.5)  return "½";
+    if (m === 2)    return "2";
+    if (m === 4)    return "4";
+    return "·";
+  };
+
+  const CELL = 28;
+  const LABEL_W = isMobile ? 52 : 62;
+
+  return (
+    <div style={{ padding: isMobile ? "12px 8px" : "20px 24px", color: C.text, fontFamily:"inherit" }}>
+      <div style={{ marginBottom:12 }}>
+        <div style={{ fontSize:15, fontWeight:"700", marginBottom:2 }}>Gen III Type Chart</div>
+        <div style={{ fontSize:11, color:C.muted }}>Rows = attacking type · Columns = defending type · Click a column to highlight</div>
+      </div>
+      <div style={{ overflowX:"auto", WebkitOverflowScrolling:"touch" }}>
+        <table style={{ borderCollapse:"separate", borderSpacing:2, minWidth: LABEL_W + TYPES_17.length * (CELL+2) }}>
+          <thead>
+            <tr>
+              <th style={{ width:LABEL_W, minWidth:LABEL_W }} />
+              {TYPES_17.map(def => (
+                <th key={def} onClick={() => setHighlightCol(highlightCol === def ? null : def)}
+                  style={{ width:CELL, minWidth:CELL, padding:0, cursor:"pointer" }}>
+                  <div style={{
+                    writingMode:"vertical-rl", textOrientation:"mixed",
+                    transform:"rotate(180deg)",
+                    fontSize:8, fontWeight:"700", color: highlightCol === def ? "var(--frlg-accent)" : C.muted,
+                    padding:"4px 2px", height:isMobile ? 52 : 62, display:"flex", alignItems:"center", justifyContent:"center",
+                    background: highlightCol === def ? "rgba(var(--frlg-accent-rgb,212,98,26),0.10)" : "transparent",
+                    borderRadius:"4px 4px 0 0",
+                    transition:"color 0.15s, background 0.15s",
+                  }}>{def}</div>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {TYPES_17.map(atk => {
+              const row = TYPE_CHART[atk] || {};
+              return (
+                <tr key={atk}>
+                  <td style={{ paddingRight:4, paddingLeft:2 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:4, height:CELL }}>
+                      <span style={{ display:"inline-block", width:8, height:8, borderRadius:2, background:TYPE_COLORS[atk]||"#888", flexShrink:0 }} />
+                      <span style={{ fontSize:9, fontWeight:"700", color:C.text, whiteSpace:"nowrap" }}>{atk}</span>
+                    </div>
+                  </td>
+                  {TYPES_17.map(def => {
+                    const m = row[def] !== undefined ? row[def] : 1;
+                    const { bg, text } = cellColor(m);
+                    const isHighlight = highlightCol === def;
+                    return (
+                      <td key={def} onClick={() => setHighlightCol(highlightCol === def ? null : def)}
+                        style={{
+                          width:CELL, height:CELL, padding:0, textAlign:"center",
+                          background: isHighlight
+                            ? (m !== 1 ? bg : "rgba(var(--frlg-accent-rgb,212,98,26),0.07)")
+                            : bg,
+                          borderRadius:3, cursor:"pointer",
+                          outline: isHighlight ? "1px solid rgba(var(--frlg-accent-rgb,212,98,26),0.4)" : "none",
+                          transition:"background 0.1s",
+                        }}>
+                        <span style={{ fontSize:9, fontWeight: m !== 1 ? "700" : "400", color: m !== 1 ? text : "#333" }}>
+                          {cellLabel(m)}
+                        </span>
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div style={{ marginTop:14, display:"flex", flexWrap:"wrap", gap:10 }}>
+        {[
+          { bg:"#5a0000", text:"#e83030", label:"4× (super effective ×2)" },
+          { bg:"#4a2200", text:"#e07b3a", label:"2× (super effective)" },
+          { bg:"transparent", text:"#666",   label:"1× (neutral)" },
+          { bg:"#0a2040", text:"#5aa0d8", label:"½× (not very effective)" },
+          { bg:"#0e2c4a", text:"#4a8fc4", label:"¼× (not very effective ×2)" },
+          { bg:"#3a1a6a", text:"#a07acc", label:"0× (no effect)" },
+        ].map(({ bg, text, label }) => (
+          <div key={label} style={{ display:"flex", alignItems:"center", gap:5 }}>
+            <div style={{ width:18, height:18, background:bg, border:"1px solid rgba(255,255,255,0.08)", borderRadius:3, display:"flex", alignItems:"center", justifyContent:"center" }}>
+              <span style={{ fontSize:8, fontWeight:"700", color:text }}>·</span>
+            </div>
+            <span style={{ fontSize:10, color:C.muted }}>{label}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
