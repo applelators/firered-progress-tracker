@@ -4714,10 +4714,10 @@ function FireRedTracker() {
         <GymBadgeStrip earned={badges} toggleBadge={toggleBadge} />
 
         {/* Tabs */}
-        <div style={{ display:"flex", gap:2, marginTop:10 }}>
+        <div style={{ display:"flex", gap:2, marginTop:10, overflowX:"auto", WebkitOverflowScrolling:"touch", flexWrap:"nowrap" }}>
           {[["areas","Areas"],["dex","Pokédex"],["team","Team"],["types","Types"],["calc","Catch"],["hunt","Hunt"],["tms","TMs"],["completion","100%"]].map(([t,label]) => (
             <button key={t} onClick={() => setTab(t)} style={{
-              padding:"8px 20px", border:"none", borderRadius:"6px 6px 0 0", cursor:"pointer",
+              padding: isMobile ? "7px 12px" : "8px 20px", border:"none", borderRadius:"6px 6px 0 0", cursor:"pointer", flexShrink:0,
               fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:13, fontWeight:"600",
               background: tab===t ? C.bg : "transparent",
               color: tab===t ? C.text : C.muted,
@@ -5132,7 +5132,7 @@ function TypeChartTab({ isMobile }) {
   return (
     <div style={{ padding: isMobile ? "12px 8px" : "20px 24px", color: C.text, fontFamily:"inherit" }}>
       <div style={{ overflowX:"auto", WebkitOverflowScrolling:"touch", marginBottom:16 }}>
-        <table style={{ borderCollapse:"separate", borderSpacing:2, minWidth: LABEL_W + TYPES_17.length * (CELL+2) }}>
+        <table style={{ borderCollapse:"separate", borderSpacing:2, tableLayout:"fixed", minWidth: LABEL_W + TYPES_17.length * (CELL+2) }}>
           <thead>
             <tr>
               {/* corner cell — mode hint */}
