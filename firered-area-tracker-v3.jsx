@@ -5129,10 +5129,11 @@ function TypeChartTab({ isMobile }) {
     );
   };
 
+  const tableW = LABEL_W + TYPES_17.length * (CELL + 2);
   return (
-    <div style={{ padding: isMobile ? "12px 8px" : "20px 24px", color: C.text, fontFamily:"inherit" }}>
+    <div style={{ flex:1, overflowY:"auto", padding: isMobile ? "12px 8px" : "20px 24px", color: C.text, fontFamily:"inherit" }}>
       <div style={{ overflowX:"auto", WebkitOverflowScrolling:"touch", marginBottom:16 }}>
-        <table style={{ borderCollapse:"separate", borderSpacing:2, tableLayout:"fixed", minWidth: LABEL_W + TYPES_17.length * (CELL+2) }}>
+        <table style={{ borderCollapse:"separate", borderSpacing:2, tableLayout:"fixed", width:tableW, minWidth:tableW }}>
           <thead>
             <tr>
               {/* corner cell — mode hint */}
