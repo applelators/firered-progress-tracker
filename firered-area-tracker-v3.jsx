@@ -4288,7 +4288,22 @@ function FireRedTracker() {
       try { const r = localStorage.getItem("frlg-badges");     if (r) setBadges(JSON.parse(r));       } catch {}
       try { const r = localStorage.getItem("frlg-checklist"); if (r) setChecklist(JSON.parse(r));    } catch {}
       try { const r = localStorage.getItem("frlg-choices");   if (r) setChoiceGroups(JSON.parse(r)); } catch {}
-      try { const r = localStorage.getItem("frlg-tms");       if (r) setTmState(JSON.parse(r));      } catch {}
+      try {
+        const savedItems = JSON.parse(localStorage.getItem("fr-items5") || "{}");
+        const savedTms   = JSON.parse(localStorage.getItem("frlg-tms")  || "{}");
+        let changed = false;
+        AREAS.forEach(area => {
+          const sync = (its, keyFn) => its.forEach((it, i) => {
+            const m = it.name.match(/^(TM\d{2}|HM\d{2})\b/);
+            if (!m) return;
+            if (savedItems[keyFn(i)] && !savedTms[m[1]]) { savedTms[m[1]] = true; changed = true; }
+          });
+          if (area.floors) area.floors.forEach(f => sync(f.items||[], i => `${area.id}|${f.label}|${i}`));
+          else sync(area.items||[], i => `${area.id}|${i}`);
+        });
+        if (changed) localStorage.setItem("frlg-tms", JSON.stringify(savedTms));
+        setTmState(savedTms);
+      } catch {}
 
       setBooted(true);
     })();
