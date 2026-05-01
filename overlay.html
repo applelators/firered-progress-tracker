@@ -86,6 +86,10 @@
       const m     = raw && raw.match(/^(\d+(?:\.\d+)?)%/);
       return m ? parseFloat(m[1]) : 0;
     }
+    function versionRate(p, ver) {
+      const split = p.rate && p.rate.match(/^(\S+)\s+FR\s*\/\s*(\S+)\s+LG$/i);
+      return split ? (ver === "fr" ? split[1] : split[2]) : p.rate;
+    }
     function sortByRate(pokemon, ver) {
       const out = [];
       let i = 0;
@@ -271,7 +275,7 @@
                     {p.method}
                   </span>
                   <span style={{ fontSize:9, color: T.textMuted, flexShrink:0, whiteSpace:"nowrap" }}>
-                    {p.levels && `Lv.${p.levels}`}{p.rate && ` · ${p.rate}`}
+                    {versionRate(p, version)}
                   </span>
                 </div>
               );
