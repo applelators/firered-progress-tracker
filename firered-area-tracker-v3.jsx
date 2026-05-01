@@ -4428,6 +4428,14 @@ function FireRedTracker() {
         return next;
       });
     }
+    if (!wasChecked && meta?.tmId) {
+      setTmState(prev => {
+        if (prev[meta.tmId]) return prev;
+        const next = { ...prev, [meta.tmId]: true };
+        try { localStorage.setItem("frlg-tms", JSON.stringify(next)); } catch {}
+        return next;
+      });
+    }
   }, [items]);
 
   const toggleTrainer = useCallback((key) => {
@@ -5706,7 +5714,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
   // Mark-all helpers (skip passed choice-group entries)
   const markAllPokemon  = (poks) => { const seen = new Set(); poks.forEach(p => { if (seen.has(p.name)) return; seen.add(p.name); if (!caught[p.name] && !isPassedPokemon(p)) toggleCaught(p.name, p.choiceGroup ? {choiceGroup:p.choiceGroup, choiceId:p.choiceId} : undefined); }); };
   const clearAllPokemon = (poks) => { const seen = new Set(); poks.forEach(p => { if (seen.has(p.name)) return; seen.add(p.name); if (caught[p.name]  && !isPassedPokemon(p)) toggleCaught(p.name, p.choiceGroup ? {choiceGroup:p.choiceGroup, choiceId:p.choiceId} : undefined); }); };
-  const markAllItems    = (its, keyFn) => its.forEach((it, i) => { if (isPassedItem(it)) return; const k = keyFn(it, i); if (!items[k]) toggleItem(k, it.choiceGroup ? {choiceGroup:it.choiceGroup, choiceId:it.choiceId} : undefined); });
+  const markAllItems    = (its, keyFn) => its.forEach((it, i) => { if (isPassedItem(it)) return; const k = keyFn(it, i); const tmM = it.name.match(/^(TM\d{2}|HM\d{2})\b/); const tmId = tmM ? tmM[1] : undefined; if (!items[k]) toggleItem(k, { ...(it.choiceGroup ? {choiceGroup:it.choiceGroup, choiceId:it.choiceId} : {}), ...(tmId ? {tmId} : {}) }); });
   const clearAllItems   = (its, keyFn) => its.forEach((it, i) => { if (isPassedItem(it)) return; const k = keyFn(it, i); if (items[k])  toggleItem(k, it.choiceGroup ? {choiceGroup:it.choiceGroup, choiceId:it.choiceId} : undefined); });
   const markAllTrainers = (trns) => trns.forEach(t => { const k = `${areaId}|${t.class}|${t.name}`; if (!trainers[k]) toggleTrainer(k); });
   const clearAllTrainers = (trns) => trns.forEach(t => { const k = `${areaId}|${t.class}|${t.name}`; if (trainers[k]) toggleTrainer(k); });
@@ -6078,7 +6086,7 @@ function ItemEntry({ it, itemKey, done, toggleItem, isMobile, choiceGroups }) {
 
   return (
     <>
-      <Row done={done} passed={isPassed} onClick={isPassed ? undefined : () => toggleItem(itemKey, it.choiceGroup ? {choiceGroup:it.choiceGroup, choiceId:it.choiceId} : undefined)}>
+      <Row done={done} passed={isPassed} onClick={isPassed ? undefined : () => { const tmM = it.name.match(/^(TM\d{2}|HM\d{2})\b/); const tmId = tmM ? tmM[1] : undefined; toggleItem(itemKey, { ...(it.choiceGroup ? {choiceGroup:it.choiceGroup, choiceId:it.choiceId} : {}), ...(tmId ? {tmId} : {}) }); }}>
         {itemSpriteUrl(it.name)&&<img src={itemSpriteUrl(it.name)} alt={it.name} style={{ width:24, height:24, imageRendering:"pixelated", flexShrink:0 }} />}
         <div style={{ flex:1 }}>
           <span style={{ fontSize:12, fontWeight:"600", color:it.hidden?C.gold:C.text }}>
