@@ -156,12 +156,13 @@
         placeholderBg:"rgba(58,42,28,0.4)",
       };
 
-      const [ready,    setReady]    = React.useState(false);
-      const [areaId,   setAreaId]   = React.useState(null);
-      const [version,  setVersion]  = React.useState("fr");
-      const [caught,   setCaught]   = React.useState({});
-      const [items,    setItems]    = React.useState({});
-      const [trainers, setTrainers] = React.useState({});
+      const [ready,           setReady]           = React.useState(false);
+      const [areaId,          setAreaId]          = React.useState(null);
+      const [version,         setVersion]         = React.useState("fr");
+      const [caught,          setCaught]          = React.useState({});
+      const [items,           setItems]           = React.useState({});
+      const [trainers,        setTrainers]        = React.useState({});
+      const [collapsedFloors, setCollapsedFloors] = React.useState({});
 
       // Poll localStorage for live state
       React.useEffect(() => {
@@ -172,11 +173,13 @@
             const c   = localStorage.getItem("fr-caught5");
             const it  = localStorage.getItem("fr-items5");
             const tr  = localStorage.getItem("fr-trainers1");
+            const cf  = localStorage.getItem("frlg-collapsed-floors");
             if (aid) setAreaId(aid);
             if (ver) setVersion(ver);
             if (c)   setCaught(JSON.parse(c));
             if (it)  setItems(JSON.parse(it));
             if (tr)  setTrainers(JSON.parse(tr));
+            if (cf)  setCollapsedFloors(JSON.parse(cf)); else setCollapsedFloors({});
           } catch {}
         }
         poll();
@@ -247,6 +250,7 @@
 
         const rows = [];
         floors.forEach(({ label, pokemon }, fi) => {
+          if (label && collapsedFloors[`${areaId}|${label}`]) return;
           const visible = sortByRate(
             pokemon.filter(p => !((p.frOnly && version === "lg") || (p.lgOnly && version === "fr"))),
             version
@@ -376,6 +380,7 @@
         const rows = [];
         let lastFloor = undefined;
         entries.forEach(({ entry, floorLabel, idx }, i) => {
+          if (floorLabel && collapsedFloors[`${areaId}|${floorLabel}`]) return;
           if (floorLabel !== lastFloor) {
             if (floorLabel) rows.push({ type:"floor", label:floorLabel, isFirst: rows.length === 0 });
             lastFloor = floorLabel;
@@ -449,6 +454,7 @@
         const rows = [];
         let lastFloor = undefined;
         entries.forEach(({ trainer, floorLabel }, i) => {
+          if (floorLabel && collapsedFloors[`${areaId}|${floorLabel}`]) return;
           if (floorLabel !== lastFloor) {
             if (floorLabel) rows.push({ type:"floor", label:floorLabel, isFirst: rows.length === 0 });
             lastFloor = floorLabel;

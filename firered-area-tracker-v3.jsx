@@ -5669,8 +5669,15 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
   const visibleAreas = useMemo(() => AREAS.filter(a => AUDITED_PARTS.has(a.part)), []);
   const groups = useMemo(() => groupByPart(visibleAreas), [visibleAreas]);
   const filtered = useMemo(() => search.trim() ? visibleAreas.filter(a => a.name.toLowerCase().includes(search.toLowerCase())) : null, [search, visibleAreas]);
-  const [collapsedFloors, setCollapsedFloors] = useState(new Set());
-  const toggleFloor = (key) => setCollapsedFloors(prev => { const n = new Set(prev); n.has(key) ? n.delete(key) : n.add(key); return n; });
+  const [collapsedFloors, setCollapsedFloors] = useState(() => {
+    try { const r = localStorage.getItem("frlg-collapsed-floors"); return r ? new Set(Object.keys(JSON.parse(r))) : new Set(); } catch { return new Set(); }
+  });
+  const toggleFloor = (key) => setCollapsedFloors(prev => {
+    const n = new Set(prev);
+    n.has(key) ? n.delete(key) : n.add(key);
+    try { const obj = {}; n.forEach(k => { obj[k] = true; }); localStorage.setItem("frlg-collapsed-floors", JSON.stringify(obj)); } catch {}
+    return n;
+  });
 
   const areaPokemon  = area ? flattenPokemon(area)  : [];
   const areaItems    = area ? flattenItems(area)    : [];
