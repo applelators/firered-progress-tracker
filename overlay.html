@@ -204,33 +204,34 @@
       // ── Wild Pokémon ───────────────────────────────────────────────────────────
       if (section === "wild") {
         const entries = flattenWild(area);
-        if (!entries.length) return null;
+        // Filter out the other version's exclusives entirely (matching main tracker behaviour)
+        const visible = entries.filter(p =>
+          !((p.frOnly && version === "lg") || (p.lgOnly && version === "fr"))
+        );
+        if (!visible.length) return null;
 
         return (
           <div style={panel}>
             <div style={sectionHeader(meta.accent)}>{meta.label}</div>
             <div style={areaLabel}>{area.name}</div>
-            {entries.map((p, i) => {
-              const isOtherVer = (p.frOnly && version === "lg") || (p.lgOnly && version === "fr");
-              const isCaught   = caught[p.name];
-              const mc         = METHOD_COLOR[p.method] || { bg:"rgba(120,100,80,0.15)", color: T.textMuted };
-              const spriteUrl  = pokeSprite(p.name);
-              const vTag       = p.frOnly ? "FR" : p.lgOnly ? "LG" : null;
+            {visible.map((p, i) => {
+              const isCaught  = caught[p.name];
+              const mc        = METHOD_COLOR[p.method] || { bg:"rgba(120,100,80,0.15)", color: T.textMuted };
+              const spriteUrl = pokeSprite(p.name);
+              const vTag      = p.frOnly ? "FR" : p.lgOnly ? "LG" : null;
 
               return (
                 <div key={i} style={{ display:"flex", alignItems:"center", gap:6, padding:"3px 0",
-                                      opacity: isOtherVer ? 0.35 : 1,
-                                      borderBottom: rowDivider(i, entries.length) }}>
+                                      borderBottom: rowDivider(i, visible.length) }}>
                   {spriteUrl
                     ? <img src={spriteUrl} alt={p.name} width={24} height={24}
-                           style={{ imageRendering:"pixelated",
-                                    filter: isCaught ? "brightness(0) opacity(0.3)" : "none",
-                                    flexShrink:0 }} />
+                           style={{ imageRendering:"pixelated", flexShrink:0,
+                                    opacity: isCaught ? 1 : 0.65,
+                                    filter:  isCaught ? "none" : "brightness(0)" }} />
                     : <div style={{ width:24, height:24, flexShrink:0 }} />
                   }
                   <span style={{ fontSize:11, flex:1, minWidth:0,
-                                 color: isCaught ? T.textMuted : T.textPrimary,
-                                 textDecoration: isCaught ? "line-through" : "none",
+                                 color: isCaught ? "#4aaf74" : T.textPrimary,
                                  whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                     {p.name}
                   </span>
