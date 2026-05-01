@@ -3279,6 +3279,7 @@ const DT_CANDIDATES = [
   {name:"Weezing",   types:["Poison"],               hms:[]},
   {name:"Kingler",   types:["Water"],                hms:["Surf","Waterfall","Cut","Strength","Rock Smash"]},
   {name:"Dodrio",    types:["Normal","Flying"],      hms:["Fly"]},
+  {name:"Dragonite", types:["Dragon","Flying"],      hms:["Fly","Surf","Strength","Waterfall"]},
   // ── FireRed exclusive ──────────────────────────────────────────────────────
   {name:"Arcanine",  types:["Fire"],                 hms:["Strength"],                  frOnly:true},
   {name:"Electabuzz",types:["Electric"],             hms:[],                            frOnly:true},
@@ -3331,6 +3332,7 @@ const DT_TM_TIPS = {
   "Tentacruel": [{move:"Sludge Bomb",src:"TM36 — Rocket Hideout B4F",oneTime:true}],
   "Hitmonchan": [{move:"Ice Punch",src:"Level 46 (level-up)"}],
   "Hitmonlee":  [{move:"Hi Jump Kick",src:"Level 41 (level-up)"}],
+  "Dragonite":  [{move:"Thunderbolt",src:"TM24 — Game Corner, Celadon City"},{move:"Ice Beam",src:"TM13 — Game Corner, Celadon City"}],
 };
 
 const DT_FINAL_FORM = {
@@ -3865,6 +3867,71 @@ function getDefensiveChart(types) {
     chart[atk] = m;
   }
   return chart;
+}
+
+const MOVE_TYPES = {
+  // HMs
+  Cut:"Normal",Fly:"Flying",Surf:"Water",Strength:"Normal",
+  "Rock Smash":"Fighting",Waterfall:"Water",Flash:"Normal",
+  // Electric
+  Thunderbolt:"Electric",Thunder:"Electric",ThunderPunch:"Electric","Thunder Wave":"Electric",
+  // Fire
+  Flamethrower:"Fire","Fire Blast":"Fire","Fire Punch":"Fire","Will-O-Wisp":"Fire",
+  // Water
+  "Ice Beam":"Ice",Blizzard:"Ice","Ice Punch":"Ice","Sheer Cold":"Ice",
+  // Ground
+  Earthquake:"Ground",Fissure:"Ground",
+  // Grass
+  SolarBeam:"Grass","Razor Leaf":"Grass","Vine Whip":"Grass","Petal Dance":"Grass",
+  "Giga Drain":"Grass","Sleep Powder":"Grass",Spore:"Grass","Leech Seed":"Grass",
+  // Poison
+  "Sludge Bomb":"Poison",Toxic:"Poison","Poison Fang":"Poison",
+  // Psychic
+  Psychic:"Psychic",Psybeam:"Psychic","Future Sight":"Psychic",
+  Amnesia:"Psychic",Agility:"Psychic",Hypnosis:"Psychic",
+  // Bug
+  Megahorn:"Bug","Silver Wind":"Bug",Twineedle:"Bug","Pin Missile":"Bug","Leech Life":"Bug",
+  // Rock
+  "Rock Slide":"Rock",AncientPower:"Rock",
+  // Ghost
+  "Shadow Ball":"Ghost","Confuse Ray":"Ghost",Lick:"Ghost",
+  // Dragon
+  Outrage:"Dragon","Dragon Rage":"Dragon",Twister:"Dragon","Dragon Dance":"Dragon",
+  // Dark
+  Crunch:"Dark",Pursuit:"Dark",Bite:"Dark",
+  // Steel
+  "Iron Tail":"Steel","Metal Claw":"Steel","Meteor Mash":"Steel",
+  // Fighting
+  "Brick Break":"Fighting","High Jump Kick":"Fighting","Hi Jump Kick":"Fighting",
+  "Sky Uppercut":"Fighting",Submission:"Fighting",Superpower:"Fighting",
+  "Rock Smash":"Fighting","Karate Chop":"Fighting","Low Kick":"Fighting",
+  // Normal (damaging)
+  "Hyper Beam":"Normal","Body Slam":"Normal",Thrash:"Normal","Hyper Voice":"Normal",
+  "Skull Bash":"Normal",ExtremeSpeed:"Normal","Hyper Fang":"Normal","Super Fang":"Normal",
+  Slash:"Normal","Tri Attack":"Normal","Rapid Spin":"Normal",Swift:"Normal",
+  "Wing Attack":"Flying","Drill Peck":"Flying","Air Cutter":"Flying","Aerial Ace":"Flying",
+  "Water Gun":"Water","Hydro Pump":"Water",
+  Slam:"Normal","Wrap":"Normal","Horn Drill":"Normal","Guillotine":"Normal",
+  Endeavor:"Normal","Spit Up":"Normal","Mirror Move":"Flying",
+  // Normal (status — no damage, so super-effective display is skipped)
+  "Swords Dance":"Normal","Belly Drum":"Normal",Safeguard:"Normal",Protect:"Normal",
+  "Rain Dance":"Water","Sunny Day":"Fire",Sandstorm:"Rock",
+  "Scary Face":"Normal","Focus Energy":"Normal",Softboiled:"Normal",
+  "Mean Look":"Normal","Stockpile":"Normal",Swallow:"Normal",Leer:"Normal",Growl:"Normal",
+};
+const STATUS_MOVES = new Set([
+  "Swords Dance","Amnesia","Agility","Dragon Dance","Belly Drum",
+  "Sleep Powder","Spore","Hypnosis","Toxic","Leech Seed","Protect",
+  "Rain Dance","Sunny Day","Sandstorm","Safeguard","Thunder Wave",
+  "Will-O-Wisp","Confuse Ray","Stockpile","Swallow","Softboiled",
+  "Mean Look","Scary Face","Focus Energy","Mirror Move","Flash",
+  "Leer","Growl","Tail Whip","String Shot","Disable","Encore","Glare","Screech",
+]);
+function getMoveSuper(moveName) {
+  const type = MOVE_TYPES[moveName];
+  if (!type || STATUS_MOVES.has(moveName)) return [];
+  const row = TYPE_CHART[type] || {};
+  return TYPES_17.filter(def => row[def] === 2);
 }
 
 // Parts that have been fully audited against the Bulbapedia walkthrough — extend as each part is verified.
@@ -4791,11 +4858,22 @@ function DreamTeamTab({ isMobile, version }) {
                                     : m.kind === "tm" ? C.gold
                                     : (MOVE_TIERS && MOVE_TIERS.good && MOVE_TIERS.good.has(m.move)) ? C.green
                                     : C.text;
+                    const superEff = getMoveSuper(m.move);
                     return (
-                      <div key={i} style={{ display:"flex", alignItems:"baseline", gap:6, marginBottom:3 }}>
-                        <span style={{ fontSize:11, fontWeight:"600", minWidth:0, color:moveColor }}>{m.move}</span>
-                        <span style={{ fontSize:9, color:C.muted, flex:1, lineHeight:1.4 }}>{m.src}</span>
-                        {isOneTime && <span style={{ fontSize:8, color:"#e8a020", background:"rgba(232,160,32,0.12)", border:"1px solid rgba(232,160,32,0.3)", borderRadius:3, padding:"0 4px", flexShrink:0, whiteSpace:"nowrap" }}>1× only</span>}
+                      <div key={i} style={{ marginBottom:4 }}>
+                        <div style={{ display:"flex", alignItems:"baseline", gap:6 }}>
+                          <span style={{ fontSize:11, fontWeight:"600", minWidth:0, color:moveColor }}>{m.move}</span>
+                          <span style={{ fontSize:9, color:C.muted, flex:1, lineHeight:1.4 }}>{m.src}</span>
+                          {isOneTime && <span style={{ fontSize:8, color:"#e8a020", background:"rgba(232,160,32,0.12)", border:"1px solid rgba(232,160,32,0.3)", borderRadius:3, padding:"0 4px", flexShrink:0, whiteSpace:"nowrap" }}>1× only</span>}
+                        </div>
+                        {superEff.length > 0 && (
+                          <div style={{ display:"flex", gap:3, flexWrap:"wrap", marginTop:2, paddingLeft:0 }}>
+                            <span style={{ fontSize:8, color:C.muted }}>2× vs</span>
+                            {superEff.map(t => (
+                              <span key={t} style={{ fontSize:8, fontWeight:"700", color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"0 4px", borderRadius:2 }}>{t}</span>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     );
                   })}
@@ -4822,7 +4900,7 @@ function DreamTeamTab({ isMobile, version }) {
                   );
                   return (
                     <div style={{ display:"flex", flexDirection:"column", gap:3 }}>
-                      <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase" }}>Type Matchups</div>
+                      <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase" }}>Weak against</div>
                       {weak4.length > 0 && <div style={{ display:"flex", gap:3, flexWrap:"wrap", alignItems:"center" }}>
                         <span style={{ fontSize:9, color:"#e83030", fontWeight:"700", minWidth:22 }}>4×</span>
                         {weak4.map(t => <TypePill key={t} type={t} bg="#c02020" />)}
