@@ -4863,9 +4863,12 @@ function DreamTeamTab({ isMobile, version }) {
 
 // ─── TYPE CHART TAB ───────────────────────────────────────────────────────────
 function TypeChartTab({ isMobile }) {
+  const [view,         setView]         = useState("calc");
   const [highlightCol, setHighlightCol] = useState(null);
+  const [calcTypes,    setCalcTypes]    = useState([]);
+  const [calcMode,     setCalcMode]     = useState("defend");
 
-  const cellColor = (m) => {
+  const cellBg = (m) => {
     if (m === 0)    return { bg:"#3a1a6a", text:"#a07acc" };
     if (m === 0.25) return { bg:"#0e2c4a", text:"#4a8fc4" };
     if (m === 0.5)  return { bg:"#0a2040", text:"#5aa0d8" };
@@ -4873,7 +4876,6 @@ function TypeChartTab({ isMobile }) {
     if (m === 4)    return { bg:"#5a0000", text:"#e83030" };
     return { bg:"transparent", text:"#444" };
   };
-
   const cellLabel = (m) => {
     if (m === 0)    return "0";
     if (m === 0.25) return "¼";
@@ -4886,88 +4888,271 @@ function TypeChartTab({ isMobile }) {
   const CELL = 28;
   const LABEL_W = isMobile ? 52 : 62;
 
+  const toggleCalcType = (t) => {
+    setCalcTypes(prev =>
+      prev.includes(t) ? prev.filter(x => x !== t)
+        : prev.length < 2 ? [...prev, t]
+        : [prev[1], t]
+    );
+  };
+
+  const MUL_GROUPS = [
+    { m:4,    label:"4× weak",      textColor:"#e83030", pillBg:"#5a0000" },
+    { m:2,    label:"2× weak",      textColor:"#e07b3a", pillBg:"#4a2200" },
+    { m:0.5,  label:"½× resist",    textColor:"#5aa0d8", pillBg:"#0a2040" },
+    { m:0.25, label:"¼× resist",    textColor:"#4a8fc4", pillBg:"#0e2c4a" },
+    { m:0,    label:"0× immune",    textColor:"#a07acc", pillBg:"#3a1a6a" },
+  ];
+
+  const TypePill = ({ type }) => (
+    <span style={{
+      fontSize:10, fontWeight:"700", color:"#fff",
+      background: TYPE_COLORS[type] || "#888",
+      padding:"2px 7px", borderRadius:3, letterSpacing:0.2,
+    }}>{type}</span>
+  );
+
+  const LEGEND = [
+    { bg:"#5a0000", text:"#e83030", label:"4×" },
+    { bg:"#4a2200", text:"#e07b3a", label:"2×" },
+    { bg:"transparent", text:"#555", label:"1×" },
+    { bg:"#0a2040", text:"#5aa0d8", label:"½×" },
+    { bg:"#0e2c4a", text:"#4a8fc4", label:"¼×" },
+    { bg:"#3a1a6a", text:"#a07acc", label:"0×" },
+  ];
+
   return (
     <div style={{ padding: isMobile ? "12px 8px" : "20px 24px", color: C.text, fontFamily:"inherit" }}>
-      <div style={{ marginBottom:12 }}>
-        <div style={{ fontSize:15, fontWeight:"700", marginBottom:2 }}>Gen III Type Chart</div>
-        <div style={{ fontSize:11, color:C.muted }}>Rows = attacking type · Columns = defending type · Click a column to highlight</div>
+
+      {/* ── view toggle ── */}
+      <div style={{ display:"flex", gap:6, marginBottom:16, background:C.card, borderRadius:8, padding:3, width:"fit-content" }}>
+        {[["calc","Calculator"],["chart","Full Chart"]].map(([v,label]) => (
+          <button key={v} onClick={() => setView(v)} style={{
+            fontSize:11, fontWeight:"700", padding:"5px 14px", borderRadius:6, border:"none", cursor:"pointer",
+            background: view === v ? "var(--frlg-accent)" : "transparent",
+            color: view === v ? "#fff" : C.muted,
+            transition:"background 0.15s, color 0.15s",
+          }}>{label}</button>
+        ))}
       </div>
-      <div style={{ overflowX:"auto", WebkitOverflowScrolling:"touch" }}>
-        <table style={{ borderCollapse:"separate", borderSpacing:2, minWidth: LABEL_W + TYPES_17.length * (CELL+2) }}>
-          <thead>
-            <tr>
-              <th style={{ width:LABEL_W, minWidth:LABEL_W }} />
-              {TYPES_17.map(def => (
-                <th key={def} onClick={() => setHighlightCol(highlightCol === def ? null : def)}
-                  style={{ width:CELL, minWidth:CELL, padding:0, cursor:"pointer" }}>
-                  <div style={{
-                    writingMode:"vertical-rl", textOrientation:"mixed",
-                    transform:"rotate(180deg)",
-                    fontSize:8, fontWeight:"700", color: highlightCol === def ? "var(--frlg-accent)" : C.muted,
-                    padding:"4px 2px", height:isMobile ? 52 : 62, display:"flex", alignItems:"center", justifyContent:"center",
-                    background: highlightCol === def ? "rgba(var(--frlg-accent-rgb,212,98,26),0.10)" : "transparent",
-                    borderRadius:"4px 4px 0 0",
-                    transition:"color 0.15s, background 0.15s",
-                  }}>{def}</div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {TYPES_17.map(atk => {
-              const row = TYPE_CHART[atk] || {};
-              return (
-                <tr key={atk}>
-                  <td style={{ paddingRight:4, paddingLeft:2 }}>
-                    <div style={{ display:"flex", alignItems:"center", gap:4, height:CELL }}>
-                      <span style={{ display:"inline-block", width:8, height:8, borderRadius:2, background:TYPE_COLORS[atk]||"#888", flexShrink:0 }} />
-                      <span style={{ fontSize:9, fontWeight:"700", color:C.text, whiteSpace:"nowrap" }}>{atk}</span>
+
+      {/* ══════════════ CALCULATOR VIEW ══════════════ */}
+      {view === "calc" && (
+        <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
+
+          {/* type picker */}
+          <div>
+            <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:6 }}>
+              Pick 1–2 types {calcTypes.length > 0 && <span style={{ color:C.text }}>— {calcTypes.join(" / ")}</span>}
+            </div>
+            <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>
+              {TYPES_17.map(t => {
+                const sel = calcTypes.includes(t);
+                return (
+                  <button key={t} onClick={() => toggleCalcType(t)} style={{
+                    fontSize:10, fontWeight:"700", padding:"3px 9px", borderRadius:4,
+                    border: sel ? `2px solid ${TYPE_COLORS[t]}` : "2px solid transparent",
+                    background: sel ? TYPE_COLORS[t] : `${TYPE_COLORS[t]}33`,
+                    color: sel ? "#fff" : TYPE_COLORS[t],
+                    cursor:"pointer", transition:"all 0.12s",
+                  }}>{t}</button>
+                );
+              })}
+            </div>
+            {calcTypes.length > 0 && (
+              <button onClick={() => setCalcTypes([])} style={{
+                marginTop:6, fontSize:9, color:C.muted, background:"transparent", border:"none", cursor:"pointer", padding:0,
+              }}>✕ clear</button>
+            )}
+          </div>
+
+          {/* defend / attack toggle */}
+          <div style={{ display:"flex", gap:4, background:C.card, borderRadius:6, padding:2, width:"fit-content" }}>
+            {[["defend","🛡 Defending"],["attack","⚔ Attacking"]].map(([m,label]) => (
+              <button key={m} onClick={() => setCalcMode(m)} style={{
+                fontSize:10, fontWeight:"700", padding:"4px 12px", borderRadius:5, border:"none", cursor:"pointer",
+                background: calcMode === m ? "var(--frlg-accent)" : "transparent",
+                color: calcMode === m ? "#fff" : C.muted,
+                transition:"background 0.15s, color 0.15s",
+              }}>{label}</button>
+            ))}
+          </div>
+
+          {/* results */}
+          {calcTypes.length === 0 ? (
+            <div style={{ fontSize:12, color:C.muted, padding:"20px 0" }}>
+              {calcMode === "defend"
+                ? "Select your Pokémon's type(s) to see what hits it."
+                : "Select your move type(s) to see what you hit."}
+            </div>
+          ) : calcMode === "defend" ? (() => {
+            const chart = getDefensiveChart(calcTypes);
+            const neutral = TYPES_17.filter(t => chart[t] === 1);
+            return (
+              <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                <div style={{ fontSize:11, color:C.muted }}>
+                  Incoming damage to a <strong style={{ color:C.text }}>{calcTypes.join("/")}</strong>-type Pokémon:
+                </div>
+                {MUL_GROUPS.map(({ m, label, textColor }) => {
+                  const types = TYPES_17.filter(t => chart[t] === m);
+                  if (types.length === 0) return null;
+                  return (
+                    <div key={m} style={{ display:"flex", alignItems:"flex-start", gap:8 }}>
+                      <span style={{ fontSize:11, fontWeight:"700", color:textColor, minWidth:62, paddingTop:2 }}>{label}</span>
+                      <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>
+                        {types.map(t => <TypePill key={t} type={t} />)}
+                      </div>
                     </div>
-                  </td>
+                  );
+                })}
+                {neutral.length > 0 && (
+                  <div style={{ display:"flex", alignItems:"flex-start", gap:8 }}>
+                    <span style={{ fontSize:11, color:C.muted, minWidth:62, paddingTop:2 }}>1× neutral</span>
+                    <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>
+                      {neutral.map(t => (
+                        <span key={t} style={{ fontSize:10, fontWeight:"700", color:"#555", background:`${TYPE_COLORS[t]}22`, border:`1px solid ${TYPE_COLORS[t]}44`, padding:"2px 7px", borderRadius:3 }}>{t}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })() : (() => {
+            // attacking mode
+            const superEff = [], neutral2 = [], notVery = [], immune2 = [];
+            for (const def of TYPES_17) {
+              let best = 0;
+              for (const atk of calcTypes) {
+                const row = TYPE_CHART[atk] || {};
+                const m = row[def] !== undefined ? row[def] : 1;
+                if (m > best) best = m;
+              }
+              if (best === 0) immune2.push(def);
+              else if (best < 1) notVery.push(def);
+              else if (best > 1) superEff.push(def);
+              else neutral2.push(def);
+            }
+            const label = calcTypes.length === 2
+              ? `${calcTypes[0]} or ${calcTypes[1]} moves`
+              : `${calcTypes[0]} moves`;
+            return (
+              <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                <div style={{ fontSize:11, color:C.muted }}>
+                  Damage dealt by <strong style={{ color:C.text }}>{label}</strong> against single-type defenders:
+                </div>
+                {superEff.length > 0 && (
+                  <div style={{ display:"flex", alignItems:"flex-start", gap:8 }}>
+                    <span style={{ fontSize:11, fontWeight:"700", color:"#e07b3a", minWidth:62, paddingTop:2 }}>2× hits</span>
+                    <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>{superEff.map(t => <TypePill key={t} type={t} />)}</div>
+                  </div>
+                )}
+                {notVery.length > 0 && (
+                  <div style={{ display:"flex", alignItems:"flex-start", gap:8 }}>
+                    <span style={{ fontSize:11, fontWeight:"700", color:"#5aa0d8", minWidth:62, paddingTop:2 }}>½× hits</span>
+                    <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>{notVery.map(t => <TypePill key={t} type={t} />)}</div>
+                  </div>
+                )}
+                {immune2.length > 0 && (
+                  <div style={{ display:"flex", alignItems:"flex-start", gap:8 }}>
+                    <span style={{ fontSize:11, fontWeight:"700", color:"#a07acc", minWidth:62, paddingTop:2 }}>0× (miss)</span>
+                    <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>{immune2.map(t => <TypePill key={t} type={t} />)}</div>
+                  </div>
+                )}
+                {neutral2.length > 0 && (
+                  <div style={{ display:"flex", alignItems:"flex-start", gap:8 }}>
+                    <span style={{ fontSize:11, color:C.muted, minWidth:62, paddingTop:2 }}>1× neutral</span>
+                    <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>
+                      {neutral2.map(t => (
+                        <span key={t} style={{ fontSize:10, fontWeight:"700", color:"#555", background:`${TYPE_COLORS[t]}22`, border:`1px solid ${TYPE_COLORS[t]}44`, padding:"2px 7px", borderRadius:3 }}>{t}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+        </div>
+      )}
+
+      {/* ══════════════ FULL CHART VIEW ══════════════ */}
+      {view === "chart" && (
+        <>
+          <div style={{ marginBottom:10, fontSize:11, color:C.muted }}>Rows = attacking · Columns = defending · Click a column to highlight</div>
+          <div style={{ overflowX:"auto", WebkitOverflowScrolling:"touch" }}>
+            <table style={{ borderCollapse:"separate", borderSpacing:2, minWidth: LABEL_W + TYPES_17.length * (CELL+2) }}>
+              <thead>
+                <tr>
+                  <th style={{ width:LABEL_W, minWidth:LABEL_W }} />
                   {TYPES_17.map(def => {
-                    const m = row[def] !== undefined ? row[def] : 1;
-                    const { bg, text } = cellColor(m);
-                    const isHighlight = highlightCol === def;
+                    const tc = TYPE_COLORS[def] || "#888";
+                    const isHL = highlightCol === def;
                     return (
-                      <td key={def} onClick={() => setHighlightCol(highlightCol === def ? null : def)}
-                        style={{
-                          width:CELL, height:CELL, padding:0, textAlign:"center",
-                          background: isHighlight
-                            ? (m !== 1 ? bg : "rgba(var(--frlg-accent-rgb,212,98,26),0.07)")
-                            : bg,
-                          borderRadius:3, cursor:"pointer",
-                          outline: isHighlight ? "1px solid rgba(var(--frlg-accent-rgb,212,98,26),0.4)" : "none",
-                          transition:"background 0.1s",
-                        }}>
-                        <span style={{ fontSize:9, fontWeight: m !== 1 ? "700" : "400", color: m !== 1 ? text : "#333" }}>
-                          {cellLabel(m)}
-                        </span>
-                      </td>
+                      <th key={def} onClick={() => setHighlightCol(isHL ? null : def)}
+                        style={{ width:CELL, minWidth:CELL, padding:0, cursor:"pointer" }}>
+                        <div style={{
+                          writingMode:"vertical-rl", textOrientation:"mixed",
+                          transform:"rotate(180deg)",
+                          fontSize:8, fontWeight:"700",
+                          color: isHL ? "#fff" : tc,
+                          padding:"4px 2px", height:isMobile ? 52 : 62,
+                          display:"flex", alignItems:"center", justifyContent:"center",
+                          background: isHL ? tc : `${tc}28`,
+                          borderRadius:"4px 4px 0 0",
+                          transition:"color 0.15s, background 0.15s",
+                        }}>{def}</div>
+                      </th>
                     );
                   })}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <div style={{ marginTop:14, display:"flex", flexWrap:"wrap", gap:10 }}>
-        {[
-          { bg:"#5a0000", text:"#e83030", label:"4× (super effective ×2)" },
-          { bg:"#4a2200", text:"#e07b3a", label:"2× (super effective)" },
-          { bg:"transparent", text:"#666",   label:"1× (neutral)" },
-          { bg:"#0a2040", text:"#5aa0d8", label:"½× (not very effective)" },
-          { bg:"#0e2c4a", text:"#4a8fc4", label:"¼× (not very effective ×2)" },
-          { bg:"#3a1a6a", text:"#a07acc", label:"0× (no effect)" },
-        ].map(({ bg, text, label }) => (
-          <div key={label} style={{ display:"flex", alignItems:"center", gap:5 }}>
-            <div style={{ width:18, height:18, background:bg, border:"1px solid rgba(255,255,255,0.08)", borderRadius:3, display:"flex", alignItems:"center", justifyContent:"center" }}>
-              <span style={{ fontSize:8, fontWeight:"700", color:text }}>·</span>
-            </div>
-            <span style={{ fontSize:10, color:C.muted }}>{label}</span>
+              </thead>
+              <tbody>
+                {TYPES_17.map(atk => {
+                  const row = TYPE_CHART[atk] || {};
+                  return (
+                    <tr key={atk}>
+                      <td style={{ paddingRight:4, paddingLeft:2 }}>
+                        <div style={{ display:"flex", alignItems:"center", gap:4, height:CELL }}>
+                          <span style={{ display:"inline-block", width:8, height:8, borderRadius:2, background:TYPE_COLORS[atk]||"#888", flexShrink:0 }} />
+                          <span style={{ fontSize:9, fontWeight:"700", color:C.text, whiteSpace:"nowrap" }}>{atk}</span>
+                        </div>
+                      </td>
+                      {TYPES_17.map(def => {
+                        const m = row[def] !== undefined ? row[def] : 1;
+                        const { bg, text } = cellBg(m);
+                        const isHL = highlightCol === def;
+                        return (
+                          <td key={def} onClick={() => setHighlightCol(isHL ? null : def)}
+                            style={{
+                              width:CELL, height:CELL, padding:0, textAlign:"center",
+                              background: isHL ? (m !== 1 ? bg : `${TYPE_COLORS[def]}18`) : bg,
+                              borderRadius:3, cursor:"pointer",
+                              outline: isHL ? `1px solid ${TYPE_COLORS[def]}88` : "none",
+                              transition:"background 0.1s",
+                            }}>
+                            <span style={{ fontSize:9, fontWeight: m !== 1 ? "700" : "400", color: m !== 1 ? text : "#333" }}>
+                              {cellLabel(m)}
+                            </span>
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
-        ))}
-      </div>
+          <div style={{ marginTop:14, display:"flex", flexWrap:"wrap", gap:8 }}>
+            {LEGEND.map(({ bg, text, label }) => (
+              <div key={label} style={{ display:"flex", alignItems:"center", gap:4 }}>
+                <div style={{ width:16, height:16, background:bg, border:"1px solid rgba(255,255,255,0.08)", borderRadius:3, display:"flex", alignItems:"center", justifyContent:"center" }}>
+                  <span style={{ fontSize:8, fontWeight:"700", color:text }}>·</span>
+                </div>
+                <span style={{ fontSize:10, color:C.muted }}>{label}</span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
