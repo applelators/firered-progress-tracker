@@ -238,6 +238,13 @@
           ? area.floors.map(f => ({ label: f.label, pokemon: f.pokemon || [] }))
           : [{ label: null, pokemon: area.pokemon || [] }];
 
+        const SEC_LABEL = { land:"LAND", surf:"SURF", fishing:"FISHING" };
+        // Use the method name directly for land (Grass / Cave / Special)
+        const secDisplayLabel = (p) => {
+          const s = getSection(p.method);
+          return s === "land" ? p.method.toUpperCase() : SEC_LABEL[s];
+        };
+
         const rows = [];
         floors.forEach(({ label, pokemon }, fi) => {
           const visible = sortByRate(
@@ -246,7 +253,15 @@
           );
           if (!visible.length) return;
           if (label) rows.push({ type:"floor", label });
-          visible.forEach(p => rows.push({ type:"pokemon", p, fi }));
+          let lastSec = null;
+          visible.forEach(p => {
+            const sec = getSection(p.method);
+            if (sec !== lastSec) {
+              rows.push({ type:"method", label: secDisplayLabel(p), color: (METHOD_COLOR[p.method] || {}).color || T.textMuted });
+              lastSec = sec;
+            }
+            rows.push({ type:"pokemon", p, fi });
+          });
         });
 
         if (!rows.length) return null;
@@ -282,6 +297,21 @@
               if (row.type === "floor") {
                 return <div key={i} style={floorLabelStyle(i === 0)}>{row.label}</div>;
               }
+              if (row.type === "method") {
+                const prevRow = rows[i - 1];
+                const isFirstInPanel = i === 0 || (prevRow && prevRow.type === "floor" && rows[i - 2] == null);
+                const hasFloorAbove  = prevRow && prevRow.type === "floor";
+                return (
+                  <div key={i} style={{
+                    fontSize:8, fontWeight:700, letterSpacing:1.5,
+                    color: row.color,
+                    marginTop: hasFloorAbove ? 0 : (i === 0 ? 2 : 7),
+                    marginBottom: 2,
+                  }}>
+                    {row.label}
+                  </div>
+                );
+              }
               const p = row.p;
               const isCaught  = caught[p.name];
               const mc        = METHOD_COLOR[p.method] || { bg:"rgba(120,100,80,0.15)", color: T.textMuted };
@@ -289,7 +319,7 @@
               const vTag      = p.frOnly ? "FR" : p.lgOnly ? "LG" : null;
               const dimmed    = secDone(row.fi, p.method);
               const nextRow   = rows[i + 1];
-              const border    = (!nextRow || nextRow.type === "floor") ? "none" : `1px solid ${T.divider}`;
+              const border    = (!nextRow || nextRow.type === "floor" || nextRow.type === "method") ? "none" : `1px solid ${T.divider}`;
 
               return (
                 <div key={i} style={{ display:"flex", alignItems:"center", gap:6, padding:"3px 0",
