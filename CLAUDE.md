@@ -26,13 +26,12 @@ Always audit one Bulbapedia part at a time. After implementing, pause and let th
 
 For each area in a part:
 
-1. **Fetch the Bulbapedia page** for the area (or the walkthrough part page).
-2. **Wild Pokémon** — record name, method, level range, encounter rate. Flag any `frOnly`/`lgOnly` fields.
-3. **Split FR/LG rates** — WebFetch reliably misreads which column is FireRed and which is LeafGreen in Bulbapedia's encounter tables. Always flag split-rate encounters for user verification before writing. Never silently guess.
-4. **Encounter rate sanity check** — rates should sum to approximately 100%. If they don't, something is wrong.
-5. **Items** — record name, `hidden` (true if requires Itemfinder), and a short location note. Strip any floor prefix from the note when the area uses a floors structure (the floor label provides the context).
-6. **Trainers** — record class, name, and full team (species + level). For multi-floor areas, assign each trainer to their correct floor.
-7. **Multi-floor areas** — fetch per-floor data. Do not collapse a dungeon into a single flat structure.
+1. **Fetch raw wikitext** for the area page via `curl "https://bulbapedia.bulbagarden.net/w/index.php?title=PAGE_TITLE&action=raw"`. Never rely on the rendered HTML for encounter or item data — use raw wikitext as the authoritative source.
+2. **Wild Pokémon** — extract from `{{Catch/entryfl|...}}` lines. The template format is `|dex#|Name|FR(yes/no)|LG(yes/no)|method|levels|rate|`. The `yes`/`no` flags are explicit — no column-guessing needed.
+3. **Encounter rate sanity check** — rates should sum to approximately 100% per version. If they don't, something is wrong.
+4. **Items** — extract from `{{Itemlist|...}}` lines. The raw wikitext lists items with their location description and FR/LG availability flags directly.
+5. **Trainers** — the rendered walkthrough page is acceptable for trainers (trainer templates in raw wikitext are verbose and harder to parse). Cross-check the team sizes and levels against the rendered page.
+6. **Multi-floor areas** — fetch per-floor data. Do not collapse a dungeon into a single flat structure.
 
 ### After implementing a part
 
@@ -120,9 +119,11 @@ These key formats are load-bearing. Do not change them without bumping the local
 
 ### WebFetch and FR/LG split tables
 
-Bulbapedia renders encounter tables with a FireRed column and a LeafGreen column. WebFetch + AI systematically misreads which column belongs to which version in these tables. This has caused multiple wrong `frOnly`/`lgOnly` assignments and swapped encounter rates in past sessions.
+Bulbapedia renders encounter tables with a FireRed column and a LeafGreen column. WebFetch + AI systematically misreads which column belongs to which version in these tables. This caused multiple wrong `frOnly`/`lgOnly` assignments and swapped encounter rates in earlier sessions.
 
-**Rule:** Always flag split-rate encounters explicitly and ask the user to verify before writing. Never silently assign version exclusivity based solely on WebFetch output.
+**Fix:** Always use raw wikitext (`?action=raw`) instead of the rendered page for encounter and item data. The `{{Catch/entryfl}}` template has explicit `|yes|no|` flags for FR and LG — no column interpretation needed. `grep catch/entryfl` pulls all encounter entries at once and is fast to verify.
+
+**If raw wikitext is unavailable for some reason:** flag all split-rate encounters explicitly and ask the user to verify before writing. Never silently assign version exclusivity from a rendered page.
 
 ### LOCATION_MAP is built at module scope
 
