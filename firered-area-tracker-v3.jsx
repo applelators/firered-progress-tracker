@@ -440,7 +440,7 @@ const AREAS = [
       {name:"Nidoran♂",method:"Trade",levels:"any",lgOnly:true,note:"Mr. Nido (LG) — give Nidoran♀ to the woman in the Route 5 gate; holds Tiny Mushroom"},
     ],
     items:[
-      {name:"Tiny Mushroom",hidden:false,note:"Held by the traded Nidoran (Ms. Nido / Mr. Nido)"},
+      {name:"Tiny Mushroom",hidden:false,heldBy:["Nidoran♀","Nidoran♂"],note:"Held by the traded Nidoran (Ms. Nido / Mr. Nido)"},
       {name:"Antidote",     hidden:true, recurring:true, note:"Near north stairs (★ Itemfinder, recurring)"},
       {name:"Paralyze Heal",hidden:true, recurring:true, note:"Northernmost section (★ Itemfinder, recurring)"},
       {name:"Awakening",    hidden:true, recurring:true, note:"North section (★ Itemfinder, recurring)"},
@@ -463,6 +463,7 @@ const AREAS = [
       {name:"Old Rod",        hidden:false,note:"Northwest house, from the Fishing Guru"},
       {name:"Bike Voucher",   hidden:false,note:"Pokémon Fan Club Chairman — exchange at Cerulean City Bike Shop for the Bicycle"},
       {name:"TM34 Shock Wave",hidden:false,note:"From Lt. Surge after defeating him"},
+      {name:"Stick",          hidden:false,heldBy:"Farfetch'd",note:"Held by Ch'Ding the traded Farfetch'd"},
     ],
     trainers:[
       {class:"Sailor",    name:"Dwayne",   team:[{name:"Pikachu",  level:21},{name:"Pikachu",  level:21}]},
@@ -1710,7 +1711,9 @@ const AREAS = [
       {name:"Psyduck",   method:"Super Rod", levels:"15–40", rate:"1%",  frOnly:true},
       {name:"Slowpoke",  method:"Super Rod", levels:"15–40", rate:"1%",  lgOnly:true},
     ],
-    items:[],
+    items:[
+      {name:"Stardust", hidden:false,heldBy:"Tangela",note:"Held by the traded Tangela from Cinnabar Lab"},
+    ],
     trainers:[]},
 
   { part:"Part 13", id:"pokemon-mansion", name:"Pokémon Mansion",
@@ -6190,6 +6193,12 @@ function DexDetail({ selected, caught, locs, compact }) {
 // Areas with a `floors` array organise data per floor; flat areas use top-level arrays.
 const flattenPokemon  = a => a.floors ? a.floors.flatMap(f => f.pokemon  || []) : (a.pokemon  || []);
 const flattenItems    = a => a.floors ? a.floors.flatMap(f => f.items    || []) : (a.items    || []);
+// Returns true/false for items held by a traded Pokémon (null if not a held item).
+function heldByDone(it, areaId, trades) {
+  if (!it.heldBy) return null;
+  const names = Array.isArray(it.heldBy) ? it.heldBy : [it.heldBy];
+  return names.some(n => !!(trades && trades[`${areaId}|trade|${n}`]));
+}
 const flattenTrainers = a => a.floors ? a.floors.flatMap(f => f.trainers || []) : (a.trainers || []);
 // All items are keyed by index to handle duplicate names (e.g. two Antidotes in Viridian Forest).
 const floorItemKey = (aId, label, idx) => `${aId}|${label}|${idx}`;
@@ -6236,16 +6245,20 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
         if (area.floors) {
           for (const f of area.floors) {
             for (let i = 0; i < (f.items||[]).length; i++) {
-              if (isPassedItem(f.items[i])) continue;
-              if (!items[floorItemKey(area.id, f.label, i)]) { itemsDone = false; break; }
+              const it = f.items[i];
+              if (isPassedItem(it)) continue;
+              const hbd = heldByDone(it, area.id, trades);
+              if (!(hbd !== null ? hbd : !!items[floorItemKey(area.id, f.label, i)])) { itemsDone = false; break; }
             }
             if (!itemsDone) break;
           }
         } else {
           const its = area.items || [];
           for (let i = 0; i < its.length; i++) {
-            if (isPassedItem(its[i])) continue;
-            if (!items[flatItemKey(area.id, i)]) { itemsDone = false; break; }
+            const it = its[i];
+            if (isPassedItem(it)) continue;
+            const hbd = heldByDone(it, area.id, trades);
+            if (!(hbd !== null ? hbd : !!items[flatItemKey(area.id, i)])) { itemsDone = false; break; }
           }
         }
         const trainersDone = flattenTrainers(area).every(t => trainers[`${area.id}|${t.class}|${t.name}`]);
@@ -6280,7 +6293,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
           for (const f of area.floors) {
             for (let i = 0; i < (f.items||[]).length; i++) {
               const it = f.items[i];
-              if (isPassedItem(it) || it.optional || it.recurring) continue;
+              if (isPassedItem(it) || it.optional || it.recurring || it.heldBy) continue;
               if (!items[floorItemKey(area.id, f.label, i)]) { reqItemsDone = false; break; }
             }
             if (!reqItemsDone) break;
@@ -6289,7 +6302,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
           const its = area.items || [];
           for (let i = 0; i < its.length; i++) {
             const it = its[i];
-            if (isPassedItem(it) || it.optional || it.recurring) continue;
+            if (isPassedItem(it) || it.optional || it.recurring || it.heldBy) continue;
             if (!items[flatItemKey(area.id, i)]) { reqItemsDone = false; break; }
           }
         }
@@ -6298,7 +6311,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
       });
     });
     return result;
-  }, [groups, caught, items, trainers, version, choiceGroups, partFullDone]);
+  }, [groups, caught, items, trainers, trades, version, choiceGroups, partFullDone]);
 
   const areaPokemon  = area ? flattenPokemon(area)  : [];
   const areaItems    = area ? flattenItems(area)    : [];
@@ -6311,12 +6324,12 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
   const nonTradePokeDone = nonTradePokemon.filter(p => caught[p.name]).length;
   const relevantItems   = areaItems.filter(it => !isPassedItem(it));
   const itemDone        = area && !area.floors
-    ? areaItems.reduce((n, it, i) => n + (!isPassedItem(it) && items[flatItemKey(areaId, i)] ? 1 : 0), 0)
-    : area?.floors?.reduce((n, floor) => n + (floor.items||[]).reduce((m, it, i) => m + (!isPassedItem(it) && items[floorItemKey(areaId, floor.label, i)] ? 1 : 0), 0), 0) ?? 0;
+    ? areaItems.reduce((n, it, i) => { if (isPassedItem(it)) return n; const hbd = heldByDone(it, areaId, trades); return n + ((hbd !== null ? hbd : !!items[flatItemKey(areaId, i)]) ? 1 : 0); }, 0)
+    : area?.floors?.reduce((n, floor) => n + (floor.items||[]).reduce((m, it, i) => { if (isPassedItem(it)) return m; const hbd = heldByDone(it, areaId, trades); return m + ((hbd !== null ? hbd : !!items[floorItemKey(areaId, floor.label, i)]) ? 1 : 0); }, 0), 0) ?? 0;
   const nonOptionalItems    = relevantItems.filter(it => !it.optional && !it.recurring);
   const nonOptionalItemDone = area && !area.floors
-    ? areaItems.reduce((n, it, i) => n + (!isPassedItem(it) && !it.optional && !it.recurring && items[flatItemKey(areaId, i)] ? 1 : 0), 0)
-    : area?.floors?.reduce((n, floor) => n + (floor.items||[]).reduce((m, it, i) => m + (!isPassedItem(it) && !it.optional && !it.recurring && items[floorItemKey(areaId, floor.label, i)] ? 1 : 0), 0), 0) ?? 0;
+    ? areaItems.reduce((n, it, i) => { if (isPassedItem(it) || it.optional || it.recurring) return n; const hbd = heldByDone(it, areaId, trades); return n + ((hbd !== null ? hbd : !!items[flatItemKey(areaId, i)]) ? 1 : 0); }, 0)
+    : area?.floors?.reduce((n, floor) => n + (floor.items||[]).reduce((m, it, i) => { if (isPassedItem(it) || it.optional || it.recurring) return m; const hbd = heldByDone(it, areaId, trades); return m + ((hbd !== null ? hbd : !!items[floorItemKey(areaId, floor.label, i)]) ? 1 : 0); }, 0), 0) ?? 0;
   const trainerDone     = areaTrainers.filter(t => trainers[`${areaId}|${t.class}|${t.name}`]).length;
 
   // Prev / Next navigation
@@ -6480,7 +6493,8 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                               onMarkAll={() => { const kfn = (it,i) => floorItemKey(areaId,floor.label,i); itmDone===relevFloorItems.length ? clearAllItems(floor.items||[],kfn) : markAllItems(floor.items||[],kfn); }}>
                               {!hasItms ? <Empty text="No items here" /> : floor.items.map((it,i) => {
                                 const key = floorItemKey(areaId, floor.label, i);
-                                return <ItemEntry key={i} it={it} itemKey={key} done={!!items[key]} toggleItem={toggleItem} isMobile={isMobile} choiceGroups={choiceGroups} />;
+                                const hbd = heldByDone(it, areaId, trades);
+                                return <ItemEntry key={i} it={it} itemKey={key} done={hbd !== null ? hbd : !!items[key]} locked={hbd !== null} toggleItem={toggleItem} isMobile={isMobile} choiceGroups={choiceGroups} />;
                               })}
                             </Section>
                           </div>
@@ -6515,7 +6529,8 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                       {areaItems.length === 0 ? <Empty text="No items here" /> :
                         areaItems.map((it,i) => {
                           const key = flatItemKey(areaId, i);
-                          return <ItemEntry key={i} it={it} itemKey={key} done={!!items[key]} toggleItem={toggleItem} isMobile={isMobile} choiceGroups={choiceGroups} />;
+                          const hbd = heldByDone(it, areaId, trades);
+                          return <ItemEntry key={i} it={it} itemKey={key} done={hbd !== null ? hbd : !!items[key]} locked={hbd !== null} toggleItem={toggleItem} isMobile={isMobile} choiceGroups={choiceGroups} />;
                         })
                       }
                     </Section>
@@ -6559,7 +6574,7 @@ function AreaRow({ area, areaId, setAreaId, caught, items, trainers, trades, ver
   // Item done/total excluding passed choice-group entries
   const { id_, itTotal } = (() => {
     let done = 0, total = 0;
-    const countFloor = (its, keyFn) => its.forEach((it, i) => { if (isItm(it) || it.optional || it.recurring) return; total++; if (items[keyFn(i)]) done++; });
+    const countFloor = (its, keyFn) => its.forEach((it, i) => { if (isItm(it) || it.optional || it.recurring) return; total++; const hbd = heldByDone(it, area.id, trades); if (hbd !== null ? hbd : items[keyFn(i)]) done++; });
     if (area.floors) area.floors.forEach(f => countFloor(f.items || [], i => floorItemKey(area.id, f.label, i)));
     else countFloor(area.items || [], i => flatItemKey(area.id, i));
     return { id_: done, itTotal: total };
@@ -6700,7 +6715,7 @@ function PokemonEntry({ p, caught, toggleCaught, version, isMobile, choiceGroups
   );
 }
 
-function ItemEntry({ it, itemKey, done, toggleItem, isMobile, choiceGroups }) {
+function ItemEntry({ it, itemKey, done, toggleItem, isMobile, choiceGroups, locked }) {
   const isPassed = !!(it.choiceGroup && choiceGroups?.[it.choiceGroup] && choiceGroups[it.choiceGroup] !== it.choiceId);
   const [showLightbox, setShowLightbox] = React.useState(false);
   const [hoverPos, setHoverPos]         = React.useState(null);
@@ -6721,13 +6736,14 @@ function ItemEntry({ it, itemKey, done, toggleItem, isMobile, choiceGroups }) {
 
   return (
     <>
-      <Row done={done} passed={isPassed} onClick={isPassed ? undefined : () => { const tmM = it.name.match(/^(TM\d{2}|HM\d{2})\b/); const tmId = tmM ? tmM[1] : undefined; toggleItem(itemKey, { ...(it.choiceGroup ? {choiceGroup:it.choiceGroup, choiceId:it.choiceId} : {}), ...(tmId ? {tmId} : {}) }); }}>
+      <Row done={done} passed={isPassed} locked={locked} onClick={isPassed || locked ? undefined : () => { const tmM = it.name.match(/^(TM\d{2}|HM\d{2})\b/); const tmId = tmM ? tmM[1] : undefined; toggleItem(itemKey, { ...(it.choiceGroup ? {choiceGroup:it.choiceGroup, choiceId:it.choiceId} : {}), ...(tmId ? {tmId} : {}) }); }}>
         {itemSpriteUrl(it.name)&&<img src={itemSpriteUrl(it.name)} alt={it.name} style={{ width:24, height:24, imageRendering:"pixelated", flexShrink:0 }} />}
         <div style={{ flex:1 }}>
           <span style={{ fontSize:12, fontWeight:"600", color:it.hidden?C.gold:C.text }}>
             {it.hidden&&<span style={{ color:C.gold, marginRight:4 }}>★</span>}{it.name}
             {it.recurring&&<span style={{ fontSize:9, color:"#6bb8d4", marginLeft:6, fontWeight:"700", letterSpacing:0.5 }}>↻</span>}
             {it.surf&&<span style={{ fontSize:9, color:"#4a8fc4", marginLeft:6, fontWeight:"700", letterSpacing:0.5 }}>≈</span>}
+            {it.heldBy&&<span style={{ fontSize:9, color:C.gold, marginLeft:6, fontWeight:"700", letterSpacing:0.5 }}>⇄</span>}
           </span>
           {it.note&&<div style={{ fontSize:10, color:C.muted, marginTop:2, lineHeight:1.5 }}>{it.note}</div>}
         </div>
@@ -6829,7 +6845,7 @@ function Section({ title, count, color, children, onMarkAll, allDone }) {
   );
 }
 
-function Row({ done, passed, onClick, children }) {
+function Row({ done, passed, onClick, locked, children }) {
   if (passed) return (
     <div style={{ display:"flex", alignItems:"flex-start", gap:10, padding:"10px 14px", minHeight:44, borderBottom:`1px solid ${C.border}20`, opacity:0.3, cursor:"default" }}>
       <div style={{ width:18, height:18, border:`2px solid ${C.border}`, borderRadius:4, flexShrink:0, marginTop:1, display:"flex", alignItems:"center", justifyContent:"center" }}>
@@ -6839,9 +6855,9 @@ function Row({ done, passed, onClick, children }) {
     </div>
   );
   return (
-    <div onClick={onClick} style={{ display:"flex", alignItems:"flex-start", gap:10, padding:"10px 14px", minHeight:44, cursor:"pointer", borderBottom:`1px solid ${C.border}20`, background: done?"rgba(74,175,116,0.05)":"transparent", transition:"background 0.1s" }}
-      onMouseEnter={e => e.currentTarget.style.background = done?"rgba(74,175,116,0.09)":"rgba(255,255,255,0.025)"}
-      onMouseLeave={e => e.currentTarget.style.background = done?"rgba(74,175,116,0.05)":"transparent"}>
+    <div onClick={locked ? undefined : onClick} style={{ display:"flex", alignItems:"flex-start", gap:10, padding:"10px 14px", minHeight:44, cursor: locked ? "default" : "pointer", borderBottom:`1px solid ${C.border}20`, background: done?"rgba(74,175,116,0.05)":"transparent", transition:"background 0.1s" }}
+      onMouseEnter={locked ? undefined : e => { e.currentTarget.style.background = done?"rgba(74,175,116,0.09)":"rgba(255,255,255,0.025)"; }}
+      onMouseLeave={locked ? undefined : e => { e.currentTarget.style.background = done?"rgba(74,175,116,0.05)":"transparent"; }}>
       <div style={{ width:18, height:18, border:`2px solid ${done ? C.green : C.border}`, background:done?C.green:"transparent", borderRadius:4, flexShrink:0, marginTop:1, display:"flex", alignItems:"center", justifyContent:"center", transition:"all 0.12s" }}>
         {done && <span style={{ color:"#000", fontSize:10, fontWeight:"700", lineHeight:1 }}>✓</span>}
       </div>
