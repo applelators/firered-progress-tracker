@@ -3402,6 +3402,8 @@ function buildDreamTeam(favoriteName, version) {
   const inTeam = new Set([finalFav]);
   const isDragoniteLine = ["Dratini","Dragonair","Dragonite"].includes(favoriteName);
   if (!isDragoniteLine) { team.push("Dragonite"); inTeam.add("Dragonite"); }
+  // TODO: remove Jolteon pin when no longer needed
+  if (!inTeam.has("Jolteon")) { team.push("Jolteon"); inTeam.add("Jolteon"); }
   const requiredHMs = ["Fly","Surf","Waterfall","Strength","Cut","Rock Smash"];
   const getCoverage = () => {
     const s = new Set();
