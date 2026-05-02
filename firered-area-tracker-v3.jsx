@@ -3271,7 +3271,7 @@ const DT_HM_COMPAT = {
   "Surf":       new Set(["Squirtle","Wartortle","Blastoise","Psyduck","Golduck","Poliwag","Poliwhirl","Poliwrath","Tentacool","Tentacruel","Slowpoke","Slowbro","Seel","Dewgong","Shellder","Cloyster","Krabby","Kingler","Horsea","Seadra","Goldeen","Seaking","Staryu","Starmie","Lapras","Vaporeon","Dratini","Dragonair","Dragonite","Jynx","Omanyte","Omastar","Kabuto","Kabutops"]),
   "Strength":   new Set(["Bulbasaur","Ivysaur","Venusaur","Charmander","Charmeleon","Charizard","Squirtle","Wartortle","Blastoise","Sandshrew","Sandslash","Nidorina","Nidoqueen","Nidorino","Nidoking","Mankey","Primeape","Poliwag","Poliwhirl","Poliwrath","Machop","Machoke","Geodude","Graveler","Golem","Slowpoke","Slowbro","Drowzee","Hypno","Krabby","Kingler","Marowak","Hitmonlee","Hitmonchan","Rhyhorn","Rhydon","Chansey","Kangaskhan","Starmie","Tauros","Gyarados","Lapras","Snorlax","Dratini","Dragonair","Dragonite","Arcanine","Dewgong","Cloyster","Seel"]),
   "Flash":      new Set(["Butterfree","Pikachu","Raichu","Clefairy","Clefable","Jigglypuff","Wigglytuff","Abra","Kadabra","Slowpoke","Slowbro","Gastly","Haunter","Gengar","Drowzee","Hypno","Magnemite","Magneton","Doduo","Dodrio","Electrode","Starmie","Jynx","Electabuzz","Porygon","Vaporeon","Jolteon","Flareon"]),
-  "Rock Smash": new Set(["Squirtle","Wartortle","Blastoise","Poliwag","Poliwhirl","Poliwrath","Machop","Machoke","Geodude","Graveler","Golem","Primeape","Hitmonlee","Hitmonchan","Rhyhorn","Rhydon","Snorlax","Krabby","Kingler","Kabutops","Aerodactyl"]),
+  "Rock Smash": new Set(["Squirtle","Wartortle","Blastoise","Poliwag","Poliwhirl","Poliwrath","Machop","Machoke","Geodude","Graveler","Golem","Primeape","Hitmonlee","Hitmonchan","Rhyhorn","Rhydon","Krabby","Kingler","Kabutops","Aerodactyl"]),
   "Waterfall":  new Set(["Squirtle","Wartortle","Blastoise","Psyduck","Golduck","Poliwag","Poliwhirl","Poliwrath","Tentacool","Tentacruel","Slowpoke","Slowbro","Seel","Dewgong","Shellder","Cloyster","Krabby","Kingler","Horsea","Seadra","Goldeen","Seaking","Staryu","Starmie","Lapras","Vaporeon","Dratini","Dragonair","Dragonite","Jynx","Omanyte","Omastar","Kabuto","Kabutops","Gyarados"]),
 };
 
@@ -3281,7 +3281,7 @@ const DT_HM_COMPAT = {
 const DT_CANDIDATES = [
   // ── Neutral (catchable in both versions) ───────────────────────────────────
   {name:"Lapras",    types:["Water","Ice"],          hms:["Surf","Waterfall","Strength"]},
-  {name:"Snorlax",   types:["Normal"],               hms:["Strength","Rock Smash"]},
+  {name:"Snorlax",   types:["Normal"],               hms:["Strength"]},
   {name:"Gyarados",  types:["Water","Flying"],       hms:["Surf","Waterfall","Strength"]},
   {name:"Nidoking",  types:["Poison","Ground"],      hms:["Cut","Rock Smash","Strength"]},
   {name:"Nidoqueen", types:["Poison","Ground"],      hms:["Cut","Rock Smash","Strength"]},
