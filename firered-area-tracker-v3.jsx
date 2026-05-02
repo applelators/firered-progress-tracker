@@ -2465,6 +2465,38 @@ const AREAS = [
       {class:"Psychic",name:"Jaclyn",team:[{name:"Natu",level:48},{name:"Slowbro",level:48},{name:"Kadabra",level:49}]},
     ] },
 
+  { part:"Part 18", id:"outcast-island", name:"Outcast Island",
+    note:"Water route surfed north from Green Path to reach Altering Cave on the small island at the far end. A Team Rocket Grunt blocks the way until the Rocket Admins at the Rocket Warehouse are defeated.",
+    pokemon:[
+      {name:"Tentacool",  method:"Surf",      levels:"5–40",  rate:"95%"},
+      {name:"Tentacruel", method:"Surf",      levels:"35–40", rate:"5%"},
+      {name:"Magikarp",   method:"Old Rod",   levels:"5",     rate:"100%"},
+      {name:"Horsea",     method:"Good Rod",  levels:"5–15",  rate:"80%", frOnly:true},
+      {name:"Krabby",     method:"Good Rod",  levels:"5–15",  rate:"80%", lgOnly:true},
+      {name:"Magikarp",   method:"Good Rod",  levels:"5–15",  rate:"20%"},
+      {name:"Horsea",     method:"Super Rod", levels:"15–25", rate:"40%", frOnly:true},
+      {name:"Qwilfish",   method:"Super Rod", levels:"15–25", rate:"40%", frOnly:true},
+      {name:"Krabby",     method:"Super Rod", levels:"15–25", rate:"40%", lgOnly:true},
+      {name:"Remoraid",   method:"Super Rod", levels:"15–25", rate:"40%", lgOnly:true},
+      {name:"Gyarados",   method:"Super Rod", levels:"15–25", rate:"15%"},
+      {name:"Seadra",     method:"Super Rod", levels:"25–35", rate:"4%",  frOnly:true},
+      {name:"Kingler",    method:"Super Rod", levels:"25–35", rate:"4%",  lgOnly:true},
+      {name:"Psyduck",    method:"Super Rod", levels:"25–35", rate:"1%",  frOnly:true},
+      {name:"Slowpoke",   method:"Super Rod", levels:"25–35", rate:"1%",  lgOnly:true},
+    ],
+    items:[
+      {name:"PP Up",      hidden:false, note:"Southwest of Fisherman Tylor"},
+      {name:"Net Ball",   hidden:true,  recurring:true, note:"South of Altering Cave entrance"},
+      {name:"Star Piece", hidden:true,  recurring:true, note:"East side of the island"},
+    ],
+    trainers:[
+      {class:"Swimmer",         name:"Nicole",    team:[{name:"Marill",   level:50}]},
+      {class:"Sis and Bro",     name:"Ava & Geb", team:[{name:"Starmie",  level:50},{name:"Poliwhirl",level:50}]},
+      {class:"Swimmer",         name:"Mymo",      team:[{name:"Kingler",  level:49},{name:"Wartortle",level:49}]},
+      {class:"Fisherman",       name:"Tylor",     team:[{name:"Qwilfish", level:49},{name:"Qwilfish", level:49}]},
+      {class:"Team Rocket Grunt",name:"Grunt",    note:"Only before clearing the Rocket Warehouse on Five Island", team:[{name:"Muk",level:48},{name:"Golbat",level:48},{name:"Raticate",level:48}]},
+    ] },
+
   { part:"Part 18", id:"pattern-bush", name:"Pattern Bush",
     note:"Dense forest on Six Island. Ledyba is far more common in LeafGreen (30%) than FireRed (5%); Spinarak is the reverse. Heracross appears at a steady 20% in both.",
     pokemon:[
