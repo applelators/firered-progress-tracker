@@ -1177,7 +1177,7 @@ const AREAS = [
           {name:"Dratini",  method:"Super Rod",levels:"15",   rate:"25%"},
           {name:"Psyduck",  method:"Super Rod",levels:"15",   rate:"15%"},
           {name:"Dragonair",method:"Super Rod",levels:"15",   rate:"10%"},
-          {name:"Slowpoke", method:"Super Rod",levels:"15",   rate:"10%"},
+          {name:"Slowpoke", method:"Super Rod",levels:"15–35", rate:"4%", lgOnly:true},
         ],
         items:[
           {name:"Nugget",    hidden:false,surf:true,note:"Central island (requires Surf)"},
