@@ -21,8 +21,8 @@
     ?section=combined&width=300&opacity=0.80
     ?section=wild&theme=cool&width=200&opacity=0.85&worker=https://frlg.nabunan.com/state
 
-  Suggested OBS source size: set width to match your ?width= value; height 600+
-  (OBS auto-crops transparent rows at the bottom).
+  Suggested OBS source size: 340 × 2000 (width matches your ?width= value;
+  OBS auto-crops transparent rows at the bottom).
   The panel updates within ~1.5 seconds when you switch areas in the main tracker.
 
   Cross-browser OBS setup (tracker in Chrome, overlay in OBS):
@@ -262,27 +262,27 @@
         width: panelWidth,
         background: T.bg,
         border: `1px solid ${T.border}`,
-        borderRadius: 10,
-        padding: "10px 14px",
+        borderRadius: 12,
+        padding: "14px 18px",
         fontFamily: "'DM Sans', sans-serif",
         color: T.textPrimary,
       };
       const sectionHeader = (accent) => ({
-        fontSize: 11, fontWeight: 700, letterSpacing: 2, color: accent,
-        borderLeft: `3px solid ${accent}`, paddingLeft: 7, marginBottom: 8,
+        fontSize: 13, fontWeight: 700, letterSpacing: 2.5, color: accent,
+        borderLeft: `4px solid ${accent}`, paddingLeft: 8, marginBottom: 10,
       });
-      const areaLabel = { fontSize: 11, color: T.textMuted, marginBottom: 6 };
+      const areaLabel = { fontSize: 13, color: T.textMuted, marginBottom: 8 };
       const floorLabelStyle = (isFirst) => ({
-        fontSize: 11, fontWeight: 700, letterSpacing: 1,
+        fontSize: 13, fontWeight: 700, letterSpacing: 1,
         color: T.textMuted,
         borderLeft: `2px solid ${T.border}`,
-        paddingLeft: 5,
-        marginTop: isFirst ? 2 : 8,
-        marginBottom: 3,
+        paddingLeft: 6,
+        marginTop: isFirst ? 2 : 10,
+        marginBottom: 4,
       });
 
-      if (!ready) return <div style={{ ...panel, color: T.textMuted, fontSize: 11 }}>Loading…</div>;
-      if (!areaId) return <div style={{ ...panel, color: T.textMuted, fontSize: 11 }}>Select an area in the tracker</div>;
+      if (!ready) return <div style={{ ...panel, color: T.textMuted, fontSize: 14 }}>Loading…</div>;
+      if (!areaId) return <div style={{ ...panel, color: T.textMuted, fontSize: 14 }}>Select an area in the tracker</div>;
 
       const area = (window.__FRLG_AREAS || []).find(a => a.id === areaId);
       if (!area) return null;
@@ -304,8 +304,8 @@
           if (row.type === "method") {
             const prevRow = rows[i - 1];
             return (
-              <div key={i} style={{ fontSize:10, fontWeight:700, letterSpacing:1.5, color: row.color || T.textMuted,
-                                    marginTop: (prevRow && prevRow.type === "floor") ? 0 : (i === 0 ? 2 : 7), marginBottom: 2 }}>
+              <div key={i} style={{ fontSize:12, fontWeight:700, letterSpacing:1.5, color: row.color || T.textMuted,
+                                    marginTop: (prevRow && prevRow.type === "floor") ? 0 : (i === 0 ? 3 : 10), marginBottom: 3 }}>
                 {row.label}
               </div>
             );
@@ -319,22 +319,22 @@
           const nextRow   = rows[i + 1];
           const border    = (!nextRow || nextRow.type === "floor" || nextRow.type === "method") ? "none" : `1px solid ${T.divider}`;
           return (
-            <div key={i} style={{ display:"flex", alignItems:"center", gap:7, padding:"5px 0", opacity: dimmed ? 0.35 : 1, borderBottom: border }}>
+            <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"9px 0", opacity: dimmed ? 0.35 : 1, borderBottom: border }}>
               {spriteUrl
-                ? <img src={spriteUrl} alt={p.name} width={32} height={32} style={{ imageRendering:"pixelated", flexShrink:0, opacity: isCaught ? 1 : 0.65, filter: isCaught ? "none" : "brightness(0)" }} />
-                : <div style={{ width:32, height:32, flexShrink:0 }} />}
-              <span style={{ fontSize:14, flex:1, minWidth:0, color: isCaught ? "#4aaf74" : T.textPrimary, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                ? <img src={spriteUrl} alt={p.name} width={48} height={48} style={{ imageRendering:"pixelated", flexShrink:0, opacity: isCaught ? 1 : 0.65, filter: isCaught ? "none" : "brightness(0)" }} />
+                : <div style={{ width:48, height:48, flexShrink:0 }} />}
+              <span style={{ fontSize:20, fontWeight:600, flex:1, minWidth:0, color: isCaught ? "#4aaf74" : T.textPrimary, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                 {p.name}
               </span>
               {vTag && (
-                <span style={{ fontSize:11, fontWeight:700, color: vTag === "FR" ? "#d4621a" : "#3fa84a", background: vTag === "FR" ? "rgba(212,98,26,0.15)" : "rgba(63,168,74,0.15)", borderRadius:4, padding:"1px 6px", flexShrink:0 }}>
+                <span style={{ fontSize:13, fontWeight:700, color: vTag === "FR" ? "#d4621a" : "#3fa84a", background: vTag === "FR" ? "rgba(212,98,26,0.15)" : "rgba(63,168,74,0.15)", borderRadius:4, padding:"2px 7px", flexShrink:0 }}>
                   {vTag}
                 </span>
               )}
-              <span style={{ fontSize:11, background:mc.bg, color:mc.color, borderRadius:4, padding:"1px 6px", flexShrink:0 }}>
+              <span style={{ fontSize:13, background:mc.bg, color:mc.color, borderRadius:4, padding:"2px 7px", flexShrink:0 }}>
                 {{"Old Rod":"Old","Good Rod":"Good","Super Rod":"Super"}[p.method] ?? p.method}
               </span>
-              <span style={{ fontSize:11, color: T.textMuted, flexShrink:0, whiteSpace:"nowrap" }}>
+              <span style={{ fontSize:13, color: T.textMuted, flexShrink:0, whiteSpace:"nowrap" }}>
                 {versionRate(p, version)}
               </span>
             </div>
@@ -353,22 +353,22 @@
         const nextRow   = rows[i + 1];
         const border    = (!nextRow || nextRow.type === "floor") ? "none" : `1px solid ${T.divider}`;
         return (
-          <div key={i} style={{ display:"flex", alignItems:"center", gap:7, padding:"5px 0", opacity: collected ? 0.45 : 1, borderBottom: border }}>
+          <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"9px 0", opacity: collected ? 0.45 : 1, borderBottom: border }}>
             {spriteUrl
-              ? <img src={spriteUrl} alt={it.name} width={32} height={32} style={{ imageRendering:"pixelated", flexShrink:0 }} />
-              : <div style={{ width:32, height:32, background: T.placeholderBg, borderRadius:4, flexShrink:0 }} />}
+              ? <img src={spriteUrl} alt={it.name} width={40} height={40} style={{ imageRendering:"pixelated", flexShrink:0 }} />
+              : <div style={{ width:40, height:40, background: T.placeholderBg, borderRadius:4, flexShrink:0 }} />}
             <div style={{ flex:1, minWidth:0 }}>
-              <div style={{ fontSize:14, color: collected ? T.textMuted : T.textPrimary, textDecoration: collected ? "line-through" : "none", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
-                {it.hidden && <span style={{ color:"#c8960a", marginRight:3 }}>★</span>}
+              <div style={{ fontSize:18, fontWeight:500, color: collected ? T.textMuted : T.textPrimary, textDecoration: collected ? "line-through" : "none", whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                {it.hidden && <span style={{ color:"#c8960a", marginRight:4 }}>★</span>}
                 {it.name}
               </div>
               {it.note && (
-                <div style={{ fontSize:11, color: T.textMuted, marginTop:1, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
+                <div style={{ fontSize:13, color: T.textMuted, marginTop:2, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                   {it.note}
                 </div>
               )}
             </div>
-            {collected && <span style={{ fontSize:16, color:"#4aaf74", flexShrink:0 }}>✓</span>}
+            {collected && <span style={{ fontSize:20, color:"#4aaf74", flexShrink:0 }}>✓</span>}
           </div>
         );
       };
@@ -414,7 +414,7 @@
               </>
             )}
             {wRows.length > 0 && iRows.length > 0 && (
-              <div style={{ height:1, background: T.border, margin:"10px 0 8px" }} />
+              <div style={{ height:1, background: T.border, margin:"14px 0 12px" }} />
             )}
             {iRows.length > 0 && (
               <>
@@ -452,22 +452,22 @@
               const nextRow = rows[i + 1];
               const border  = (!nextRow || nextRow.type === "floor") ? "none" : `1px solid ${T.divider}`;
               return (
-                <div key={i} style={{ padding:"4px 0", opacity: defeated ? 0.45 : 1, borderBottom: border }}>
+                <div key={i} style={{ padding:"9px 0", opacity: defeated ? 0.45 : 1, borderBottom: border }}>
                   <div style={{ display:"flex", alignItems:"center", gap:6 }}>
                     <div style={{ flex:1, minWidth:0 }}>
-                      <span style={{ fontSize:11, color:"#a87acc", marginRight:4 }}>{tr.class}</span>
-                      <span style={{ fontSize:11, color: defeated ? T.textMuted : T.textPrimary, textDecoration: defeated ? "line-through" : "none" }}>{tr.name}</span>
+                      <span style={{ fontSize:14, color:"#a87acc", marginRight:5 }}>{tr.class}</span>
+                      <span style={{ fontSize:15, fontWeight:600, color: defeated ? T.textMuted : T.textPrimary, textDecoration: defeated ? "line-through" : "none" }}>{tr.name}</span>
                     </div>
-                    {defeated && <span style={{ fontSize:13, color:"#4aaf74", flexShrink:0 }}>✓</span>}
+                    {defeated && <span style={{ fontSize:16, color:"#4aaf74", flexShrink:0 }}>✓</span>}
                   </div>
                   {tr.team && tr.team.length > 0 && (
-                    <div style={{ display:"flex", flexWrap:"wrap", gap:4, marginTop:3 }}>
+                    <div style={{ display:"flex", flexWrap:"wrap", gap:5, marginTop:5 }}>
                       {tr.team.map((mon, j) => {
                         const url = pokeSprite(mon.name);
                         return (
-                          <div key={j} style={{ display:"flex", alignItems:"center", gap:2, background: T.teamBg, borderRadius:5, padding:"1px 5px 1px 2px" }}>
-                            {url && <img src={url} alt={mon.name} width={20} height={20} style={{ imageRendering:"pixelated" }} />}
-                            <span style={{ fontSize:9, color: T.textMuted }}>{mon.name} <span style={{ color:"#c8960a" }}>{mon.level}</span></span>
+                          <div key={j} style={{ display:"flex", alignItems:"center", gap:3, background: T.teamBg, borderRadius:5, padding:"2px 7px 2px 3px" }}>
+                            {url && <img src={url} alt={mon.name} width={24} height={24} style={{ imageRendering:"pixelated" }} />}
+                            <span style={{ fontSize:12, color: T.textMuted }}>{mon.name} <span style={{ color:"#c8960a" }}>{mon.level}</span></span>
                           </div>
                         );
                       })}
