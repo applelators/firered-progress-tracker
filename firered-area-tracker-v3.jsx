@@ -5153,7 +5153,7 @@ function DreamTeamTab({ isMobile, version }) {
                     </button>
                     {altExpanded && (
                       <div style={{ marginTop:8, display:"flex", flexDirection:"column", gap:5 }}>
-                        {getAlternatives(idx, team, version).map(({ name: altName, delta }) => {
+                        {getAlternatives(idx, team, version, 10).map(({ name: altName, delta }) => {
                           const altDex = DEX.find(p => p.name === altName);
                           const isCurr = altName === name;
                           const isBest = delta === 0;
