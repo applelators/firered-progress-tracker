@@ -3688,7 +3688,8 @@ function getDreamHMs(name) {
 // For each HM required by the team, assign it to exactly one Pokémon.
 // Strategy: process rarest coverage first; consolidate onto whichever team member
 // is already the HM carrier, tiebroken by total HM capability then team order.
-function assignHMs(team) {
+function assignHMs(team, maxPerPokemon) {
+  const max = maxPerPokemon || 3;
   const ALL_HMs = ["Fly","Surf","Waterfall","Strength","Cut","Rock Smash"];
   const canLearn = {};
   team.forEach(name => { canLearn[name] = new Set(getDreamHMs(name)); });
@@ -3700,9 +3701,9 @@ function assignHMs(team) {
   const load = {};
   team.forEach(n => { load[n] = 0; });
 
-  // Priority override: Lapras always carries both water HMs when present
+  // Priority override: Lapras always carries both water HMs when present (respects cap)
   for (const waterHM of ["Surf", "Waterfall"]) {
-    if (team.includes("Lapras") && (candidates[waterHM] || []).includes("Lapras")) {
+    if (team.includes("Lapras") && (candidates[waterHM] || []).includes("Lapras") && load["Lapras"] < max) {
       assignments[waterHM] = "Lapras";
       load["Lapras"]++;
     }
@@ -3713,7 +3714,8 @@ function assignHMs(team) {
     .sort((a, b) => candidates[a].length - candidates[b].length);
 
   for (const hm of sorted) {
-    const avail = candidates[hm];
+    const avail = candidates[hm].filter(n => load[n] < max);
+    if (!avail.length) continue;
     const winner = avail.reduce((best, cur) => {
       const curSTAB = hasSTAB(cur, hm), bestSTAB = hasSTAB(best, hm);
       if (curSTAB !== bestSTAB) return curSTAB ? cur : best;
@@ -4961,18 +4963,24 @@ function DreamTeamTab({ isMobile, version }) {
   const [favorite,        setFavorite]        = React.useState("");
   const [pins,            setPins]            = React.useState({});   // {slotIdx: name}
   const [expandedAltSlot, setExpandedAltSlot] = React.useState(null);
+  const [hmPerPokemon,    setHmPerPokemon]    = React.useState(3);
 
   React.useEffect(() => {
     try {
       const r = localStorage.getItem("frlg-dream-team-v4");
-      if (r) { const d = JSON.parse(r); if (d.favorite) setFavorite(d.favorite); if (d.pins) setPins(d.pins); }
+      if (r) {
+        const d = JSON.parse(r);
+        if (d.favorite) setFavorite(d.favorite);
+        if (d.pins) setPins(d.pins);
+        if (d.hmPerPokemon) setHmPerPokemon(d.hmPerPokemon);
+      }
     } catch {}
   }, []);
 
   React.useEffect(() => {
     if (!favorite) return;
-    try { localStorage.setItem("frlg-dream-team-v4", JSON.stringify({ favorite, pins, version })); } catch {}
-  }, [favorite, pins, version]);
+    try { localStorage.setItem("frlg-dream-team-v4", JSON.stringify({ favorite, pins, version, hmPerPokemon })); } catch {}
+  }, [favorite, pins, version, hmPerPokemon]);
 
   // Drop version-conflicting pins when version changes
   React.useEffect(() => {
@@ -4992,7 +5000,7 @@ function DreamTeamTab({ isMobile, version }) {
   const team = React.useMemo(() => buildDreamTeamV2(favorite, pins, version), [favorite, pins, version]);
   const isDragoniteLine = ["Dratini","Dragonair","Dragonite"].includes(favorite);
   const tmWinners     = React.useMemo(() => team ? assignOneTimeTMs(team) : {}, [team]);
-  const hmAssignments = React.useMemo(() => team ? assignHMs(team) : {}, [team]);
+  const hmAssignments = React.useMemo(() => team ? assignHMs(team, hmPerPokemon) : {}, [team, hmPerPokemon]);
 
   const isHardLocked = idx => idx === 0 || (idx === 1 && !isDragoniteLine);
 
@@ -5057,6 +5065,20 @@ function DreamTeamTab({ isMobile, version }) {
             Reset pins
           </button>
         )}
+        <div style={{ display:"flex", alignItems:"center", gap:6, marginLeft:"auto" }}>
+          <span style={{ fontSize:10, color:C.muted, whiteSpace:"nowrap" }}>Max HMs/member:</span>
+          <div style={{ display:"flex", border:`1px solid ${C.border}`, borderRadius:6, overflow:"hidden" }}>
+            {[1,2,3].map(n => (
+              <button key={n} onClick={() => setHmPerPokemon(n)} style={{
+                padding:"5px 10px", fontSize:11, fontFamily:"'DM Sans',system-ui,sans-serif",
+                background: hmPerPokemon === n ? "rgba(74,143,196,0.25)" : "rgba(0,0,0,0.2)",
+                color: hmPerPokemon === n ? "#4a8fc4" : C.muted,
+                border:"none", borderLeft: n > 1 ? `1px solid ${C.border}` : "none",
+                cursor:"pointer", fontWeight: hmPerPokemon === n ? "700" : "400",
+              }}>{n}</button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Coverage summary */}
