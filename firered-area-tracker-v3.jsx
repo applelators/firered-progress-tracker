@@ -3719,6 +3719,11 @@ function assignHMs(team, maxPerPokemon) {
     const winner = avail.reduce((best, cur) => {
       const curSTAB = hasSTAB(cur, hm), bestSTAB = hasSTAB(best, hm);
       if (curSTAB !== bestSTAB) return curSTAB ? cur : best;
+      // Prefer the weaker Pokémon (higher pool index = listed later = less battle value)
+      const curForm = DT_FINAL_FORM[cur] || cur, bestForm = DT_FINAL_FORM[best] || best;
+      const curRank = DT_CANDIDATES.findIndex(c => c.name === curForm);
+      const bestRank = DT_CANDIDATES.findIndex(c => c.name === bestForm);
+      if (curRank !== bestRank) return curRank > bestRank ? cur : best;
       if (load[cur] !== load[best]) return load[cur] > load[best] ? cur : best;
       const curCap = canLearn[cur].size, bestCap = canLearn[best].size;
       if (curCap !== bestCap) return curCap > bestCap ? cur : best;
