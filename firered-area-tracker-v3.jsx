@@ -3090,6 +3090,88 @@ for (const chain of _EVO_CHAINS_RAW) {
   }
 }
 
+// Flat list of every evolution step with method and group for the Evo Planner tab.
+const EVO_METHODS = [
+  // ── Level-up ──────────────────────────────────────────────────────────────────
+  {pre:"Bulbasaur",  evo:"Ivysaur",    how:"Level 16",  group:"level"},
+  {pre:"Ivysaur",    evo:"Venusaur",   how:"Level 32",  group:"level"},
+  {pre:"Charmander", evo:"Charmeleon", how:"Level 16",  group:"level"},
+  {pre:"Charmeleon", evo:"Charizard",  how:"Level 36",  group:"level"},
+  {pre:"Squirtle",   evo:"Wartortle",  how:"Level 16",  group:"level"},
+  {pre:"Wartortle",  evo:"Blastoise",  how:"Level 36",  group:"level"},
+  {pre:"Caterpie",   evo:"Metapod",    how:"Level 7",   group:"level"},
+  {pre:"Metapod",    evo:"Butterfree", how:"Level 10",  group:"level"},
+  {pre:"Weedle",     evo:"Kakuna",     how:"Level 7",   group:"level"},
+  {pre:"Kakuna",     evo:"Beedrill",   how:"Level 10",  group:"level"},
+  {pre:"Pidgey",     evo:"Pidgeotto",  how:"Level 18",  group:"level"},
+  {pre:"Pidgeotto",  evo:"Pidgeot",    how:"Level 36",  group:"level"},
+  {pre:"Rattata",    evo:"Raticate",   how:"Level 20",  group:"level"},
+  {pre:"Spearow",    evo:"Fearow",     how:"Level 20",  group:"level"},
+  {pre:"Ekans",      evo:"Arbok",      how:"Level 22",  group:"level"},
+  {pre:"Sandshrew",  evo:"Sandslash",  how:"Level 22",  group:"level"},
+  {pre:"Nidoran♀",   evo:"Nidorina",   how:"Level 16",  group:"level"},
+  {pre:"Nidoran♂",   evo:"Nidorino",   how:"Level 16",  group:"level"},
+  {pre:"Zubat",      evo:"Golbat",     how:"Level 22",  group:"level"},
+  {pre:"Oddish",     evo:"Gloom",      how:"Level 21",  group:"level"},
+  {pre:"Paras",      evo:"Parasect",   how:"Level 24",  group:"level"},
+  {pre:"Venonat",    evo:"Venomoth",   how:"Level 31",  group:"level"},
+  {pre:"Diglett",    evo:"Dugtrio",    how:"Level 26",  group:"level"},
+  {pre:"Meowth",     evo:"Persian",    how:"Level 28",  group:"level"},
+  {pre:"Psyduck",    evo:"Golduck",    how:"Level 33",  group:"level"},
+  {pre:"Mankey",     evo:"Primeape",   how:"Level 28",  group:"level"},
+  {pre:"Poliwag",    evo:"Poliwhirl",  how:"Level 25",  group:"level"},
+  {pre:"Abra",       evo:"Kadabra",    how:"Level 16",  group:"level"},
+  {pre:"Machop",     evo:"Machoke",    how:"Level 28",  group:"level"},
+  {pre:"Bellsprout", evo:"Weepinbell", how:"Level 21",  group:"level"},
+  {pre:"Tentacool",  evo:"Tentacruel", how:"Level 30",  group:"level"},
+  {pre:"Geodude",    evo:"Graveler",   how:"Level 25",  group:"level"},
+  {pre:"Ponyta",     evo:"Rapidash",   how:"Level 40",  group:"level"},
+  {pre:"Slowpoke",   evo:"Slowbro",    how:"Level 37",  group:"level"},
+  {pre:"Magnemite",  evo:"Magneton",   how:"Level 30",  group:"level"},
+  {pre:"Doduo",      evo:"Dodrio",     how:"Level 31",  group:"level"},
+  {pre:"Seel",       evo:"Dewgong",    how:"Level 34",  group:"level"},
+  {pre:"Grimer",     evo:"Muk",        how:"Level 38",  group:"level"},
+  {pre:"Gastly",     evo:"Haunter",    how:"Level 25",  group:"level"},
+  {pre:"Drowzee",    evo:"Hypno",      how:"Level 26",  group:"level"},
+  {pre:"Krabby",     evo:"Kingler",    how:"Level 28",  group:"level"},
+  {pre:"Voltorb",    evo:"Electrode",  how:"Level 30",  group:"level"},
+  {pre:"Cubone",     evo:"Marowak",    how:"Level 28",  group:"level"},
+  {pre:"Koffing",    evo:"Weezing",    how:"Level 35",  group:"level"},
+  {pre:"Rhyhorn",    evo:"Rhydon",     how:"Level 42",  group:"level"},
+  {pre:"Horsea",     evo:"Seadra",     how:"Level 32",  group:"level"},
+  {pre:"Goldeen",    evo:"Seaking",    how:"Level 33",  group:"level"},
+  {pre:"Magikarp",   evo:"Gyarados",   how:"Level 20",  group:"level"},
+  {pre:"Omanyte",    evo:"Omastar",    how:"Level 40",  group:"level"},
+  {pre:"Kabuto",     evo:"Kabutops",   how:"Level 40",  group:"level"},
+  {pre:"Dratini",    evo:"Dragonair",  how:"Level 30",  group:"level"},
+  {pre:"Dragonair",  evo:"Dragonite",  how:"Level 55",  group:"level"},
+  // ── Stone ─────────────────────────────────────────────────────────────────────
+  {pre:"Pikachu",    evo:"Raichu",     how:"Thunder Stone",  group:"stone"},
+  {pre:"Nidorina",   evo:"Nidoqueen",  how:"Moon Stone",     group:"stone"},
+  {pre:"Nidorino",   evo:"Nidoking",   how:"Moon Stone",     group:"stone"},
+  {pre:"Clefairy",   evo:"Clefable",   how:"Moon Stone",     group:"stone"},
+  {pre:"Vulpix",     evo:"Ninetales",  how:"Fire Stone",     group:"stone"},
+  {pre:"Jigglypuff", evo:"Wigglytuff", how:"Moon Stone",     group:"stone"},
+  {pre:"Gloom",      evo:"Vileplume",  how:"Leaf Stone",     group:"stone"},
+  {pre:"Growlithe",  evo:"Arcanine",   how:"Fire Stone",     group:"stone"},
+  {pre:"Poliwhirl",  evo:"Poliwrath",  how:"Water Stone",    group:"stone"},
+  {pre:"Weepinbell", evo:"Victreebel", how:"Leaf Stone",     group:"stone"},
+  {pre:"Shellder",   evo:"Cloyster",   how:"Water Stone",    group:"stone"},
+  {pre:"Exeggcute",  evo:"Exeggutor",  how:"Leaf Stone",     group:"stone"},
+  {pre:"Staryu",     evo:"Starmie",    how:"Water Stone",    group:"stone"},
+  {pre:"Eevee",      evo:"Vaporeon",   how:"Water Stone",    group:"stone"},
+  {pre:"Eevee",      evo:"Jolteon",    how:"Thunder Stone",  group:"stone"},
+  {pre:"Eevee",      evo:"Flareon",    how:"Fire Stone",     group:"stone"},
+  // ── Trade ─────────────────────────────────────────────────────────────────────
+  {pre:"Kadabra",    evo:"Alakazam",   how:"Trade",          group:"trade"},
+  {pre:"Machoke",    evo:"Machamp",    how:"Trade",          group:"trade"},
+  {pre:"Graveler",   evo:"Golem",      how:"Trade",          group:"trade"},
+  {pre:"Haunter",    evo:"Gengar",     how:"Trade",          group:"trade"},
+  // ── Friendship ────────────────────────────────────────────────────────────────
+  {pre:"Golbat",     evo:"Crobat",     how:"High friendship", group:"friend"},
+  {pre:"Chansey",    evo:"Blissey",    how:"High friendship", group:"friend"},
+];
+
 // ─── LEARNSETS ────────────────────────────────────────────────────────────────
 // Gen III FRLG level-up moves only. Source: Bulbapedia /Generation_III_learnset.
 // Level-1 entries are inherited moves (available via Move Reminder after evolution).
@@ -3965,6 +4047,46 @@ const BADGES = [
   { id:"marsh",   name:"Marsh Badge",   city:"Saffron City",   color:"#60b8d8", shape:"hex"     },
   { id:"volcano", name:"Volcano Badge", city:"Cinnabar Island",color:"#e04828", shape:"tri"     },
   { id:"earth",   name:"Earth Badge",   city:"Viridian City",  color:"#c0a030", shape:"globe"   },
+];
+
+const GYM_DATA = [
+  { id:"brock",    name:"Brock",     city:"Pewter City",    badge:"Boulder Badge", badgeId:"boulder", specialty:["Rock","Ground"],
+    team:[{name:"Geodude",   level:12,types:["Rock","Ground"]},{name:"Onix",     level:14,types:["Rock","Ground"]}] },
+  { id:"misty",    name:"Misty",     city:"Cerulean City",  badge:"Cascade Badge", badgeId:"cascade", specialty:["Water"],
+    team:[{name:"Staryu",    level:18,types:["Water"]},{name:"Starmie",  level:21,types:["Water","Psychic"]}] },
+  { id:"surge",    name:"Lt. Surge", city:"Vermilion City", badge:"Thunder Badge", badgeId:"thunder", specialty:["Electric"],
+    team:[{name:"Voltorb",   level:21,types:["Electric"]},{name:"Pikachu",  level:18,types:["Electric"]},{name:"Raichu",level:24,types:["Electric"]}] },
+  { id:"erika",    name:"Erika",     city:"Celadon City",   badge:"Rainbow Badge", badgeId:"rainbow", specialty:["Grass","Poison"],
+    team:[{name:"Victreebel",level:29,types:["Grass","Poison"]},{name:"Tangela",  level:24,types:["Grass"]},{name:"Vileplume",level:29,types:["Grass","Poison"]}] },
+  { id:"koga",     name:"Koga",      city:"Fuchsia City",   badge:"Soul Badge",    badgeId:"soul",    specialty:["Poison"],
+    team:[{name:"Koffing",   level:37,types:["Poison"]},{name:"Muk",      level:39,types:["Poison"]},{name:"Koffing",level:37,types:["Poison"]},{name:"Weezing",level:43,types:["Poison"]}] },
+  { id:"sabrina",  name:"Sabrina",   city:"Saffron City",   badge:"Marsh Badge",   badgeId:"marsh",   specialty:["Psychic"],
+    team:[{name:"Kadabra",   level:38,types:["Psychic"]},{name:"Mr. Mime",level:37,types:["Psychic"]},{name:"Venomoth",level:38,types:["Bug","Poison"]},{name:"Alakazam",level:43,types:["Psychic"]}] },
+  { id:"blaine",   name:"Blaine",    city:"Cinnabar Island",badge:"Volcano Badge", badgeId:"volcano", specialty:["Fire"],
+    team:[{name:"Growlithe", level:42,types:["Fire"]},{name:"Ponyta",    level:40,types:["Fire"]},{name:"Rapidash",level:42,types:["Fire"]},{name:"Arcanine",level:47,types:["Fire"]}] },
+  { id:"giovanni", name:"Giovanni",  city:"Viridian City",  badge:"Earth Badge",   badgeId:"earth",   specialty:["Ground"],
+    team:[{name:"Rhyhorn",   level:45,types:["Ground","Rock"]},{name:"Dugtrio",   level:42,types:["Ground"]},{name:"Nidoqueen",level:44,types:["Poison","Ground"]},{name:"Nidoking",level:45,types:["Poison","Ground"]},{name:"Rhyhorn",level:50,types:["Ground","Rock"]}] },
+  { id:"lorelei",  name:"Lorelei",   city:"Elite Four",     badge:"",              specialty:["Ice","Water"],
+    team:[{name:"Dewgong",   level:54,types:["Water","Ice"]},{name:"Cloyster",  level:53,types:["Water","Ice"]},{name:"Slowbro",level:54,types:["Water","Psychic"]},{name:"Jynx",level:56,types:["Ice","Psychic"]},{name:"Lapras",level:60,types:["Water","Ice"]}] },
+  { id:"bruno",    name:"Bruno",     city:"Elite Four",     badge:"",              specialty:["Fighting","Rock"],
+    team:[{name:"Onix",      level:53,types:["Rock","Ground"]},{name:"Hitmonchan",level:55,types:["Fighting"]},{name:"Hitmonlee",level:55,types:["Fighting"]},{name:"Onix",level:56,types:["Rock","Ground"]},{name:"Machamp",level:58,types:["Fighting"]}] },
+  { id:"agatha",   name:"Agatha",    city:"Elite Four",     badge:"",              specialty:["Ghost","Poison"],
+    team:[{name:"Gengar",    level:54,types:["Ghost","Poison"]},{name:"Haunter",   level:53,types:["Ghost","Poison"]},{name:"Gengar",level:54,types:["Ghost","Poison"]},{name:"Arbok",level:58,types:["Poison"]},{name:"Gengar",level:58,types:["Ghost","Poison"]}] },
+  { id:"lance",    name:"Lance",     city:"Elite Four",     badge:"",              specialty:["Dragon","Flying"],
+    team:[{name:"Gyarados",  level:58,types:["Water","Flying"]},{name:"Dragonair", level:56,types:["Dragon"]},{name:"Dragonair",level:56,types:["Dragon"]},{name:"Aerodactyl",level:60,types:["Rock","Flying"]},{name:"Dragonite",level:62,types:["Dragon","Flying"]}] },
+  { id:"blue",     name:"Blue",      city:"Champion",       badge:"",              specialty:["Normal","Psychic","Ground","Grass"],
+    note:"Core team (always): Pidgeot, Alakazam, Rhydon, Exeggutor. Final two slots depend on your starter.",
+    team:[
+      {name:"Pidgeot",   level:59,types:["Normal","Flying"]},
+      {name:"Alakazam",  level:57,types:["Psychic"]},
+      {name:"Rhydon",    level:59,types:["Ground","Rock"]},
+      {name:"Exeggutor", level:61,types:["Grass","Psychic"]},
+      {name:"Arcanine",  level:61,types:["Fire"],         note:"vs Bulbasaur / Squirtle start"},
+      {name:"Gyarados",  level:61,types:["Water","Flying"],note:"vs Charmander start"},
+      {name:"Blastoise", level:63,types:["Water"],         note:"vs Bulbasaur start"},
+      {name:"Charizard", level:65,types:["Fire","Flying"], note:"vs Squirtle start"},
+      {name:"Venusaur",  level:65,types:["Grass","Poison"],note:"vs Charmander start"},
+    ]},
 ];
 
 // ─── KANTO MAP NODES ─────────────────────────────────────────────────────────
@@ -4983,6 +5105,32 @@ function FireRedTracker() {
     }
     return { completionDone: done, completionTotal: total };
   }, [caught, checklist]);
+
+  const globalStats = useMemo(() => {
+    const auditedAreas = AREAS.filter(a => AUDITED_PARTS.has(a.part));
+    const allPoks = a => a.floors ? a.floors.flatMap(f => f.pokemon || []) : (a.pokemon || []);
+    const allTrns = a => a.floors ? a.floors.flatMap(f => f.trainers || []) : (a.trainers || []);
+    const pokSet = new Set();
+    auditedAreas.forEach(a => allPoks(a).forEach(p => {
+      if (version === "fr" && p.lgOnly) return;
+      if (version === "lg" && p.frOnly) return;
+      pokSet.add(p.name);
+    }));
+    const totalPok = pokSet.size;
+    const caughtPok = [...pokSet].filter(n => caught[n]).length;
+    let totalItems = 0, doneItems = 0;
+    auditedAreas.forEach(a => {
+      if (a.floors) a.floors.forEach(f => (f.items||[]).forEach((_, i) => { totalItems++; if (items[`${a.id}|${f.label}|${i}`]) doneItems++; }));
+      else (a.items||[]).forEach((_, i) => { totalItems++; if (items[`${a.id}|${i}`]) doneItems++; });
+    });
+    let totalTrainers = 0, doneTrainers = 0;
+    auditedAreas.forEach(a => allTrns(a).forEach(t => {
+      totalTrainers++;
+      if (trainers[`${a.id}|${t.class}|${t.name}`]) doneTrainers++;
+    }));
+    return { caughtPok, totalPok, doneItems, totalItems, doneTrainers, totalTrainers };
+  }, [caught, items, trainers, version]);
+
   const accent = version === "lg" ? C.lgGreen : C.frRed;
 
   if (!booted) return <div style={{ background:C.bg, minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", color:C.text, fontFamily:"'DM Sans',system-ui,sans-serif" }}>Loading…</div>;
@@ -5022,8 +5170,9 @@ function FireRedTracker() {
             </div>
             {/* Stats */}
             <div style={{ display:"flex", gap:18, fontSize:11, alignItems:"center" }}>
-              <span><span style={{ color:C.green, fontWeight:"700", fontSize:13 }}>{caughtCount}</span><span style={{ color:C.muted }}> / 151 caught</span></span>
-              <span><span style={{ color:C.gold, fontWeight:"700", fontSize:13 }}>{Object.keys(items).length}</span><span style={{ color:C.muted }}> items</span></span>
+              <span><span style={{ color:C.green, fontWeight:"700", fontSize:13 }}>{globalStats.caughtPok}/{globalStats.totalPok}</span><span style={{ color:C.muted }}> caught</span></span>
+              <span><span style={{ color:C.gold, fontWeight:"700", fontSize:13 }}>{pct(globalStats.doneItems,globalStats.totalItems)}%</span><span style={{ color:C.muted }}> items</span></span>
+              <span><span style={{ color:"#a87acc", fontWeight:"700", fontSize:13 }}>{pct(globalStats.doneTrainers,globalStats.totalTrainers)}%</span><span style={{ color:C.muted }}> trainers</span></span>
               <span onClick={() => setTabAndSave("completion")}
                 title="View 100% checklist"
                 style={{ cursor:"pointer" }}>
@@ -5053,7 +5202,7 @@ function FireRedTracker() {
 
         {/* Tabs */}
         <div style={{ display:"flex", gap:2, marginTop:10, overflowX:"auto", WebkitOverflowScrolling:"touch", flexWrap:"nowrap" }}>
-          {[["areas","Areas"],["dex","Pokédex"],["team","Team"],["types","Types"],["calc","Catch"],["hunt","Hunt"],["tms","TMs"],["completion","100%"]].map(([t,label]) => (
+          {[["areas","Areas"],["dex","Pokédex"],["team","Team"],["gyms","Gyms"],["evo","Evolutions"],["types","Types"],["calc","Catch"],["hunt","Hunt"],["tms","TMs"],["completion","100%"]].map(([t,label]) => (
             <button key={t} onClick={() => setTabAndSave(t)} style={{
               padding: isMobile ? "7px 12px" : "8px 20px", border:"none", borderRadius:"6px 6px 0 0", cursor:"pointer", flexShrink:0,
               fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:13, fontWeight:"600",
@@ -5074,6 +5223,12 @@ function FireRedTracker() {
 
       {/* ── Tab: Dream Team ── */}
       {tab === "team" && <DreamTeamTab isMobile={isMobile} version={version} />}
+
+      {/* ── Tab: Gym Matchup ── */}
+      {tab === "gyms" && <GymTab isMobile={isMobile} />}
+
+      {/* ── Tab: Evolution Planner ── */}
+      {tab === "evo" && <EvoTab caught={caught} toggleCaught={toggleCaught} version={version} />}
 
       {tab === "types" && <TypeChartTab isMobile={isMobile} />}
 
@@ -6647,6 +6802,15 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
   const visibleAreas = useMemo(() => AREAS.filter(a => AUDITED_PARTS.has(a.part)), []);
   const groups = useMemo(() => groupByPart(visibleAreas), [visibleAreas]);
   const filtered = useMemo(() => search.trim() ? visibleAreas.filter(a => a.name.toLowerCase().includes(search.toLowerCase())) : null, [search, visibleAreas]);
+  const [areaNotes, setAreaNotes] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("frlg-area-notes") || "{}"); } catch { return {}; }
+  });
+  const setAreaNote = (id, text) => setAreaNotes(prev => {
+    const next = { ...prev };
+    if (text) next[id] = text; else delete next[id];
+    try { localStorage.setItem("frlg-area-notes", JSON.stringify(next)); } catch {}
+    return next;
+  });
   const [collapsedFloors, setCollapsedFloors] = useState(() => {
     try { const r = localStorage.getItem("frlg-collapsed-floors"); return r ? new Set(Object.keys(JSON.parse(r))) : new Set(); } catch { return new Set(); }
   });
@@ -6789,7 +6953,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
             style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:14, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
         </div>
         {filtered
-          ? filtered.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} trainers={trainers} trades={trades} version={version} choiceGroups={choiceGroups} />)
+          ? filtered.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} trainers={trainers} trades={trades} version={version} choiceGroups={choiceGroups} areaNotes={areaNotes} />)
           : Object.entries(groups).map(([part, list]) => {
               const isCollapsed = collapsedParts.has(part);
               const isDone = partFullDone[part];
@@ -6801,7 +6965,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                     <span>{isDone ? "✓ " : isSoft ? "~ " : ""}{part}</span>
                     <span style={{ fontSize:11, opacity:0.6, marginLeft:6 }}>{isCollapsed ? "▶" : "▼"}</span>
                   </div>
-                  {!isCollapsed && list.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} trainers={trainers} trades={trades} version={version} choiceGroups={choiceGroups} />)}
+                  {!isCollapsed && list.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} trainers={trainers} trades={trades} version={version} choiceGroups={choiceGroups} areaNotes={areaNotes} />)}
                 </div>
               );
             })
@@ -6980,6 +7144,18 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                 </div>
               )}
             </div>
+
+            {/* ── Notes ── */}
+            <div style={{ padding:"4px 20px 20px" }}>
+              <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:6 }}>Notes</div>
+              <textarea
+                value={areaNotes[areaId] || ""}
+                onChange={e => setAreaNote(areaId, e.target.value)}
+                placeholder="Personal notes for this area…"
+                rows={3}
+                style={{ width:"100%", background:"rgba(0,0,0,0.2)", border:`1px solid ${C.border}`, borderRadius:6, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:12, resize:"vertical", outline:"none", boxSizing:"border-box" }}
+              />
+            </div>
           </>
         )}
       </div>
@@ -6989,7 +7165,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
 }
 
 // ─── Shared sub-components ────────────────────────────────────────────────────
-function AreaRow({ area, areaId, setAreaId, caught, items, trainers, trades, version, choiceGroups }) {
+function AreaRow({ area, areaId, setAreaId, caught, items, trainers, trades, version, choiceGroups, areaNotes }) {
   const isSel  = areaId === area.id;
   const isPok  = p  => !!(p.choiceGroup  && choiceGroups?.[p.choiceGroup]  && choiceGroups[p.choiceGroup]  !== p.choiceId);
   const isItm  = it => !!(it.choiceGroup && choiceGroups?.[it.choiceGroup] && choiceGroups[it.choiceGroup] !== it.choiceId);
@@ -7030,6 +7206,7 @@ function AreaRow({ area, areaId, setAreaId, caught, items, trainers, trades, ver
         <span style={{ fontSize:12, fontWeight: isSel ? "700" : "400", color: allDone ? C.green : isSel ? "var(--frlg-accent)" : "#c4a888", lineHeight:1.4, flex:1 }}>{allDone ? "✓ " : ""}{area.name}</span>
         {hasPendingTrades && <span style={{ fontSize:9, color:"#c8960a", background:"rgba(200,150,10,0.12)", border:"1px solid rgba(200,150,10,0.35)", padding:"1px 5px", borderRadius:99, fontWeight:"700", flexShrink:0 }}>⇄</span>}
         {hasPendingSurfItems && <span style={{ fontSize:9, color:"#4a8fc4", background:"rgba(74,143,196,0.12)", border:"1px solid rgba(74,143,196,0.35)", padding:"1px 5px", borderRadius:99, fontWeight:"700", flexShrink:0 }}>≈</span>}
+        {areaNotes?.[area.id] && <span title="Has notes" style={{ width:7, height:7, borderRadius:"50%", background:"#6ba8d4", flexShrink:0, display:"inline-block" }} />}
       </div>
       {total > 0 && (
         <div style={{ display:"flex", gap:10, marginTop:3, fontSize:10, color:C.muted }}>
@@ -7420,6 +7597,184 @@ function RateDisplay({ rate, isMobile }) {
 
 function Empty({ text }) {
   return <div style={{ padding:20, textAlign:"center", fontSize:12, color:C.muted }}>{text}</div>;
+}
+
+// ─── GYM MATCHUP TAB ─────────────────────────────────────────────────────────
+function GymTab({ isMobile }) {
+  const [selId, setSelId] = React.useState("brock");
+  const gym = GYM_DATA.find(g => g.id === selId) || GYM_DATA[0];
+  const gymTypes = [...new Set(gym.team.flatMap(p => p.types))];
+  const attackAdvantage = TYPES_17.filter(atk => gymTypes.some(def => (TYPE_CHART[atk]?.[def] || 1) >= 2));
+  const gymThreats      = TYPES_17.filter(def => gymTypes.some(atk => (TYPE_CHART[atk]?.[def] || 1) >= 2));
+  const E4_IDS = new Set(["lorelei","bruno","agatha","lance","blue"]);
+
+  const SideBtn = ({ g }) => {
+    const isSel = g.id === selId;
+    return (
+      <button onClick={() => setSelId(g.id)} style={{
+        display:"flex", alignItems:"center", gap:8, padding:"8px 10px", width:"100%",
+        background: isSel ? "rgba(74,143,196,0.12)" : "transparent",
+        borderLeft: isSel ? `3px solid #4a8fc4` : `3px solid transparent`,
+        border:"none", borderBottom:`1px solid ${C.border}`, cursor:"pointer",
+        textAlign:"left", fontFamily:"'DM Sans',system-ui,sans-serif",
+      }}>
+        <div style={{ flex:1 }}>
+          <div style={{ fontSize:12, fontWeight:"700", color: isSel ? "#4a8fc4" : C.text }}>{g.name}</div>
+          <div style={{ fontSize:10, color:C.muted }}>{g.city}</div>
+        </div>
+        <div style={{ display:"flex", gap:2, flexWrap:"wrap", justifyContent:"flex-end", maxWidth:80 }}>
+          {g.specialty.map(t => <span key={t} style={{ fontSize:8, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"1px 4px", borderRadius:3, fontWeight:"700" }}>{t}</span>)}
+        </div>
+      </button>
+    );
+  };
+
+  return (
+    <div style={{ display:"flex", flex:1, overflow:"hidden" }}>
+      {/* Sidebar */}
+      <div style={{ width:190, flexShrink:0, borderRight:`1px solid ${C.border}`, background:C.card, overflowY:"auto" }}>
+        <div style={{ padding:"6px 10px 4px", fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", borderBottom:`1px solid ${C.border}` }}>Gym Leaders</div>
+        {GYM_DATA.filter(g => !E4_IDS.has(g.id)).map(g => <SideBtn key={g.id} g={g} />)}
+        <div style={{ padding:"6px 10px 4px", fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", borderBottom:`1px solid ${C.border}`, borderTop:`1px solid ${C.border}`, marginTop:4 }}>Elite Four + Champion</div>
+        {GYM_DATA.filter(g => E4_IDS.has(g.id)).map(g => <SideBtn key={g.id} g={g} />)}
+      </div>
+
+      {/* Detail */}
+      <div style={{ flex:1, overflowY:"auto", padding:20 }}>
+        <div style={{ marginBottom:16 }}>
+          <div style={{ fontSize:11, color:C.muted, letterSpacing:1, textTransform:"uppercase", marginBottom:3 }}>{gym.city}</div>
+          <div style={{ fontSize:22, fontWeight:"700", color:C.text }}>{gym.name}</div>
+          {gym.badge && <div style={{ fontSize:11, color:C.gold, marginTop:2 }}>{gym.badge}</div>}
+          {gym.note && <div style={{ fontSize:11, color:C.muted, marginTop:8, padding:"6px 10px", background:"rgba(255,255,255,0.04)", borderRadius:6, borderLeft:`2px solid ${C.border}` }}>{gym.note}</div>}
+        </div>
+
+        {/* Team */}
+        <div style={{ marginBottom:20 }}>
+          <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:8 }}>Team</div>
+          <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+            {gym.team.map((p, i) => {
+              const dId = allDexId(p.name);
+              return (
+                <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 12px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>
+                  {dId ? <img src={pokeSpriteUrl(dId)} alt={p.name} width={36} height={36} style={{ imageRendering:"pixelated", flexShrink:0 }} /> : <div style={{ width:36, flexShrink:0 }} />}
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontSize:13, fontWeight:"700", color:C.text }}>{p.name}</div>
+                    <div style={{ display:"flex", gap:4, marginTop:2 }}>
+                      {p.types.map(t => <span key={t} style={{ fontSize:9, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"1px 6px", borderRadius:3, fontWeight:"700" }}>{t}</span>)}
+                    </div>
+                  </div>
+                  <div style={{ textAlign:"right" }}>
+                    <div style={{ fontSize:12, color:C.muted, fontWeight:"600" }}>Lv {p.level}</div>
+                    {p.note && <div style={{ fontSize:9, color:C.muted, fontStyle:"italic", maxWidth:130 }}>{p.note}</div>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Type matchup summary */}
+        <div style={{ display:"flex", gap:16, flexWrap:"wrap" }}>
+          <div style={{ flex:1, minWidth:180, padding:"12px 14px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>
+            <div style={{ fontSize:9, color:C.green, letterSpacing:1.5, textTransform:"uppercase", marginBottom:8, fontWeight:"700" }}>Super effective against them</div>
+            <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>
+              {attackAdvantage.length === 0
+                ? <span style={{ fontSize:11, color:C.muted }}>None</span>
+                : attackAdvantage.map(t => <span key={t} style={{ fontSize:11, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"3px 10px", borderRadius:4, fontWeight:"700" }}>{t}</span>)}
+            </div>
+          </div>
+          <div style={{ flex:1, minWidth:180, padding:"12px 14px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>
+            <div style={{ fontSize:9, color:"#e85c5c", letterSpacing:1.5, textTransform:"uppercase", marginBottom:8, fontWeight:"700" }}>Their types are SE against</div>
+            <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>
+              {gymThreats.length === 0
+                ? <span style={{ fontSize:11, color:C.muted }}>None</span>
+                : gymThreats.map(t => <span key={t} style={{ fontSize:11, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"3px 10px", borderRadius:4, fontWeight:"700" }}>{t}</span>)}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── EVOLUTION PLANNER TAB ────────────────────────────────────────────────────
+function EvoTab({ caught, toggleCaught }) {
+  const [showAll, setShowAll] = React.useState(false);
+  const displayed = React.useMemo(() =>
+    showAll ? EVO_METHODS : EVO_METHODS.filter(e => caught[e.pre] && !caught[e.evo]),
+    [caught, showAll]);
+  const groups = { level:[], stone:[], trade:[], friend:[] };
+  displayed.forEach(e => { if (groups[e.group]) groups[e.group].push(e); });
+  const GROUP_LABEL = { level:"Level-Up", stone:"Stone Evolution", trade:"Trade Evolution", friend:"Friendship" };
+  const GROUP_COLOR = { level:C.green, stone:C.gold, trade:"#a87acc", friend:"#e85c8a" };
+  const totalPending = EVO_METHODS.filter(e => caught[e.pre] && !caught[e.evo]).length;
+
+  return (
+    <div style={{ flex:1, overflowY:"auto", padding:20 }}>
+      {/* Header */}
+      <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:20, flexWrap:"wrap" }}>
+        <div>
+          <div style={{ fontSize:16, fontWeight:"700", color:C.text }}>Evolution Planner</div>
+          <div style={{ fontSize:11, color: totalPending > 0 ? C.muted : C.green, marginTop:2 }}>
+            {totalPending > 0 ? `${totalPending} evolution${totalPending !== 1 ? "s" : ""} pending` : "All evolutions complete!"}
+          </div>
+        </div>
+        <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:8 }}>
+          <span style={{ fontSize:11, color:C.muted }}>Show all chains</span>
+          <button onClick={() => setShowAll(v => !v)} style={{
+            padding:"4px 12px", fontSize:11, borderRadius:5, cursor:"pointer",
+            border:`1px solid ${showAll ? "#4a8fc4" : C.border}`,
+            background: showAll ? "rgba(74,143,196,0.15)" : "transparent",
+            color: showAll ? "#4a8fc4" : C.muted, fontFamily:"'DM Sans',system-ui,sans-serif",
+          }}>{showAll ? "On" : "Off"}</button>
+        </div>
+      </div>
+
+      {displayed.length === 0 && (
+        <div style={{ textAlign:"center", padding:"40px 20px", color: totalPending === 0 ? C.green : C.muted, fontSize:13 }}>
+          {totalPending === 0 ? "All evolutions complete!" : "Catch some Pokémon to see pending evolutions here."}
+        </div>
+      )}
+
+      {Object.entries(groups).map(([key, entries]) => {
+        if (entries.length === 0) return null;
+        const col = GROUP_COLOR[key];
+        return (
+          <div key={key} style={{ marginBottom:24 }}>
+            <div style={{ fontSize:9, color:col, letterSpacing:1.5, textTransform:"uppercase", marginBottom:10, fontWeight:"700" }}>{GROUP_LABEL[key]}</div>
+            {entries.map(e => {
+              const preId  = allDexId(e.pre);
+              const evoId  = allDexId(e.evo);
+              const evoCaught = !!caught[e.evo];
+              return (
+                <div key={`${e.pre}-${e.evo}`} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 12px", background:C.card, borderRadius:8, border:`1px solid ${C.border}`, marginBottom:6 }}>
+                  <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:2, minWidth:52 }}>
+                    {preId ? <img src={pokeSpriteUrl(preId)} alt={e.pre} width={36} height={36} style={{ imageRendering:"pixelated" }} /> : <div style={{ width:36, height:36 }} />}
+                    <span style={{ fontSize:9, color:C.muted, textAlign:"center" }}>{e.pre}</span>
+                  </div>
+                  <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3 }}>
+                    <span style={{ color:C.muted, fontSize:14, lineHeight:1 }}>→</span>
+                    <span style={{ fontSize:9, color:col, background:`${col}18`, border:`1px solid ${col}44`, borderRadius:4, padding:"1px 6px", whiteSpace:"nowrap" }}>{e.how}</span>
+                  </div>
+                  <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:2, minWidth:52 }}>
+                    {evoId ? <img src={pokeSpriteUrl(evoId)} alt={e.evo} width={36} height={36} style={{ imageRendering:"pixelated", opacity: evoCaught ? 1 : 0.3, filter: evoCaught ? "none" : "brightness(0)" }} /> : <div style={{ width:36, height:36 }} />}
+                    <span style={{ fontSize:9, color: evoCaught ? C.green : C.text, textAlign:"center" }}>{e.evo}</span>
+                  </div>
+                  <button onClick={() => toggleCaught(e.evo)} style={{
+                    marginLeft:"auto", padding:"5px 12px", fontSize:11, borderRadius:5, cursor:"pointer",
+                    border:`1px solid ${evoCaught ? C.green : C.border}`,
+                    background: evoCaught ? "rgba(74,175,116,0.12)" : "transparent",
+                    color: evoCaught ? C.green : C.muted,
+                    fontFamily:"'DM Sans',system-ui,sans-serif", whiteSpace:"nowrap",
+                  }}>{evoCaught ? "✓ Caught" : "Mark caught"}</button>
+                </div>
+              );
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 function MiniBar({ label, done, total, color }) {
