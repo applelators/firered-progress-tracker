@@ -7868,6 +7868,49 @@ function EvoTab({ caught, toggleCaught }) {
     [regionalEvos, caught]);
 
   const METHOD_COLOR = { level: C.green, stone: C.gold, trade: "#a87acc", friend: "#e85c8a" };
+  const GROUP_LABEL  = { level: "Level-Up", stone: "Stone Evolution", trade: "Trade Evolution", friend: "Friendship" };
+  const GROUP_ORDER  = ["level", "stone", "trade", "friend"];
+
+  // Group displayed chains by their final evolution's method
+  const grouped = React.useMemo(() => {
+    const g = { level:[], stone:[], trade:[], friend:[] };
+    displayed.forEach(chain => {
+      const lastMethod = chain[chain.length - 2];
+      const key = lastMethod?.group || "level";
+      if (g[key]) g[key].push(chain);
+    });
+    return g;
+  }, [displayed]);
+
+  const renderChain = (chain, ci) => (
+    <div key={ci} style={{ display:"flex", alignItems:"center", gap:8, padding:"10px 14px", background:C.card, borderRadius:8, border:`1px solid ${C.border}`, flexWrap:"wrap" }}>
+      {chain.map((item, idx) => {
+        if (typeof item === "string") {
+          const dexId = allDexId(item);
+          const isCaught = !!caught[item];
+          const prevName = idx >= 2 ? chain[idx - 2] : null;
+          const isPending = prevName && caught[prevName] && !isCaught;
+          return (
+            <div key={idx} onClick={() => toggleCaught(item)} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:2, minWidth:48, cursor:"pointer", position:"relative" }}>
+              {isPending && <div style={{ position:"absolute", top:-3, right:2, width:7, height:7, borderRadius:"50%", background:C.gold, border:`1px solid ${C.bg}` }} />}
+              {dexId
+                ? <img src={pokeSpriteUrl(dexId)} alt={item} width={38} height={38} style={{ imageRendering:"pixelated", opacity: isCaught ? 1 : 0.25, filter: isCaught ? "none" : "brightness(0)" }} />
+                : <div style={{ width:38, height:38 }} />}
+              <span style={{ fontSize:8, color: isCaught ? C.green : C.muted, textAlign:"center", maxWidth:52 }}>{item}</span>
+            </div>
+          );
+        } else {
+          const col = METHOD_COLOR[item.group] || C.muted;
+          return (
+            <div key={idx} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3 }}>
+              <span style={{ color:C.muted, fontSize:14, lineHeight:1 }}>→</span>
+              <span style={{ fontSize:8, color:col, background:`${col}18`, border:`1px solid ${col}44`, borderRadius:4, padding:"1px 5px", whiteSpace:"nowrap" }}>{item.how}</span>
+            </div>
+          );
+        }
+      })}
+    </div>
+  );
 
   return (
     <div style={{ flex:1, overflowY:"auto", padding:20 }}>
@@ -7895,37 +7938,19 @@ function EvoTab({ caught, toggleCaught }) {
         </div>
       )}
 
-      <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
-        {displayed.map((chain, ci) => (
-          <div key={ci} style={{ display:"flex", alignItems:"center", gap:8, padding:"10px 14px", background:C.card, borderRadius:8, border:`1px solid ${C.border}`, flexWrap:"wrap" }}>
-            {chain.map((item, idx) => {
-              if (typeof item === "string") {
-                const dexId = allDexId(item);
-                const isCaught = !!caught[item];
-                const prevName = idx >= 2 ? chain[idx - 2] : null;
-                const isPending = prevName && caught[prevName] && !isCaught;
-                return (
-                  <div key={idx} onClick={() => toggleCaught(item)} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:2, minWidth:48, cursor:"pointer", position:"relative" }}>
-                    {isPending && <div style={{ position:"absolute", top:-3, right:2, width:7, height:7, borderRadius:"50%", background:C.gold, border:`1px solid ${C.bg}` }} />}
-                    {dexId
-                      ? <img src={pokeSpriteUrl(dexId)} alt={item} width={38} height={38} style={{ imageRendering:"pixelated", opacity: isCaught ? 1 : 0.25, filter: isCaught ? "none" : "brightness(0)" }} />
-                      : <div style={{ width:38, height:38 }} />}
-                    <span style={{ fontSize:8, color: isCaught ? C.green : C.muted, textAlign:"center", maxWidth:52 }}>{item}</span>
-                  </div>
-                );
-              } else {
-                const col = METHOD_COLOR[item.group] || C.muted;
-                return (
-                  <div key={idx} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3 }}>
-                    <span style={{ color:C.muted, fontSize:14, lineHeight:1 }}>→</span>
-                    <span style={{ fontSize:8, color:col, background:`${col}18`, border:`1px solid ${col}44`, borderRadius:4, padding:"1px 5px", whiteSpace:"nowrap" }}>{item.how}</span>
-                  </div>
-                );
-              }
-            })}
+      {GROUP_ORDER.map(key => {
+        const entries = grouped[key];
+        if (!entries || entries.length === 0) return null;
+        const col = METHOD_COLOR[key];
+        return (
+          <div key={key} style={{ marginBottom:24 }}>
+            <div style={{ fontSize:9, color:col, letterSpacing:1.5, textTransform:"uppercase", marginBottom:10, fontWeight:"700" }}>{GROUP_LABEL[key]}</div>
+            <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+              {entries.map((chain, ci) => renderChain(chain, ci))}
+            </div>
           </div>
-        ))}
-      </div>
+        );
+      })}
     </div>
   );
 }
