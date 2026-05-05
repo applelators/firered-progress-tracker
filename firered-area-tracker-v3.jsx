@@ -5261,7 +5261,7 @@ function FireRedTracker() {
       {tab === "recurring" && <RecurringTab sweeps={sweeps} markSwept={markSwept} />}
 
       {/* ── Tab: PC Boxes ── */}
-      {tab === "boxes" && <BoxTab caught={caught} toggleCaught={toggleCaught} version={version} />}
+      {tab === "boxes" && <BoxTab caught={caught} toggleCaught={toggleCaught} />}
 
       {/* ── Tab: 100% Completion ── */}
       {tab === "completion" && <CompletionTab caught={caught} checklist={checklist} toggleChecklist={toggleChecklist} isMobile={isMobile} />}
@@ -7897,7 +7897,7 @@ function RecurringTab({ sweeps, markSwept }) {
 
 const BOX_SIZE = 30;
 
-function BoxTab({ caught, toggleCaught, version }) {
+function BoxTab({ caught, toggleCaught }) {
   const { useState: useS, useMemo: useM, useCallback: useCB } = React;
 
   const [boxNames, setBoxNames] = useS(() => {
@@ -7916,16 +7916,7 @@ function BoxTab({ caught, toggleCaught, version }) {
     setEditingBox(null);
   }, []);
 
-  const allPokemon = useM(() => {
-    const versionFiltered = p => {
-      if (version === "fr" && p.lgOnly) return false;
-      if (version === "lg" && p.frOnly) return false;
-      return true;
-    };
-    const kantoDex = DEX.filter(versionFiltered);
-    const nationalDex = NATIONAL_DEX.filter(versionFiltered);
-    return [...kantoDex, ...nationalDex];
-  }, [version]);
+  const allPokemon = useM(() => [...DEX, ...NATIONAL_DEX], []);
 
   const boxes = useM(() => {
     const result = [];
