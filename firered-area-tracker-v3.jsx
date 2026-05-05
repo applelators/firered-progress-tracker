@@ -1912,7 +1912,7 @@ const AREAS = [
     ]},
 
   { part:"Part 14", id:"mt-ember", name:"Mt. Ember",
-    note:"Moltres rests at the summit — one-time encounter. The Ruby Path opens after obtaining the National Pokédex and defeating two Team Rocket Grunts, and is the only place in Kanto to find Slugma and Magcargo.",
+    note:"Moltres rests at the summit — one-time encounter. Ruby Path (below the exterior) is revisited post-game and tracked separately in Part 18.",
     floors:[
       { label:"Exterior",
         pokemon:[
@@ -1951,26 +1951,6 @@ const AREAS = [
         ],
         items:[],
         trainers:[],
-      },
-      { label:"Ruby Path",
-        note:"Requires National Pokédex — defeat the two Team Rocket Grunts to access. Slugma and Magcargo are exclusive to these floors.",
-        pokemon:[
-          {name:"Geodude",  method:"Cave",       levels:"32–44", rate:"40–70%"},
-          {name:"Machop",   method:"Cave",       levels:"34–38", rate:"40%", note:"1F only"},
-          {name:"Machoke",  method:"Cave",       levels:"40–42", rate:"10%", note:"1F only"},
-          {name:"Slugma",   method:"Cave",       levels:"18–36", rate:"30–100%"},
-          {name:"Geodude",  method:"Rock Smash", levels:"25–40", rate:"65%"},
-          {name:"Graveler", method:"Rock Smash", levels:"30–50", rate:"35%"},
-          {name:"Slugma",   method:"Rock Smash", levels:"15–35", rate:"90%", note:"B3F only"},
-          {name:"Magcargo", method:"Rock Smash", levels:"25–45", rate:"10%", note:"B3F only"},
-        ],
-        items:[
-          {name:"Ruby", hidden:false, note:"In the deepest room — needed to enable trading with Hoenn via Celio on One Island"},
-        ],
-        trainers:[
-          {class:"Team Rocket Grunt", name:"Grunt 1", note:"Guards the Ruby cave entrance — must be defeated to proceed.", team:[{name:"Cubone",level:37},{name:"Marowak",level:37}]},
-          {class:"Team Rocket Grunt", name:"Grunt 2", note:"Guards the Ruby cave entrance — must be defeated to proceed.", team:[{name:"Rattata",level:35},{name:"Raticate",level:35},{name:"Sandshrew",level:35},{name:"Sandslash",level:35}]},
-        ],
       },
     ]},
 
@@ -2426,6 +2406,26 @@ const AREAS = [
           {name:"Full Restore",   hidden:false, note:"Near the southern ladder in B1F"},
         ],
         trainers:[] },
+    ] },
+
+  { part:"Part 18", id:"ruby-path", name:"Ruby Path",
+    note:"Underground cave beneath Mt. Ember on One Island. Defeat the two Team Rocket Grunts at the entrance to access. The only place to find Slugma and Magcargo in FRLG. The Ruby here is needed to deliver to Celio.",
+    pokemon:[
+      {name:"Geodude",  method:"Cave",       levels:"32–44", rate:"40–70%"},
+      {name:"Machop",   method:"Cave",       levels:"34–38", rate:"40%",  note:"1F only"},
+      {name:"Machoke",  method:"Cave",       levels:"40–42", rate:"10%",  note:"1F only"},
+      {name:"Slugma",   method:"Cave",       levels:"18–36", rate:"30–100%"},
+      {name:"Geodude",  method:"Rock Smash", levels:"25–40", rate:"65%"},
+      {name:"Graveler", method:"Rock Smash", levels:"30–50", rate:"35%"},
+      {name:"Slugma",   method:"Rock Smash", levels:"15–35", rate:"90%",  note:"B3F only"},
+      {name:"Magcargo", method:"Rock Smash", levels:"25–45", rate:"10%",  note:"B3F only"},
+    ],
+    items:[
+      {name:"Ruby", hidden:false, note:"In the deepest room — deliver to Celio on One Island to enable Hoenn trading"},
+    ],
+    trainers:[
+      {class:"Team Rocket Grunt", name:"Grunt 1", note:"Guards the entrance — must be defeated to proceed.", team:[{name:"Cubone",level:37},{name:"Marowak",level:37}]},
+      {class:"Team Rocket Grunt", name:"Grunt 2", note:"Guards the entrance — must be defeated to proceed.", team:[{name:"Rattata",level:35},{name:"Raticate",level:35},{name:"Sandshrew",level:35},{name:"Sandslash",level:35}]},
     ] },
 
   { part:"Part 18", id:"six-island-town", name:"Six Island",
