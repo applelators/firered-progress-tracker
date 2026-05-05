@@ -7852,7 +7852,10 @@ function GymTab({ isMobile }) {
         {/* Dream team picks */}
         {teamPicks && (
           <div>
-            <div style={{ fontSize:9, color:C.gold, letterSpacing:1.5, textTransform:"uppercase", marginBottom:8, fontWeight:"700" }}>Your dream team picks</div>
+            <div style={{ display:"flex", alignItems:"baseline", gap:8, marginBottom:8 }}>
+              <div style={{ fontSize:9, color:C.gold, letterSpacing:1.5, textTransform:"uppercase", fontWeight:"700" }}>Your dream team picks</div>
+              <div style={{ fontSize:10, color:C.muted }}>aim for Lv {Math.max(...gym.team.map(p => p.level))}</div>
+            </div>
             {teamPicks.length === 0
               ? <div style={{ fontSize:11, color:C.muted, padding:"8px 12px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>None of your team members have a type advantage here.</div>
               : <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
