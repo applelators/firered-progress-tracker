@@ -2428,6 +2428,14 @@ const AREAS = [
         trainers:[] },
     ] },
 
+  { part:"Part 18", id:"six-island-town", name:"Six Island",
+    note:"Hub town for Six Island. Blue is here and mentions returning to Kanto for his Pokédex.",
+    pokemon:[],
+    items:[
+      {name:"Leppa Berry", hidden:true, note:"North of the Pokémon Center"},
+    ],
+    trainers:[] },
+
   { part:"Part 18", id:"water-path", name:"Water Path",
     note:"Coastal route on Six Island connecting the Pokémon Center to the rest of the island. Grass encounters include Johto Pokémon.",
     pokemon:[
@@ -2464,7 +2472,7 @@ const AREAS = [
       {name:"Dragon Scale", hidden:false, note:"Small land mass southeast of Aspear Berry (requires Surf)"},
       {name:"Oran Berry",   hidden:true,  note:"Northwest of northern house (requires Surf)"},
       {name:"Elixir",       hidden:false, note:"Small land east of southern house (requires Surf)"},
-      {name:"Nest Ball",   hidden:false, optional:true, note:"From the woman in the northern house for showing a record-breaking Heracross (requires Surf, repeatable)"},
+      {name:"Nest Ball",   hidden:false, note:"From the woman in the northern house for showing a record-breaking Heracross (requires Surf)"},
     ],
     trainers:[
       {class:"Juggler",    name:"Edward",   team:[{name:"Voltorb",level:46},{name:"Voltorb",level:46},{name:"Electrode",level:47},{name:"Mr. Mime",level:48}]},
