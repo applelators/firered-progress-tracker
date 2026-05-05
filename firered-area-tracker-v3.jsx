@@ -6908,6 +6908,15 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
     try { localStorage.setItem("frlg-collapsed-parts", JSON.stringify([...n])); } catch {}
     return n;
   });
+  const sidebarRef = React.useRef(null);
+  useEffect(() => {
+    const el = sidebarRef.current;
+    if (!el) return;
+    try { const saved = localStorage.getItem("frlg-sidebar-scroll"); if (saved) el.scrollTop = parseInt(saved, 10); } catch {}
+    const onScroll = () => { try { localStorage.setItem("frlg-sidebar-scroll", el.scrollTop); } catch {} };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
   const partFullDone = useMemo(() => {
     const result = {};
     Object.entries(groups).forEach(([part, list]) => {
@@ -7031,7 +7040,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
     <div style={{ display:"flex", flex:1, overflow:"hidden", flexDirection: isMobile ? "column" : "row" }}>
       {/* Sidebar */}
       {showSidebar && (
-      <div style={{ width: isMobile ? "100%" : 210, flexShrink:0, borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:C.card, display:"flex", flexDirection:"column", overflowY:"auto", flex: isMobile ? "1" : "unset" }}>
+      <div ref={sidebarRef} style={{ width: isMobile ? "100%" : 210, flexShrink:0, borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:C.card, display:"flex", flexDirection:"column", overflowY:"auto", flex: isMobile ? "1" : "unset" }}>
         <div style={{ padding:"10px 12px", borderBottom:`1px solid ${C.border}`, position:"sticky", top:0, background:C.card, zIndex:1 }}>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search areas…"
             style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:14, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
