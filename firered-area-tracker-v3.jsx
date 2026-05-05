@@ -7745,6 +7745,25 @@ function GymTab({ isMobile }) {
   const gymThreats      = TYPES_17.filter(def => gymTypes.some(atk => (TYPE_CHART[atk]?.[def] || 1) >= 2));
   const E4_IDS = new Set(["lorelei","bruno","agatha","lance","blue"]);
 
+  const savedTeam = React.useMemo(() => {
+    try {
+      const r = localStorage.getItem("frlg-dream-team-v4");
+      if (!r) return null;
+      const { favorite, pins, version } = JSON.parse(r);
+      if (!favorite) return null;
+      return buildDreamTeamV2(favorite, pins, version);
+    } catch { return null; }
+  }, []);
+
+  const teamPicks = React.useMemo(() => {
+    if (!savedTeam) return null;
+    return savedTeam.filter(name => {
+      const cand = DT_CANDIDATES.find(c => c.name === name);
+      if (!cand) return false;
+      return cand.types.some(myType => gymTypes.some(gymType => (TYPE_CHART[myType]?.[gymType] || 1) >= 2));
+    });
+  }, [savedTeam, gymTypes]);
+
   const SideBtn = ({ g }) => {
     const isSel = g.id === selId;
     return (
@@ -7811,7 +7830,7 @@ function GymTab({ isMobile }) {
         </div>
 
         {/* Type matchup summary */}
-        <div style={{ display:"flex", gap:16, flexWrap:"wrap" }}>
+        <div style={{ display:"flex", gap:16, flexWrap:"wrap", marginBottom: teamPicks ? 20 : 0 }}>
           <div style={{ flex:1, minWidth:180, padding:"12px 14px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>
             <div style={{ fontSize:9, color:C.green, letterSpacing:1.5, textTransform:"uppercase", marginBottom:8, fontWeight:"700" }}>Super effective against them</div>
             <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>
@@ -7829,6 +7848,31 @@ function GymTab({ isMobile }) {
             </div>
           </div>
         </div>
+
+        {/* Dream team picks */}
+        {teamPicks && (
+          <div>
+            <div style={{ fontSize:9, color:C.gold, letterSpacing:1.5, textTransform:"uppercase", marginBottom:8, fontWeight:"700" }}>Your dream team picks</div>
+            {teamPicks.length === 0
+              ? <div style={{ fontSize:11, color:C.muted, padding:"8px 12px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>None of your team members have a type advantage here.</div>
+              : <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+                  {teamPicks.map(name => {
+                    const dId = allDexId(name);
+                    const cand = DT_CANDIDATES.find(c => c.name === name);
+                    return (
+                      <div key={name} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3, padding:"8px 10px", background:C.card, borderRadius:8, border:`1px solid ${C.gold}`, minWidth:68, textAlign:"center" }}>
+                        {dId && <img src={pokeSpriteUrl(dId)} alt={name} width={36} height={36} style={{ imageRendering:"pixelated" }} />}
+                        <span style={{ fontSize:9, color:C.gold, fontWeight:"600" }}>{name}</span>
+                        <div style={{ display:"flex", gap:2, flexWrap:"wrap", justifyContent:"center" }}>
+                          {cand?.types.map(t => <span key={t} style={{ fontSize:7, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"1px 4px", borderRadius:2, fontWeight:"700" }}>{t}</span>)}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+            }
+          </div>
+        )}
       </div>
     </div>
   );
