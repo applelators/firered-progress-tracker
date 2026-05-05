@@ -2319,7 +2319,27 @@ const AREAS = [
         team:[{name:"Rhyhorn",level:45},{name:"Dugtrio",level:42},{name:"Nidoqueen",level:44},{name:"Nidoking",level:45},{name:"Rhyhorn",level:50}]},
     ]},
 
-// ─── PART 18 — Four Island · Icefall Cave · Six Island ───────────────────────
+// ─── PART 18 — Ruby Path · Four Island · Icefall Cave · Six Island ──────────
+
+  { part:"Part 18", id:"ruby-path", name:"Ruby Path",
+    note:"Underground cave beneath Mt. Ember on One Island. Defeat the two Team Rocket Grunts at the entrance to access. The only place to find Slugma and Magcargo in FRLG. Deliver the Ruby to Celio to receive the Rainbow Pass for islands 4–7.",
+    pokemon:[
+      {name:"Geodude",  method:"Cave",       levels:"32–44", rate:"40–70%"},
+      {name:"Machop",   method:"Cave",       levels:"34–38", rate:"40%",  note:"1F only"},
+      {name:"Machoke",  method:"Cave",       levels:"40–42", rate:"10%",  note:"1F only"},
+      {name:"Slugma",   method:"Cave",       levels:"18–36", rate:"30–100%"},
+      {name:"Geodude",  method:"Rock Smash", levels:"25–40", rate:"65%"},
+      {name:"Graveler", method:"Rock Smash", levels:"30–50", rate:"35%"},
+      {name:"Slugma",   method:"Rock Smash", levels:"15–35", rate:"90%",  note:"B3F only"},
+      {name:"Magcargo", method:"Rock Smash", levels:"25–45", rate:"10%",  note:"B3F only"},
+    ],
+    items:[
+      {name:"Ruby", hidden:false, note:"B5F pedestal — deliver to Celio on One Island to receive the Rainbow Pass"},
+    ],
+    trainers:[
+      {class:"Team Rocket Grunt", name:"Grunt 1", note:"Guards the entrance — must be defeated to proceed.", team:[{name:"Cubone",level:37},{name:"Marowak",level:37}]},
+      {class:"Team Rocket Grunt", name:"Grunt 2", note:"Guards the entrance — must be defeated to proceed.", team:[{name:"Rattata",level:35},{name:"Raticate",level:35},{name:"Sandshrew",level:35},{name:"Sandslash",level:35}]},
+    ] },
 
   { part:"Part 18", id:"four-island", name:"Four Island",
     note:"Kinnow Island — hub of the second set of Sevii Islands. Surf and fish off the beaches for Kanto and Johto Pokémon. Blue appears here but does not battle.",
@@ -2406,26 +2426,6 @@ const AREAS = [
           {name:"Full Restore",   hidden:false, note:"Near the southern ladder in B1F"},
         ],
         trainers:[] },
-    ] },
-
-  { part:"Part 18", id:"ruby-path", name:"Ruby Path",
-    note:"Underground cave beneath Mt. Ember on One Island. Defeat the two Team Rocket Grunts at the entrance to access. The only place to find Slugma and Magcargo in FRLG. The Ruby here is needed to deliver to Celio.",
-    pokemon:[
-      {name:"Geodude",  method:"Cave",       levels:"32–44", rate:"40–70%"},
-      {name:"Machop",   method:"Cave",       levels:"34–38", rate:"40%",  note:"1F only"},
-      {name:"Machoke",  method:"Cave",       levels:"40–42", rate:"10%",  note:"1F only"},
-      {name:"Slugma",   method:"Cave",       levels:"18–36", rate:"30–100%"},
-      {name:"Geodude",  method:"Rock Smash", levels:"25–40", rate:"65%"},
-      {name:"Graveler", method:"Rock Smash", levels:"30–50", rate:"35%"},
-      {name:"Slugma",   method:"Rock Smash", levels:"15–35", rate:"90%",  note:"B3F only"},
-      {name:"Magcargo", method:"Rock Smash", levels:"25–45", rate:"10%",  note:"B3F only"},
-    ],
-    items:[
-      {name:"Ruby", hidden:false, note:"In the deepest room — deliver to Celio on One Island to enable Hoenn trading"},
-    ],
-    trainers:[
-      {class:"Team Rocket Grunt", name:"Grunt 1", note:"Guards the entrance — must be defeated to proceed.", team:[{name:"Cubone",level:37},{name:"Marowak",level:37}]},
-      {class:"Team Rocket Grunt", name:"Grunt 2", note:"Guards the entrance — must be defeated to proceed.", team:[{name:"Rattata",level:35},{name:"Raticate",level:35},{name:"Sandshrew",level:35},{name:"Sandslash",level:35}]},
     ] },
 
   { part:"Part 18", id:"six-island-town", name:"Six Island",
