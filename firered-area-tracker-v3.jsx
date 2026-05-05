@@ -5229,7 +5229,7 @@ function FireRedTracker() {
 
         {/* Tabs */}
         <div style={{ display:"flex", gap:2, marginTop:10, overflowX:"auto", WebkitOverflowScrolling:"touch", flexWrap:"nowrap" }}>
-          {[["areas","Areas"],["dex","Pokédex"],["team","Team"],["gyms","Gyms"],["evo","Evolutions"],["types","Types"],["calc","Catch"],["hunt","Hunt"],["tms","TMs"],["recurring","Recur"],["boxes","Boxes"],["completion","100%"]].map(([t,label]) => (
+          {[["areas","Areas"],["dex","Pokédex"],["team","Team"],["gyms","Gyms"],["evo","Evolutions"],["types","Types"],["calc","Catch"],["hunt","Hunt"],["tms","TMs"],["remain","Left"],["recurring","Recur"],["boxes","Boxes"],["completion","100%"]].map(([t,label]) => (
             <button key={t} onClick={() => setTabAndSave(t)} style={{
               padding: isMobile ? "7px 12px" : "8px 20px", border:"none", borderRadius:"6px 6px 0 0", cursor:"pointer", flexShrink:0,
               fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:13, fontWeight:"600",
@@ -5267,6 +5267,9 @@ function FireRedTracker() {
 
       {/* ── Tab: TMs & HMs ── */}
       {tab === "tms" && <TMsTab tmState={tmState} />}
+
+      {/* ── Tab: Remaining ── */}
+      {tab === "remain" && <RemainingTab items={items} toggleItem={toggleItem} trainers={trainers} toggleTrainer={toggleTrainer} choiceGroups={choiceGroups} setAreaId={setAreaId} setTabAndSave={setTabAndSave} />}
 
       {/* ── Tab: Recurring Items ── */}
       {tab === "recurring" && <RecurringTab sweeps={sweeps} markSwept={markSwept} />}
@@ -7822,6 +7825,153 @@ function MiniBar({ label, done, total, color }) {
       </div>
       <div style={{ height:5, background:"rgba(0,0,0,0.3)", borderRadius:99, overflow:"hidden" }}>
         <div style={{ height:"100%", width:`${p}%`, background:color, borderRadius:99, transition:"width 0.3s" }} />
+      </div>
+    </div>
+  );
+}
+
+// ─── REMAINING TAB ───────────────────────────────────────────────────────────
+
+function RemainingTab({ items, toggleItem, trainers, toggleTrainer, choiceGroups, setAreaId, setTabAndSave }) {
+  const { useState: useS, useMemo: useM } = React;
+  const [section, setSection] = useS("items");
+
+  const remainingItems = useM(() => {
+    const isPassed = it => !!(it.choiceGroup && choiceGroups?.[it.choiceGroup] && choiceGroups[it.choiceGroup] !== it.choiceId);
+    const result = [];
+    for (const area of AREAS) {
+      if (!AUDITED_PARTS.has(area.part)) continue;
+      if (area.floors) {
+        for (const floor of area.floors) {
+          for (let i = 0; i < (floor.items || []).length; i++) {
+            const it = floor.items[i];
+            if (isPassed(it)) continue;
+            const key = floorItemKey(area.id, floor.label, i);
+            if (!items[key]) result.push({ area, floorLabel: floor.label, it, key });
+          }
+        }
+      } else {
+        for (let i = 0; i < (area.items || []).length; i++) {
+          const it = area.items[i];
+          if (isPassed(it)) continue;
+          const key = flatItemKey(area.id, i);
+          if (!items[key]) result.push({ area, floorLabel: null, it, key });
+        }
+      }
+    }
+    return result;
+  }, [items, choiceGroups]);
+
+  const remainingTrainers = useM(() => {
+    const result = [];
+    for (const area of AREAS) {
+      if (!AUDITED_PARTS.has(area.part)) continue;
+      for (const t of flattenTrainers(area)) {
+        const key = `${area.id}|${t.class}|${t.name}`;
+        if (!trainers[key]) result.push({ area, t, key });
+      }
+    }
+    return result;
+  }, [trainers]);
+
+  const toGroups = list => {
+    const groups = [];
+    let lastId = null;
+    for (const entry of list) {
+      if (entry.area.id !== lastId) { groups.push({ area: entry.area, entries: [] }); lastId = entry.area.id; }
+      groups[groups.length - 1].entries.push(entry);
+    }
+    return groups;
+  };
+
+  const grouped     = section === "items" ? toGroups(remainingItems) : toGroups(remainingTrainers);
+  const totalLeft   = section === "items" ? remainingItems.length    : remainingTrainers.length;
+  const allDone     = remainingItems.length === 0 && remainingTrainers.length === 0;
+
+  const markItem = entry => {
+    const { it, key } = entry;
+    const tmM = it.name.match(/^(TM\d{2}|HM\d{2})\b/);
+    const tmId = tmM ? tmM[1] : undefined;
+    toggleItem(key, { ...(it.choiceGroup ? { choiceGroup:it.choiceGroup, choiceId:it.choiceId } : {}), ...(tmId ? { tmId } : {}) });
+  };
+
+  const goToArea = area => { setAreaId(area.id); setTabAndSave("areas"); };
+
+  const rowStyle = { display:"flex", alignItems:"center", gap:10, padding:"7px 10px", borderRadius:6,
+    cursor:"pointer", marginBottom:3, background:"rgba(0,0,0,0.18)", border:`1px solid ${C.border}` };
+
+  return (
+    <div style={{ flex:1, overflowY:"auto" }}>
+      {/* Header */}
+      <div style={{ padding:"14px 20px 10px", borderBottom:`1px solid ${C.border}`, background:C.card }}>
+        <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:10 }}>
+          <span style={{ fontSize:11, color:C.muted, letterSpacing:2, textTransform:"uppercase" }}>Remaining</span>
+          <span style={{ fontSize:11, fontWeight:"600", color: allDone ? C.green : C.frRed }}>
+            {allDone ? "All done!" : `${totalLeft} left in view`}
+          </span>
+        </div>
+        <div style={{ display:"flex", gap:6 }}>
+          {[["items",`Items (${remainingItems.length})`],["trainers",`Trainers (${remainingTrainers.length})`]].map(([s,label]) => (
+            <button key={s} onClick={() => setSection(s)} style={{
+              padding:"4px 14px", fontSize:11, cursor:"pointer", fontFamily:"'DM Sans',system-ui,sans-serif",
+              background: section===s ? "var(--frlg-accent)" : "rgba(0,0,0,0.25)",
+              color: section===s ? "#fff" : C.muted,
+              border:`1px solid ${section===s ? "var(--frlg-accent)" : C.border}`,
+              borderRadius:20, fontWeight: section===s ? "600" : "400",
+            }}>{label}</button>
+          ))}
+        </div>
+      </div>
+
+      {/* List */}
+      <div style={{ padding:"12px 16px" }}>
+        {grouped.length === 0 && (
+          <div style={{ textAlign:"center", padding:"48px 20px", color:C.green, fontSize:13 }}>
+            All {section} complete!
+          </div>
+        )}
+        {grouped.map(({ area, entries }) => (
+          <div key={area.id} style={{ marginBottom:18 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:5 }}>
+              <span style={{ fontSize:10, fontWeight:"700", letterSpacing:1.5, textTransform:"uppercase", color:C.muted }}>{area.name}</span>
+              <span style={{ fontSize:9, color:C.muted, opacity:0.5 }}>{area.part}</span>
+              <button onClick={() => goToArea(area)} style={{
+                marginLeft:"auto", fontSize:10, color:"var(--frlg-accent)", background:"none",
+                border:"none", cursor:"pointer", padding:"0 2px", opacity:0.85,
+              }}>→ Go</button>
+            </div>
+            {section === "items" ? entries.map(entry => (
+              <div key={entry.key} style={rowStyle}
+                onMouseEnter={e => e.currentTarget.style.borderColor="var(--frlg-accent)"}
+                onMouseLeave={e => e.currentTarget.style.borderColor=C.border}
+                onClick={() => markItem(entry)}
+              >
+                <span style={{ fontSize:11, color:C.muted, flexShrink:0 }}>☐</span>
+                <span style={{ fontSize:12, color:C.text, flex:1 }}>{entry.it.name}</span>
+                {entry.floorLabel && <span style={{ fontSize:9, color:C.muted, flexShrink:0 }}>{entry.floorLabel}</span>}
+                {entry.it.hidden    && <span style={{ fontSize:9, color:C.gold,  flexShrink:0 }}>★</span>}
+                {entry.it.recurring && <span style={{ fontSize:9, color:C.muted, flexShrink:0, opacity:0.7 }}>↻</span>}
+                {entry.it.optional  && <span style={{ fontSize:9, color:C.muted, flexShrink:0, opacity:0.7 }}>opt</span>}
+              </div>
+            )) : entries.map(entry => (
+              <div key={entry.key} style={rowStyle}
+                onMouseEnter={e => e.currentTarget.style.borderColor="var(--frlg-accent)"}
+                onMouseLeave={e => e.currentTarget.style.borderColor=C.border}
+                onClick={() => toggleTrainer(entry.key)}
+              >
+                <span style={{ fontSize:11, color:C.muted, flexShrink:0 }}>☐</span>
+                <span style={{ fontSize:12, color:C.text, flex:1 }}>
+                  <span style={{ color:C.muted }}>{entry.t.class}{entry.t.name ? " " : ""}</span>{entry.t.name || ""}
+                </span>
+                {entry.t.team && (
+                  <span style={{ fontSize:9, color:C.muted, flexShrink:0 }}>
+                    Lv.{Math.max(...entry.t.team.map(m => m.level))}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   );
