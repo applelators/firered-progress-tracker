@@ -2989,6 +2989,17 @@ for (const area of AREAS) {
   }
 }
 
+// ─── OBTAIN METHOD SETS ──────────────────────────────────────────────────────
+// Pokémon not found as wild encounters or gifts — must evolve or trade-evolve.
+const EVO_ONLY_SET = new Set([
+  "Ivysaur","Venusaur","Charmeleon","Charizard","Wartortle","Blastoise",
+  "Butterfree","Beedrill","Pidgeot","Raichu","Nidoqueen","Nidoking",
+  "Clefable","Ninetales","Wigglytuff","Vileplume","Arcanine","Poliwrath",
+  "Victreebel","Dodrio","Cloyster","Exeggutor","Rhydon","Starmie",
+  "Vaporeon","Jolteon","Flareon","Omastar","Kabutops","Dragonite","Mew",
+]);
+const TRADE_EVO_SET = new Set(["Alakazam","Machamp","Golem","Gengar"]);
+
 // ─── BEST ENCOUNTER AREA MAP ─────────────────────────────────────────────────
 // For each Pokémon × version, the single area with the highest encounter rate.
 // Used in PokemonEntry to flag when a better hunting spot exists elsewhere.
@@ -6575,13 +6586,13 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
                 <div key={p.id} onClick={() => { if (!isDimmed) { toggleCaught(p.name); setDexSelected(p.name); } }}
                   style={{
                     background: isCaught ? "rgba(74,175,116,0.10)" : isSel ? "rgba(0,0,0,0.15)" : C.card,
-                    border:`1px solid ${isSel ? "var(--frlg-accent)" : isCaught ? C.green : p.event ? "#a87acc" : p.lgOnly ? C.lgGreen : p.frOnly ? "#c85252" : C.border}`,
+                    border:`1px solid ${isSel ? "var(--frlg-accent)" : isCaught ? C.green : p.event ? "#a87acc" : p.lgOnly ? C.lgGreen : p.frOnly ? "#c85252" : TRADE_EVO_SET.has(p.name) ? "#c89832" : EVO_ONLY_SET.has(p.name) ? "#5a9fd4" : C.border}`,
                     borderRadius:8, padding:"8px 5px 6px", cursor: isDimmed ? "default" : "pointer", textAlign:"center",
                     transition:"all 0.12s", position:"relative", opacity: isDimmed ? 0.3 : 1,
                     boxShadow: isSel ? "0 0 0 2px rgba(var(--frlg-accent-rgb,212,98,26),0.2)" : "none",
                   }}
                   onMouseEnter={e => { if (isDimmed) return; e.currentTarget.style.borderColor = isCaught ? C.green : "var(--frlg-accent)"; e.currentTarget.style.background = isCaught ? "rgba(74,175,116,0.15)" : "rgba(0,0,0,0.2)"; }}
-                  onMouseLeave={e => { if (isDimmed) return; e.currentTarget.style.borderColor = isSel ? "var(--frlg-accent)" : isCaught ? C.green : p.event ? "#a87acc" : p.lgOnly ? C.lgGreen : p.frOnly ? "#c85252" : C.border; e.currentTarget.style.background = isCaught ? "rgba(74,175,116,0.10)" : isSel ? "rgba(0,0,0,0.15)" : C.card; }}
+                  onMouseLeave={e => { if (isDimmed) return; e.currentTarget.style.borderColor = isSel ? "var(--frlg-accent)" : isCaught ? C.green : p.event ? "#a87acc" : p.lgOnly ? C.lgGreen : p.frOnly ? "#c85252" : TRADE_EVO_SET.has(p.name) ? "#c89832" : EVO_ONLY_SET.has(p.name) ? "#5a9fd4" : C.border; e.currentTarget.style.background = isCaught ? "rgba(74,175,116,0.10)" : isSel ? "rgba(0,0,0,0.15)" : C.card; }}
                 >
                   {isCaught && <div style={{ position:"absolute", top:4, left:5, fontSize:9, color:C.green, fontWeight:"700" }}>✓</div>}
                   {p.frOnly && <div style={{ position:"absolute", top:4, right:4, fontSize:8, color:"#c85252", fontWeight:"600" }}>FR</div>}
@@ -6591,6 +6602,8 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
                   <div style={{ fontSize:9, color:C.muted, marginBottom:1, fontFamily:"'Courier New',monospace" }}>#{String(p.id).padStart(3,"0")}</div>
                   <div style={{ fontSize:10, color: isCaught ? C.green : C.text, fontWeight:isCaught?"600":"400", lineHeight:1.3, wordBreak:"break-word" }}>{p.name}</div>
                   {(() => { const cs = CONSTRAINT_STYLE[CATCH_CONSTRAINT_MAP[p.name]]; return cs ? <div style={{ fontSize:8, fontWeight:"700", color:cs.color, marginTop:1, letterSpacing:"0.02em" }}>{cs.label.toUpperCase()}</div> : null; })()}
+                  {TRADE_EVO_SET.has(p.name) && <div style={{ fontSize:8, fontWeight:"700", color:"#c89832", marginTop:1, letterSpacing:"0.02em" }}>TRADE EVO</div>}
+                  {EVO_ONLY_SET.has(p.name) && <div style={{ fontSize:8, fontWeight:"700", color:"#5a9fd4", marginTop:1, letterSpacing:"0.02em" }}>EVO ONLY</div>}
                 </div>
               );
             })}
