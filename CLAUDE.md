@@ -26,17 +26,25 @@ Always audit one Bulbapedia part at a time. After implementing, pause and let th
 
 For each area in a part:
 
-1. **Fetch raw wikitext** for the area page. Check the local cache first — if `bulbapedia-cache/PAGE_TITLE.txt` exists, read it directly instead of fetching. If not, fetch and save it:
+1. **Start with the walkthrough page** — always fetch the walkthrough part page first. It is the authoritative source for area order, floor structure, and which content belongs to each visit. Check the cache first (`bulbapedia-cache/Walkthrough_Part_N.txt`); if absent, fetch it:
+   ```bash
+   curl -s "https://bulbapedia.bulbagarden.net/w/index.php?title=Walkthrough:Pokémon_FireRed_and_LeafGreen/Part_N&action=raw" \
+     -o "bulbapedia-cache/Walkthrough_Part_N.txt"
+   ```
+   Use the walkthrough to determine: the correct sequence of areas within the part, how many floors a dungeon has, and which items/encounters belong to which floor or visit.
+
+2. **Supplement with the location page** — after reading the walkthrough, fetch the dedicated location page for detailed encounter tables and item lists. Check the cache first (`bulbapedia-cache/PAGE_TITLE.txt`); if absent, fetch it:
    ```bash
    curl -s "https://bulbapedia.bulbagarden.net/w/index.php?title=PAGE_TITLE&action=raw" \
      -o "bulbapedia-cache/PAGE_TITLE.txt"
    ```
    The cache folder is gitignored. Delete a file to force a refresh. Never rely on the rendered HTML for encounter or item data — use raw wikitext as the authoritative source.
-2. **Wild Pokémon** — extract from `{{Catch/entryfl|...}}` lines. The template format is `|dex#|Name|FR(yes/no)|LG(yes/no)|method|levels|rate|`. The `yes`/`no` flags are explicit — no column-guessing needed.
-3. **Encounter rate sanity check** — rates should sum to approximately 100% per version. If they don't, something is wrong.
-4. **Items** — extract from `{{Itemlist|...}}` lines. The raw wikitext lists items with their location description and FR/LG availability flags directly.
-5. **Trainers** — the rendered walkthrough page is acceptable for trainers (trainer templates in raw wikitext are verbose and harder to parse). Cross-check the team sizes and levels against the rendered page.
-6. **Multi-floor areas** — fetch per-floor data. Do not collapse a dungeon into a single flat structure.
+
+3. **Wild Pokémon** — extract from `{{Catch/entryfl|...}}` lines. The template format is `|dex#|Name|FR(yes/no)|LG(yes/no)|method|levels|rate|`. The `yes`/`no` flags are explicit — no column-guessing needed.
+4. **Encounter rate sanity check** — rates should sum to approximately 100% per version. If they don't, something is wrong.
+5. **Items** — extract from `{{Itemlist|...}}` lines. The raw wikitext lists items with their location description and FR/LG availability flags directly.
+6. **Trainers** — the walkthrough page is the primary source for trainers. Cross-check team sizes and levels against the location page.
+7. **Multi-floor areas** — the walkthrough establishes how many floors exist. Do not collapse a dungeon into a single flat structure. Do not assume floor count from geography or memory.
 
 ### After implementing a part
 
