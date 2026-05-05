@@ -7838,6 +7838,7 @@ function RemainingTab({ items, toggleItem, trainers, toggleTrainer, choiceGroups
 
   const remainingItems = useM(() => {
     const isPassed = it => !!(it.choiceGroup && choiceGroups?.[it.choiceGroup] && choiceGroups[it.choiceGroup] !== it.choiceId);
+    const skip = it => isPassed(it) || it.recurring || it.optional;
     const result = [];
     for (const area of AREAS) {
       if (!AUDITED_PARTS.has(area.part)) continue;
@@ -7845,7 +7846,7 @@ function RemainingTab({ items, toggleItem, trainers, toggleTrainer, choiceGroups
         for (const floor of area.floors) {
           for (let i = 0; i < (floor.items || []).length; i++) {
             const it = floor.items[i];
-            if (isPassed(it)) continue;
+            if (skip(it)) continue;
             const key = floorItemKey(area.id, floor.label, i);
             if (!items[key]) result.push({ area, floorLabel: floor.label, it, key });
           }
@@ -7853,7 +7854,7 @@ function RemainingTab({ items, toggleItem, trainers, toggleTrainer, choiceGroups
       } else {
         for (let i = 0; i < (area.items || []).length; i++) {
           const it = area.items[i];
-          if (isPassed(it)) continue;
+          if (skip(it)) continue;
           const key = flatItemKey(area.id, i);
           if (!items[key]) result.push({ area, floorLabel: null, it, key });
         }
@@ -7949,9 +7950,7 @@ function RemainingTab({ items, toggleItem, trainers, toggleTrainer, choiceGroups
                 <span style={{ fontSize:11, color:C.muted, flexShrink:0 }}>☐</span>
                 <span style={{ fontSize:12, color:C.text, flex:1 }}>{entry.it.name}</span>
                 {entry.floorLabel && <span style={{ fontSize:9, color:C.muted, flexShrink:0 }}>{entry.floorLabel}</span>}
-                {entry.it.hidden    && <span style={{ fontSize:9, color:C.gold,  flexShrink:0 }}>★</span>}
-                {entry.it.recurring && <span style={{ fontSize:9, color:C.muted, flexShrink:0, opacity:0.7 }}>↻</span>}
-                {entry.it.optional  && <span style={{ fontSize:9, color:C.muted, flexShrink:0, opacity:0.7 }}>opt</span>}
+                {entry.it.hidden && <span style={{ fontSize:9, color:C.gold, flexShrink:0 }}>★</span>}
               </div>
             )) : entries.map(entry => (
               <div key={entry.key} style={rowStyle}
