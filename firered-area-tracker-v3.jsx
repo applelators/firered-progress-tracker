@@ -6962,6 +6962,10 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
   const nonOptionalItemDone = area && !area.floors
     ? areaItems.reduce((n, it, i) => { if (isPassedItem(it) || it.optional || it.recurring) return n; const hbd = heldByDone(it, areaId, trades); return n + ((hbd !== null ? hbd : !!items[flatItemKey(areaId, i)]) ? 1 : 0); }, 0)
     : area?.floors?.reduce((n, floor) => n + (floor.items||[]).reduce((m, it, i) => { if (isPassedItem(it) || it.optional || it.recurring) return m; const hbd = heldByDone(it, areaId, trades); return m + ((hbd !== null ? hbd : !!items[floorItemKey(areaId, floor.label, i)]) ? 1 : 0); }, 0), 0) ?? 0;
+  const recurringItems     = relevantItems.filter(it => it.recurring);
+  const recurringItemDone  = area && !area.floors
+    ? areaItems.reduce((n,it,i) => { if (!it.recurring||isPassedItem(it)) return n; return n+(!!items[flatItemKey(areaId,i)]?1:0); },0)
+    : area?.floors?.reduce((n,f) => n+(f.items||[]).reduce((m,it,i) => { if (!it.recurring||isPassedItem(it)) return m; return m+(!!items[floorItemKey(areaId,f.label,i)]?1:0); },0),0) ?? 0;
   const trainerDone     = areaTrainers.filter(t => trainers[`${areaId}|${t.class}|${t.name}`]).length;
 
   // Prev / Next navigation
@@ -7095,10 +7099,14 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                   const floorVerPoks    = (floor.pokemon || []).filter(p => !(version === "fr" && p.lgOnly) && !(version === "lg" && p.frOnly));
                   const relevFloorPoks  = floorVerPoks.filter(p => !isPassedPokemon(p));
                   const pokDone         = relevFloorPoks.filter(p => p.method === "Trade" ? !!trades[`${areaId}|trade|${p.name}`] : !!caught[p.name]).length;
-                  const relevFloorItems = (floor.items || []).filter(it => !isPassedItem(it));
-                  const itmDone         = (floor.items || []).reduce((n, it, i) => n + (!isPassedItem(it) && items[floorItemKey(areaId, floor.label, i)] ? 1 : 0), 0);
+                  const relevFloorItems        = (floor.items || []).filter(it => !isPassedItem(it));
+                  const regularFloorItems      = relevFloorItems.filter(it => !it.recurring && !it.optional);
+                  const recurringFloorItems    = relevFloorItems.filter(it => it.recurring);
+                  const regularFloorItemDone   = (floor.items || []).reduce((n,it,i) => n+(!isPassedItem(it)&&!it.recurring&&!it.optional&&items[floorItemKey(areaId,floor.label,i)]?1:0),0);
+                  const recurringFloorItemDone = (floor.items || []).reduce((n,it,i) => n+(!isPassedItem(it)&&it.recurring&&items[floorItemKey(areaId,floor.label,i)]?1:0),0);
+                  const itmDone         = regularFloorItemDone;
                   const trnDone         = (floor.trainers || []).filter(t => trainers[`${areaId}|${t.class}|${t.name}`]).length;
-                  const floorTotal = relevFloorPoks.length + relevFloorItems.length + (floor.trainers||[]).length;
+                  const floorTotal = relevFloorPoks.length + regularFloorItems.length + (floor.trainers||[]).length;
                   const floorDone  = pokDone + itmDone + trnDone;
                   const floorKey = `${areaId}|${floor.label}`;
                   const isCollapsed = collapsedFloors.has(floorKey);
@@ -7121,15 +7129,34 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                               collapsible>
                               {!hasPoks ? <Empty text="No wild Pokémon here" /> : renderPokemonList(floor.pokemon, caught, toggleCaught, version, isMobile, choiceGroups, areaId, trades, toggleTrade)}
                             </Section>
-                            <Section title="Items" count={`${itmDone}/${relevFloorItems.length}`} color={C.gold}
-                              allDone={itmDone===relevFloorItems.length && relevFloorItems.length>0}
-                              onMarkAll={() => { const kfn = (it,i) => floorItemKey(areaId,floor.label,i); itmDone===relevFloorItems.length ? clearAllItems(floor.items||[],kfn) : markAllItems(floor.items||[],kfn); }}>
-                              {!hasItms ? <Empty text="No items here" /> : floor.items.map((it,i) => {
+                            <Section title="Items" count={`${regularFloorItemDone}/${regularFloorItems.length}`} color={C.gold}
+                              allDone={regularFloorItemDone===regularFloorItems.length && regularFloorItems.length>0}
+                              onMarkAll={() => {
+                                const doMark = regularFloorItemDone < regularFloorItems.length;
+                                (floor.items||[]).forEach((it,i) => {
+                                  if (isPassedItem(it)||it.recurring||it.optional) return;
+                                  const k = floorItemKey(areaId,floor.label,i);
+                                  const tmM = it.name.match(/^(TM\d{2}|HM\d{2})\b/); const tmId = tmM?tmM[1]:undefined;
+                                  if (doMark && !items[k]) toggleItem(k,{...(it.choiceGroup?{choiceGroup:it.choiceGroup,choiceId:it.choiceId}:{}),...(tmId?{tmId}:{})});
+                                  if (!doMark && items[k]) toggleItem(k,{...(it.choiceGroup?{choiceGroup:it.choiceGroup,choiceId:it.choiceId}:{}),...(tmId?{tmId}:{})});
+                                });
+                              }}>
+                              {regularFloorItems.length === 0 ? <Empty text="No items here" /> : (floor.items||[]).map((it,i) => {
+                                if (it.recurring || it.optional || isPassedItem(it)) return null;
                                 const key = floorItemKey(areaId, floor.label, i);
                                 const hbd = heldByDone(it, areaId, trades);
                                 return <ItemEntry key={i} it={it} itemKey={key} done={hbd !== null ? hbd : !!items[key]} locked={hbd !== null} toggleItem={toggleItem} isMobile={isMobile} choiceGroups={choiceGroups} />;
                               })}
                             </Section>
+                            {recurringFloorItems.length > 0 && (
+                              <Section title="Recurring Items" count={`${recurringFloorItemDone}/${recurringFloorItems.length}`} color={C.muted}>
+                                {(floor.items||[]).map((it,i) => {
+                                  if (!it.recurring || isPassedItem(it)) return null;
+                                  const key = floorItemKey(areaId, floor.label, i);
+                                  return <ItemEntry key={i} it={it} itemKey={key} done={!!items[key]} toggleItem={toggleItem} isMobile={isMobile} choiceGroups={choiceGroups} />;
+                                })}
+                              </Section>
+                            )}
                           </div>
                           {/* Trainers right */}
                           <Section title="Trainers" count={`${trnDone}/${(floor.trainers||[]).length}`} color="#a87acc"
@@ -7157,17 +7184,36 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
                         renderPokemonList(areaPokemon, caught, toggleCaught, version, isMobile, choiceGroups, areaId, trades, toggleTrade)
                       }
                     </Section>
-                    <Section title="Items" count={`${itemDone}/${relevantItems.length}`} color={C.gold}
-                      allDone={itemDone===relevantItems.length && relevantItems.length>0}
-                      onMarkAll={() => { const kfn = (_,i) => flatItemKey(areaId,i); itemDone===relevantItems.length ? clearAllItems(areaItems,kfn) : markAllItems(areaItems,kfn); }}>
-                      {areaItems.length === 0 ? <Empty text="No items here" /> :
+                    <Section title="Items" count={`${nonOptionalItemDone}/${nonOptionalItems.length}`} color={C.gold}
+                      allDone={nonOptionalItemDone===nonOptionalItems.length && nonOptionalItems.length>0}
+                      onMarkAll={() => {
+                        const doMark = nonOptionalItemDone < nonOptionalItems.length;
+                        areaItems.forEach((it,i) => {
+                          if (isPassedItem(it)||it.recurring||it.optional) return;
+                          const k = flatItemKey(areaId,i);
+                          const tmM = it.name.match(/^(TM\d{2}|HM\d{2})\b/); const tmId = tmM?tmM[1]:undefined;
+                          if (doMark && !items[k]) toggleItem(k,{...(it.choiceGroup?{choiceGroup:it.choiceGroup,choiceId:it.choiceId}:{}),...(tmId?{tmId}:{})});
+                          if (!doMark && items[k]) toggleItem(k,{...(it.choiceGroup?{choiceGroup:it.choiceGroup,choiceId:it.choiceId}:{}),...(tmId?{tmId}:{})});
+                        });
+                      }}>
+                      {nonOptionalItems.length === 0 ? <Empty text="No items here" /> :
                         areaItems.map((it,i) => {
+                          if (it.recurring || it.optional || isPassedItem(it)) return null;
                           const key = flatItemKey(areaId, i);
                           const hbd = heldByDone(it, areaId, trades);
                           return <ItemEntry key={i} it={it} itemKey={key} done={hbd !== null ? hbd : !!items[key]} locked={hbd !== null} toggleItem={toggleItem} isMobile={isMobile} choiceGroups={choiceGroups} />;
                         })
                       }
                     </Section>
+                    {recurringItems.length > 0 && (
+                      <Section title="Recurring Items" count={`${recurringItemDone}/${recurringItems.length}`} color={C.muted}>
+                        {areaItems.map((it,i) => {
+                          if (!it.recurring || isPassedItem(it)) return null;
+                          const key = flatItemKey(areaId, i);
+                          return <ItemEntry key={i} it={it} itemKey={key} done={!!items[key]} toggleItem={toggleItem} isMobile={isMobile} choiceGroups={choiceGroups} />;
+                        })}
+                      </Section>
+                    )}
                   </div>
                   {/* Trainers right */}
                   <Section title="Trainers" count={`${trainerDone}/${areaTrainers.length}`} color="#a87acc"
