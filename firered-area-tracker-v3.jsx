@@ -4873,6 +4873,7 @@ function FireRedTracker() {
   const [choiceGroups, setChoiceGroups] = useState({});  // {groupId: choiceId}
   const [tmState, setTmState]     = useState({});   // {TM01: true, HM03: true, ...}
   const [trades, setTrades]       = useState({});   // {`${areaId}|trade|${name}`: true}
+  const [sweeps, setSweeps]       = useState({});   // {areaId: timestamp ms}
 
 
   useEffect(() => {
@@ -4885,6 +4886,7 @@ function FireRedTracker() {
       try { const r = localStorage.getItem("frlg-checklist"); if (r) setChecklist(JSON.parse(r));    } catch {}
       try { const r = localStorage.getItem("frlg-choices");   if (r) setChoiceGroups(JSON.parse(r)); } catch {}
       try { const r = localStorage.getItem("frlg-trades");    if (r) setTrades(JSON.parse(r));       } catch {}
+      try { const r = localStorage.getItem("frlg-sweeps");    if (r) setSweeps(JSON.parse(r));       } catch {}
       try {
         const savedItems = JSON.parse(localStorage.getItem("fr-items5") || "{}");
         const savedTms   = JSON.parse(localStorage.getItem("frlg-tms")  || "{}");
@@ -4953,6 +4955,9 @@ function FireRedTracker() {
       checklist: localStorage.getItem("frlg-checklist"),
       choices:   localStorage.getItem("frlg-choices"),
       tms:       localStorage.getItem("frlg-tms"),
+      sweeps:    localStorage.getItem("frlg-sweeps"),
+      boxNames:  localStorage.getItem("frlg-box-names"),
+      areaNotes: localStorage.getItem("frlg-area-notes"),
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type:"application/json" });
     const url = URL.createObjectURL(blob);
@@ -4982,6 +4987,9 @@ function FireRedTracker() {
           if (data.checklist)  localStorage.setItem("frlg-checklist", data.checklist);
           if (data.choices)    localStorage.setItem("frlg-choices",   data.choices);
           if (data.tms)        localStorage.setItem("frlg-tms",       data.tms);
+          if (data.sweeps)     localStorage.setItem("frlg-sweeps",    data.sweeps);
+          if (data.boxNames)   localStorage.setItem("frlg-box-names", data.boxNames);
+          if (data.areaNotes)  localStorage.setItem("frlg-area-notes",data.areaNotes);
           window.location.reload();
         } catch { alert("Invalid save file — could not restore data."); }
       };
@@ -5079,6 +5087,14 @@ function FireRedTracker() {
       const next = { ...prev };
       if (next[key]) delete next[key]; else next[key] = true;
       try { localStorage.setItem("frlg-trades", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }, []);
+
+  const markSwept = useCallback((areaId) => {
+    setSweeps(prev => {
+      const next = { ...prev, [areaId]: Date.now() };
+      try { localStorage.setItem("frlg-sweeps", JSON.stringify(next)); } catch {}
       return next;
     });
   }, []);
@@ -5202,7 +5218,7 @@ function FireRedTracker() {
 
         {/* Tabs */}
         <div style={{ display:"flex", gap:2, marginTop:10, overflowX:"auto", WebkitOverflowScrolling:"touch", flexWrap:"nowrap" }}>
-          {[["areas","Areas"],["dex","Pokédex"],["team","Team"],["gyms","Gyms"],["evo","Evolutions"],["types","Types"],["calc","Catch"],["hunt","Hunt"],["tms","TMs"],["completion","100%"]].map(([t,label]) => (
+          {[["areas","Areas"],["dex","Pokédex"],["team","Team"],["gyms","Gyms"],["evo","Evolutions"],["types","Types"],["calc","Catch"],["hunt","Hunt"],["tms","TMs"],["recurring","Recur"],["boxes","Boxes"],["completion","100%"]].map(([t,label]) => (
             <button key={t} onClick={() => setTabAndSave(t)} style={{
               padding: isMobile ? "7px 12px" : "8px 20px", border:"none", borderRadius:"6px 6px 0 0", cursor:"pointer", flexShrink:0,
               fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:13, fontWeight:"600",
@@ -5240,6 +5256,12 @@ function FireRedTracker() {
 
       {/* ── Tab: TMs & HMs ── */}
       {tab === "tms" && <TMsTab tmState={tmState} />}
+
+      {/* ── Tab: Recurring Items ── */}
+      {tab === "recurring" && <RecurringTab sweeps={sweeps} markSwept={markSwept} />}
+
+      {/* ── Tab: PC Boxes ── */}
+      {tab === "boxes" && <BoxTab caught={caught} toggleCaught={toggleCaught} version={version} />}
 
       {/* ── Tab: 100% Completion ── */}
       {tab === "completion" && <CompletionTab caught={caught} checklist={checklist} toggleChecklist={toggleChecklist} isMobile={isMobile} />}
@@ -7788,6 +7810,198 @@ function MiniBar({ label, done, total, color }) {
       <div style={{ height:5, background:"rgba(0,0,0,0.3)", borderRadius:99, overflow:"hidden" }}>
         <div style={{ height:"100%", width:`${p}%`, background:color, borderRadius:99, transition:"width 0.3s" }} />
       </div>
+    </div>
+  );
+}
+
+// ─── RECURRING ITEMS TAB ─────────────────────────────────────────────────────
+
+function timeAgo(ms) {
+  if (!ms) return null;
+  const diff = Date.now() - ms;
+  const m = Math.floor(diff / 60000);
+  if (m < 1)   return "just now";
+  if (m < 60)  return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24)  return `${h}h ago`;
+  const d = Math.floor(h / 24);
+  return `${d}d ago`;
+}
+
+const RECURRING_AREAS = [
+  { id:"mt-moon",        name:"Mt. Moon",                    note:"Tiny/Big Mushroom (Itemfinder, B1F/B2F)" },
+  { id:"underground-5-6",name:"Underground Path (5↔6)",      note:"7 hidden items (Itemfinder)" },
+  { id:"route-20-west",  name:"Route 20 (West)",             note:"Stardust on small island" },
+  { id:"treasure-beach", name:"Treasure Beach",              note:"8 hidden items on beach" },
+  { id:"bond-bridge",    name:"Bond Bridge",                 note:"10 hidden items on bridge" },
+  { id:"berry-forest",   name:"Berry Forest",               note:"Items throughout" },
+  { id:"green-path",     name:"Green Path",                 note:"Hidden items on water route" },
+  { id:"outcast-island", name:"Outcast Island",             note:"Net Ball + Star Piece (hidden)" },
+  { id:"memorial-pillar",name:"Memorial Pillar",            note:"Hidden items on water route" },
+  { id:"resort-gorgeous",name:"Resort Gorgeous",            note:"Hidden items in resort area" },
+  { id:"route21",        name:"Route 21",                   note:"Hidden items on water route" },
+  { id:"tanoby-ruins",   name:"Tanoby Ruins",              note:"Hidden items in ruins" },
+  { id:"trainer-tower",  name:"Trainer Tower",             note:"Hidden items around tower" },
+];
+
+function RecurringTab({ sweeps, markSwept }) {
+  const sorted = [...RECURRING_AREAS].sort((a, b) => {
+    const ta = sweeps[a.id] || 0;
+    const tb = sweeps[b.id] || 0;
+    return ta - tb;
+  });
+
+  return (
+    <div style={{ maxWidth:600, margin:"0 auto", padding:"20px 16px" }}>
+      <div style={{ fontSize:11, color:C.muted, letterSpacing:2, textTransform:"uppercase", marginBottom:16 }}>
+        Recurring Items Schedule
+      </div>
+      <div style={{ fontSize:11, color:C.muted, marginBottom:20, lineHeight:1.6 }}>
+        Recurring hidden items respawn periodically. Sorted oldest-swept first — sweep the top areas first.
+      </div>
+      {sorted.map(area => {
+        const ts = sweeps[area.id] || 0;
+        const ago = timeAgo(ts);
+        const urgent = !ts || (Date.now() - ts) > 7 * 24 * 60 * 60 * 1000;
+        return (
+          <div key={area.id} style={{
+            background:C.card, border:`1px solid ${urgent ? C.frRed : C.border}`,
+            borderRadius:8, padding:"12px 16px", marginBottom:8,
+            display:"flex", alignItems:"center", gap:12
+          }}>
+            <div style={{ flex:1 }}>
+              <div style={{ fontSize:13, color:C.text, fontWeight:600 }}>{area.name}</div>
+              <div style={{ fontSize:11, color:C.muted, marginTop:2 }}>{area.note}</div>
+            </div>
+            <div style={{ textAlign:"right", flexShrink:0 }}>
+              <div style={{ fontSize:11, color: ago ? (urgent ? C.frRed : C.green) : C.muted, marginBottom:6 }}>
+                {ago || "never swept"}
+              </div>
+              <button onClick={() => markSwept(area.id)} style={{
+                background:C.accent, color:"#fff", border:"none", borderRadius:5,
+                padding:"4px 12px", fontSize:11, cursor:"pointer", fontWeight:600
+              }}>
+                Mark swept
+              </button>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── PC BOX TAB ──────────────────────────────────────────────────────────────
+
+const BOX_SIZE = 30;
+
+function BoxTab({ caught, toggleCaught, version }) {
+  const { useState: useS, useMemo: useM, useCallback: useCB } = React;
+
+  const [boxNames, setBoxNames] = useS(() => {
+    try { return JSON.parse(localStorage.getItem("frlg-box-names") || "{}"); } catch { return {}; }
+  });
+  const [editingBox, setEditingBox] = useS(null);
+  const [editVal,    setEditVal]    = useS("");
+
+  const saveBoxName = useCB((idx, name) => {
+    setBoxNames(prev => {
+      const next = { ...prev };
+      if (name.trim()) next[idx] = name.trim(); else delete next[idx];
+      try { localStorage.setItem("frlg-box-names", JSON.stringify(next)); } catch {}
+      return next;
+    });
+    setEditingBox(null);
+  }, []);
+
+  const allPokemon = useM(() => {
+    const versionFiltered = p => {
+      if (version === "fr" && p.lgOnly) return false;
+      if (version === "lg" && p.frOnly) return false;
+      return true;
+    };
+    const kantoDex = DEX.filter(versionFiltered);
+    const nationalDex = NATIONAL_DEX.filter(versionFiltered);
+    return [...kantoDex, ...nationalDex];
+  }, [version]);
+
+  const boxes = useM(() => {
+    const result = [];
+    for (let i = 0; i < allPokemon.length; i += BOX_SIZE) {
+      result.push(allPokemon.slice(i, i + BOX_SIZE));
+    }
+    return result;
+  }, [allPokemon]);
+
+  return (
+    <div style={{ maxWidth:700, margin:"0 auto", padding:"20px 16px" }}>
+      <div style={{ fontSize:11, color:C.muted, letterSpacing:2, textTransform:"uppercase", marginBottom:16 }}>
+        PC Box Organizer
+      </div>
+      {boxes.map((box, boxIdx) => {
+        const caughtInBox = box.filter(p => caught[p.name]).length;
+        const defaultName = `Box ${boxIdx + 1}`;
+        const boxName = boxNames[boxIdx] || defaultName;
+        return (
+          <div key={boxIdx} style={{ marginBottom:24 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:10 }}>
+              {editingBox === boxIdx ? (
+                <input
+                  autoFocus
+                  value={editVal}
+                  onChange={e => setEditVal(e.target.value)}
+                  onBlur={() => saveBoxName(boxIdx, editVal)}
+                  onKeyDown={e => { if (e.key === "Enter") saveBoxName(boxIdx, editVal); if (e.key === "Escape") setEditingBox(null); }}
+                  style={{
+                    background:"rgba(0,0,0,0.3)", border:`1px solid ${C.accent}`, borderRadius:5,
+                    color:C.text, padding:"3px 8px", fontSize:13, fontWeight:600, width:160, outline:"none"
+                  }}
+                />
+              ) : (
+                <span
+                  onClick={() => { setEditingBox(boxIdx); setEditVal(boxNames[boxIdx] || ""); }}
+                  style={{ fontSize:13, color:C.text, fontWeight:600, cursor:"pointer", borderBottom:`1px dashed ${C.border}` }}
+                  title="Click to rename"
+                >{boxName}</span>
+              )}
+              <span style={{ fontSize:11, color:C.muted }}>
+                {caughtInBox}/{box.length} caught
+              </span>
+              <div style={{ flex:1, height:4, background:"rgba(0,0,0,0.3)", borderRadius:99, overflow:"hidden" }}>
+                <div style={{ height:"100%", width:`${Math.round(caughtInBox/box.length*100)}%`, background:C.green, borderRadius:99, transition:"width 0.3s" }} />
+              </div>
+            </div>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(10, 1fr)", gap:3 }}>
+              {box.map(p => {
+                const isCaught = !!caught[p.name];
+                return (
+                  <div
+                    key={p.name}
+                    title={p.name}
+                    onClick={() => toggleCaught(p.name)}
+                    style={{
+                      aspectRatio:"1", background: isCaught ? "rgba(74,175,116,0.15)" : "rgba(0,0,0,0.25)",
+                      border:`1px solid ${isCaught ? C.green : C.border}`,
+                      borderRadius:6, display:"flex", flexDirection:"column",
+                      alignItems:"center", justifyContent:"center", cursor:"pointer",
+                      gap:1, padding:2, transition:"all 0.15s"
+                    }}
+                  >
+                    <img
+                      src={pokeSpriteUrl(p.id)}
+                      alt={p.name}
+                      style={{ width:32, height:32, imageRendering:"pixelated", filter: isCaught ? "none" : "brightness(0) opacity(0.35)" }}
+                    />
+                    <span style={{ fontSize:7, color: isCaught ? C.green : C.muted, lineHeight:1, textAlign:"center", overflow:"hidden", maxWidth:"100%" }}>
+                      {p.name}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
