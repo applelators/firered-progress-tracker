@@ -5565,15 +5565,16 @@ function DreamTeamTab({ isMobile, version }) {
                 {/* Moveset */}
                 <div>
                   <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:5 }}>Moveset{isPreEvo ? ` (as ${finalForm})` : ""}</div>
+                  <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
                   {moves.map((m, i) => {
                     const isHM      = m.kind === "hm";
                     const isOneTime = m.kind === "tm" && m.oneTime;
-                    const moveColor = isHM ? "#4a8fc4" : isOneTime ? "#e8a020" : m.kind === "tm" ? C.gold : (MOVE_TIERS?.good?.has(m.move) ? C.green : C.text);
+                    const moveColor = isHM ? "#4a8fc4" : isOneTime ? "#e8a020" : m.kind === "tm" ? C.gold : (MOVE_TIERS?.good?.has(m.move) ? C.green : C.muted);
                     const superEff  = getMoveSuper(m.move);
                     return (
-                      <div key={i} style={{ marginBottom:4 }}>
+                      <div key={i} style={{ padding:"6px 8px", background:"rgba(0,0,0,0.18)", borderRadius:6, borderLeft:`2px solid ${moveColor}` }}>
                         <div style={{ display:"flex", alignItems:"baseline", gap:6 }}>
-                          <span style={{ fontSize:11, fontWeight:"600", color:moveColor }}>{m.move}</span>
+                          <span style={{ fontSize:11, fontWeight:"600", color:C.text }}>{m.move}</span>
                           {MOVE_TYPES[m.move] && <span style={{ fontSize:8, color:"#fff", background:TYPE_COLORS[MOVE_TYPES[m.move]]||"#888", padding:"1px 5px", borderRadius:3, fontWeight:"700", letterSpacing:0.3, flexShrink:0 }}>{MOVE_TYPES[m.move]}</span>}
                           <span style={{ fontSize:9, color:C.muted, flex:1, lineHeight:1.4 }}>{m.src}</span>
                           {isOneTime && <span style={{ fontSize:8, color:"#e8a020", background:"rgba(232,160,32,0.12)", border:"1px solid rgba(232,160,32,0.3)", borderRadius:3, padding:"0 4px", flexShrink:0, whiteSpace:"nowrap" }}>1× only</span>}
@@ -5582,10 +5583,10 @@ function DreamTeamTab({ isMobile, version }) {
                           const s = MOVE_STATS[m.move];
                           const bp  = s.bp  != null ? `${s.bp} bp`  : "— bp";
                           const acc = s.acc != null ? `${s.acc}%`   : "—%";
-                          return <div style={{ fontSize:9, color:C.muted, opacity:0.75, marginTop:1, paddingLeft:1 }}>{bp} · {acc} · {s.pp} PP</div>;
+                          return <div style={{ fontSize:9, color:C.muted, opacity:0.75, marginTop:2 }}>{bp} · {acc} · {s.pp} PP</div>;
                         })()}
                         {superEff.length > 0 && (
-                          <div style={{ display:"flex", gap:3, flexWrap:"wrap", marginTop:2 }}>
+                          <div style={{ display:"flex", gap:3, flexWrap:"wrap", marginTop:3 }}>
                             <span style={{ fontSize:8, color:C.muted }}>2× vs</span>
                             {superEff.map(t => <span key={t} style={{ fontSize:8, fontWeight:"700", color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"0 4px", borderRadius:2 }}>{t}</span>)}
                           </div>
@@ -5593,6 +5594,7 @@ function DreamTeamTab({ isMobile, version }) {
                       </div>
                     );
                   })}
+                  </div>
                   {moves.length === 0 && <div style={{ fontSize:10, color:C.muted }}>No moveset data available.</div>}
                 </div>
 
