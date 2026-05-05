@@ -7835,19 +7835,42 @@ function GymTab({ isMobile }) {
 // ─── EVOLUTION PLANNER TAB ────────────────────────────────────────────────────
 function EvoTab({ caught, toggleCaught }) {
   const regionalEvos = React.useMemo(() => EVO_METHODS.filter(e => e.evo in DEX_ID), []);
+
+  // Build full chains as flat paths: ["Bulbasaur", {how,group}, "Ivysaur", {how,group}, "Venusaur"]
+  const chains = React.useMemo(() => {
+    const preMap = {};
+    regionalEvos.forEach(e => { if (!preMap[e.pre]) preMap[e.pre] = []; preMap[e.pre].push(e); });
+    const evoSet = new Set(regionalEvos.map(e => e.evo));
+    const roots = [...new Set(regionalEvos.map(e => e.pre))].filter(p => !evoSet.has(p));
+    function buildPaths(name, path) {
+      const nexts = preMap[name] || [];
+      if (nexts.length === 0) return [path];
+      return nexts.flatMap(n => buildPaths(n.evo, [...path, { how: n.how, group: n.group }, n.evo]));
+    }
+    const all = roots.flatMap(r => buildPaths(r, [r]));
+    all.sort((a, b) => (DEX_ID[a[0]] || 999) - (DEX_ID[b[0]] || 999));
+    return all;
+  }, [regionalEvos]);
+
   const [showAll, setShowAll] = React.useState(false);
-  const displayed = React.useMemo(() =>
-    showAll ? regionalEvos : regionalEvos.filter(e => caught[e.pre] && !caught[e.evo]),
-    [caught, showAll, regionalEvos]);
-  const groups = { level:[], stone:[], trade:[], friend:[] };
-  displayed.forEach(e => { if (groups[e.group]) groups[e.group].push(e); });
-  const GROUP_LABEL = { level:"Level-Up", stone:"Stone Evolution", trade:"Trade Evolution", friend:"Friendship" };
-  const GROUP_COLOR = { level:C.green, stone:C.gold, trade:"#a87acc", friend:"#e85c8a" };
-  const totalPending = regionalEvos.filter(e => caught[e.pre] && !caught[e.evo]).length;
+
+  const displayed = React.useMemo(() => {
+    if (showAll) return chains;
+    return chains.filter(chain => {
+      for (let i = 0; i < chain.length - 2; i += 2)
+        if (caught[chain[i]] && !caught[chain[i + 2]]) return true;
+      return false;
+    });
+  }, [chains, caught, showAll]);
+
+  const totalPending = React.useMemo(() =>
+    regionalEvos.filter(e => caught[e.pre] && !caught[e.evo]).length,
+    [regionalEvos, caught]);
+
+  const METHOD_COLOR = { level: C.green, stone: C.gold, trade: "#a87acc", friend: "#e85c8a" };
 
   return (
     <div style={{ flex:1, overflowY:"auto", padding:20 }}>
-      {/* Header */}
       <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:20, flexWrap:"wrap" }}>
         <div>
           <div style={{ fontSize:16, fontWeight:"700", color:C.text }}>Evolution Planner</div>
@@ -7872,43 +7895,37 @@ function EvoTab({ caught, toggleCaught }) {
         </div>
       )}
 
-      {Object.entries(groups).map(([key, entries]) => {
-        if (entries.length === 0) return null;
-        const col = GROUP_COLOR[key];
-        return (
-          <div key={key} style={{ marginBottom:24 }}>
-            <div style={{ fontSize:9, color:col, letterSpacing:1.5, textTransform:"uppercase", marginBottom:10, fontWeight:"700" }}>{GROUP_LABEL[key]}</div>
-            {entries.map(e => {
-              const preId  = allDexId(e.pre);
-              const evoId  = allDexId(e.evo);
-              const evoCaught = !!caught[e.evo];
-              return (
-                <div key={`${e.pre}-${e.evo}`} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 12px", background:C.card, borderRadius:8, border:`1px solid ${C.border}`, marginBottom:6 }}>
-                  <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:2, minWidth:52 }}>
-                    {preId ? <img src={pokeSpriteUrl(preId)} alt={e.pre} width={36} height={36} style={{ imageRendering:"pixelated" }} /> : <div style={{ width:36, height:36 }} />}
-                    <span style={{ fontSize:9, color:C.muted, textAlign:"center" }}>{e.pre}</span>
+      <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+        {displayed.map((chain, ci) => (
+          <div key={ci} style={{ display:"flex", alignItems:"center", gap:8, padding:"10px 14px", background:C.card, borderRadius:8, border:`1px solid ${C.border}`, flexWrap:"wrap" }}>
+            {chain.map((item, idx) => {
+              if (typeof item === "string") {
+                const dexId = allDexId(item);
+                const isCaught = !!caught[item];
+                const prevName = idx >= 2 ? chain[idx - 2] : null;
+                const isPending = prevName && caught[prevName] && !isCaught;
+                return (
+                  <div key={idx} onClick={() => toggleCaught(item)} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:2, minWidth:48, cursor:"pointer", position:"relative" }}>
+                    {isPending && <div style={{ position:"absolute", top:-3, right:2, width:7, height:7, borderRadius:"50%", background:C.gold, border:`1px solid ${C.bg}` }} />}
+                    {dexId
+                      ? <img src={pokeSpriteUrl(dexId)} alt={item} width={38} height={38} style={{ imageRendering:"pixelated", opacity: isCaught ? 1 : 0.25, filter: isCaught ? "none" : "brightness(0)" }} />
+                      : <div style={{ width:38, height:38 }} />}
+                    <span style={{ fontSize:8, color: isCaught ? C.green : C.muted, textAlign:"center", maxWidth:52 }}>{item}</span>
                   </div>
-                  <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3 }}>
+                );
+              } else {
+                const col = METHOD_COLOR[item.group] || C.muted;
+                return (
+                  <div key={idx} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3 }}>
                     <span style={{ color:C.muted, fontSize:14, lineHeight:1 }}>→</span>
-                    <span style={{ fontSize:9, color:col, background:`${col}18`, border:`1px solid ${col}44`, borderRadius:4, padding:"1px 6px", whiteSpace:"nowrap" }}>{e.how}</span>
+                    <span style={{ fontSize:8, color:col, background:`${col}18`, border:`1px solid ${col}44`, borderRadius:4, padding:"1px 5px", whiteSpace:"nowrap" }}>{item.how}</span>
                   </div>
-                  <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:2, minWidth:52 }}>
-                    {evoId ? <img src={pokeSpriteUrl(evoId)} alt={e.evo} width={36} height={36} style={{ imageRendering:"pixelated", opacity: evoCaught ? 1 : 0.3, filter: evoCaught ? "none" : "brightness(0)" }} /> : <div style={{ width:36, height:36 }} />}
-                    <span style={{ fontSize:9, color: evoCaught ? C.green : C.text, textAlign:"center" }}>{e.evo}</span>
-                  </div>
-                  <button onClick={() => toggleCaught(e.evo)} style={{
-                    marginLeft:"auto", padding:"5px 12px", fontSize:11, borderRadius:5, cursor:"pointer",
-                    border:`1px solid ${evoCaught ? C.green : C.border}`,
-                    background: evoCaught ? "rgba(74,175,116,0.12)" : "transparent",
-                    color: evoCaught ? C.green : C.muted,
-                    fontFamily:"'DM Sans',system-ui,sans-serif", whiteSpace:"nowrap",
-                  }}>{evoCaught ? "✓ Caught" : "Mark caught"}</button>
-                </div>
-              );
+                );
+              }
             })}
           </div>
-        );
-      })}
+        ))}
+      </div>
     </div>
   );
 }
