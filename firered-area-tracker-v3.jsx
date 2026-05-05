@@ -7852,6 +7852,7 @@ function RecurringTab({ sweeps, markSwept }) {
   });
 
   return (
+    <div style={{ flex:1, overflowY:"auto" }}>
     <div style={{ maxWidth:600, margin:"0 auto", padding:"20px 16px" }}>
       <div style={{ fontSize:11, color:C.muted, letterSpacing:2, textTransform:"uppercase", marginBottom:16 }}>
         Recurring Items Schedule
@@ -7887,6 +7888,7 @@ function RecurringTab({ sweeps, markSwept }) {
           </div>
         );
       })}
+    </div>
     </div>
   );
 }
@@ -7934,6 +7936,7 @@ function BoxTab({ caught, toggleCaught, version }) {
   }, [allPokemon]);
 
   return (
+    <div style={{ flex:1, overflowY:"auto" }}>
     <div style={{ maxWidth:700, margin:"0 auto", padding:"20px 16px" }}>
       <div style={{ fontSize:11, color:C.muted, letterSpacing:2, textTransform:"uppercase", marginBottom:16 }}>
         PC Box Organizer
@@ -8002,6 +8005,7 @@ function BoxTab({ caught, toggleCaught, version }) {
           </div>
         );
       })}
+    </div>
     </div>
   );
 }
