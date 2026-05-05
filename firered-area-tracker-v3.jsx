@@ -7834,15 +7834,16 @@ function GymTab({ isMobile }) {
 
 // ─── EVOLUTION PLANNER TAB ────────────────────────────────────────────────────
 function EvoTab({ caught, toggleCaught }) {
+  const regionalEvos = React.useMemo(() => EVO_METHODS.filter(e => e.evo in DEX_ID), []);
   const [showAll, setShowAll] = React.useState(false);
   const displayed = React.useMemo(() =>
-    showAll ? EVO_METHODS : EVO_METHODS.filter(e => caught[e.pre] && !caught[e.evo]),
-    [caught, showAll]);
+    showAll ? regionalEvos : regionalEvos.filter(e => caught[e.pre] && !caught[e.evo]),
+    [caught, showAll, regionalEvos]);
   const groups = { level:[], stone:[], trade:[], friend:[] };
   displayed.forEach(e => { if (groups[e.group]) groups[e.group].push(e); });
   const GROUP_LABEL = { level:"Level-Up", stone:"Stone Evolution", trade:"Trade Evolution", friend:"Friendship" };
   const GROUP_COLOR = { level:C.green, stone:C.gold, trade:"#a87acc", friend:"#e85c8a" };
-  const totalPending = EVO_METHODS.filter(e => caught[e.pre] && !caught[e.evo]).length;
+  const totalPending = regionalEvos.filter(e => caught[e.pre] && !caught[e.evo]).length;
 
   return (
     <div style={{ flex:1, overflowY:"auto", padding:20 }}>
