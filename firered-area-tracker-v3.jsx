@@ -5147,8 +5147,8 @@ function FireRedTracker() {
     const caughtPok = [...pokSet].filter(n => caught[n]).length;
     let totalItems = 0, doneItems = 0;
     auditedAreas.forEach(a => {
-      if (a.floors) a.floors.forEach(f => (f.items||[]).forEach((_, i) => { totalItems++; if (items[`${a.id}|${f.label}|${i}`]) doneItems++; }));
-      else (a.items||[]).forEach((_, i) => { totalItems++; if (items[`${a.id}|${i}`]) doneItems++; });
+      if (a.floors) a.floors.forEach(f => (f.items||[]).forEach((it, i) => { if (it.recurring || it.optional) return; totalItems++; if (items[`${a.id}|${f.label}|${i}`]) doneItems++; }));
+      else (a.items||[]).forEach((it, i) => { if (it.recurring || it.optional) return; totalItems++; if (items[`${a.id}|${i}`]) doneItems++; });
     });
     let totalTrainers = 0, doneTrainers = 0;
     auditedAreas.forEach(a => allTrns(a).forEach(t => {
