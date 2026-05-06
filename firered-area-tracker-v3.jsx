@@ -160,22 +160,11 @@ const AREAS = [
     items:[{name:"Oak's Parcel",hidden:false,note:"From the Poké Mart shopkeeper — deliver to Professor Oak in Pallet Town"},{name:"Potion",hidden:false,note:"Near the city's north exit, west of the small tree"},{name:"Teachy TV",hidden:false,note:"From the old man after delivering Oak's Parcel"}] },
 
   { part:"Part 2", id:"route22", name:"Route 22",
-    note:"Worth visiting early for Mankey (useful against Brock). Surf and fishing unlocked on the return visit after Viridian Gym.",
+    note:"Worth visiting early for Mankey (useful against Brock). Surf and fishing accessible on the return visit — see Route 22 (Surf & Fishing) in Part 10.",
     pokemon:[
-      {name:"Rattata",  method:"Grass",     levels:"2–5",   rate:"45%"},
-      {name:"Mankey",   method:"Grass",     levels:"2–5",   rate:"45%"},
-      {name:"Spearow",  method:"Grass",     levels:"3–5",   rate:"10%"},
-      {name:"Psyduck",  method:"Surf",      levels:"20–40", rate:"100%", frOnly:true},
-      {name:"Slowpoke", method:"Surf",      levels:"20–40", rate:"100%", lgOnly:true},
-      {name:"Magikarp", method:"Old Rod",   levels:"5",     rate:"100%"},
-      {name:"Poliwag",  method:"Good Rod",  levels:"5–15",  rate:"60%"},
-      {name:"Goldeen",  method:"Good Rod",  levels:"5–15",  rate:"20%"},
-      {name:"Magikarp", method:"Good Rod",  levels:"5–15",  rate:"20%"},
-      {name:"Poliwag",  method:"Super Rod", levels:"15–25", rate:"40%"},
-      {name:"Poliwhirl",method:"Super Rod", levels:"20–30", rate:"40%"},
-      {name:"Gyarados", method:"Super Rod", levels:"15–25", rate:"15%"},
-      {name:"Psyduck",  method:"Super Rod", levels:"15–35", rate:"5%",  frOnly:true},
-      {name:"Slowpoke", method:"Super Rod", levels:"15–35", rate:"5%",  lgOnly:true},
+      {name:"Rattata",method:"Grass",levels:"2–5",rate:"45%"},
+      {name:"Mankey", method:"Grass",levels:"2–5",rate:"45%"},
+      {name:"Spearow",method:"Grass",levels:"3–5",rate:"10%"},
     ],
     items:[],
     trainers:[
@@ -539,22 +528,13 @@ const AREAS = [
   { part:"Part 7", id:"route11", name:"Route 11",
     note:"Ekans is FR-only at 40%; Sandshrew fills the same slot in LeafGreen. Get the Itemfinder from Oak's aide in the east gate (30 Pokémon). Trade NPC in the gate: Nidorino→Nidorina (FR) or Nidorina→Nidorino (LG).",
     pokemon:[
-      {name:"Ekans",    method:"Grass",  levels:"12–15",rate:"40%",frOnly:true},
-      {name:"Sandshrew",method:"Grass",  levels:"12–15",rate:"40%",lgOnly:true},
-      {name:"Spearow",  method:"Grass",  levels:"13–17",rate:"35%"},
-      {name:"Drowzee",  method:"Grass",  levels:"11–15",rate:"25%"},
-      {name:"Tentacool",method:"Surf",     levels:"5–40", rate:"100%"},
+      {name:"Ekans",    method:"Grass",   levels:"12–15",rate:"40%",frOnly:true},
+      {name:"Sandshrew",method:"Grass",   levels:"12–15",rate:"40%",lgOnly:true},
+      {name:"Spearow",  method:"Grass",   levels:"13–17",rate:"35%"},
+      {name:"Drowzee",  method:"Grass",   levels:"11–15",rate:"25%"},
       {name:"Magikarp", method:"Old Rod", levels:"5",    rate:"100%"},
-      {name:"Horsea",   method:"Good Rod",levels:"5–15", rate:"60% FR / 20% LG"},
-      {name:"Krabby",   method:"Good Rod",levels:"5–15", rate:"20% FR / 60% LG"},
-      {name:"Magikarp", method:"Good Rod",levels:"5–15", rate:"20%"},
-      {name:"Horsea",   method:"Super Rod",levels:"15–35",rate:"84%",frOnly:true},
-      {name:"Krabby",   method:"Super Rod",levels:"15–35",rate:"84%",lgOnly:true},
-      {name:"Gyarados", method:"Super Rod",levels:"15–25",rate:"15%"},
-      {name:"Psyduck",  method:"Super Rod",levels:"25–35",rate:"1%", frOnly:true},
-      {name:"Slowpoke", method:"Super Rod",levels:"25–35",rate:"1%", lgOnly:true},
-      {name:"Nidorina", method:"Trade",  levels:"any",  frOnly:true,note:"Trade Nidorino in the east gate (FR)"},
-      {name:"Nidorino", method:"Trade",  levels:"any",  lgOnly:true,note:"Trade Nidorina in the east gate (LG)"},
+      {name:"Nidorina", method:"Trade",   levels:"any",  frOnly:true,note:"Trade Nidorino in the east gate (FR)"},
+      {name:"Nidorino", method:"Trade",   levels:"any",  lgOnly:true,note:"Trade Nidorina in the east gate (LG)"},
     ],
     items:[
       {name:"Awakening",   hidden:false,note:"Northwest part of the route"},
@@ -627,27 +607,16 @@ const AREAS = [
       {name:"Spearow",  method:"Grass",   levels:"13–17",rate:"35%"},
       {name:"Ekans",    method:"Grass",   levels:"11–17",rate:"25%",frOnly:true},
       {name:"Sandshrew",method:"Grass",   levels:"11–17",rate:"25%",lgOnly:true},
-      {name:"Tentacool",method:"Surf",    levels:"5–40", rate:"100%"},
       {name:"Magikarp", method:"Old Rod", levels:"5",    rate:"100%"},
-      {name:"Horsea",   method:"Good Rod",levels:"5–15", rate:"60% FR / 20% LG"},
-      {name:"Krabby",   method:"Good Rod",levels:"5–15", rate:"20% FR / 60% LG"},
-      {name:"Magikarp", method:"Good Rod",levels:"5–15", rate:"20%"},
-      {name:"Horsea",   method:"Super Rod",levels:"15–35",rate:"84%",frOnly:true},
-      {name:"Krabby",   method:"Super Rod",levels:"15–35",rate:"84%",lgOnly:true},
-      {name:"Gyarados", method:"Super Rod",levels:"15–25",rate:"15%"},
-      {name:"Psyduck",  method:"Super Rod",levels:"25–35",rate:"1%", frOnly:true},
-      {name:"Slowpoke", method:"Super Rod",levels:"25–35",rate:"1%", lgOnly:true},
     ],
     items:[
       {name:"Everstone",   hidden:false,note:"Pokémon Center — from Oak's aide after catching 20 different species"},
       {name:"Persim Berry",hidden:true, note:"Southeast of Pokémon Center, corner of fencing (★ Itemfinder)",img:"screenshots/hidden/route10-north-1.png"},
       {name:"Cheri Berry", hidden:true, note:"Southwest of Pokémon Center, edge of dirt patch (★ Itemfinder)",img:"screenshots/hidden/route10-north-2.png"},
       {name:"Super Potion",hidden:true, note:"One step east of Rock Tunnel north entrance — requires Cut (★ Itemfinder)",img:"screenshots/hidden/route10-north-3.png"},
-      {name:"Max Ether",  hidden:true, note:"One step west, four steps north of PokéManiac Mark (requires Surf)"},
     ],
     trainers:[
       {class:"Picnicker", name:"Heidi",team:[{name:"Pikachu", level:20},{name:"Clefairy",level:20}]},
-      {class:"PokéManiac",name:"Mark", note:"Requires Surf — only accessible on the Part 15 return trip to reach the Power Plant.", team:[{name:"Rhyhorn", level:29},{name:"Lickitung",level:29}]},
     ] },
 
   { part:"Part 8", id:"rock-tunnel", name:"Rock Tunnel",
@@ -706,16 +675,7 @@ const AREAS = [
       {name:"Spearow",  method:"Grass",   levels:"18–22",rate:"35%"},
       {name:"Ekans",    method:"Grass",   levels:"16–21",rate:"25%",frOnly:true},
       {name:"Sandshrew",method:"Grass",   levels:"16–21",rate:"25%",lgOnly:true},
-      {name:"Tentacool",method:"Surf",    levels:"5–40", rate:"100%"},
       {name:"Magikarp", method:"Old Rod", levels:"5",    rate:"100%"},
-      {name:"Horsea",   method:"Good Rod",levels:"5–15", rate:"60% FR / 20% LG"},
-      {name:"Krabby",   method:"Good Rod",levels:"5–15", rate:"20% FR / 60% LG"},
-      {name:"Magikarp", method:"Good Rod",levels:"5–15", rate:"20%"},
-      {name:"Horsea",   method:"Super Rod",levels:"15–35",rate:"84%",frOnly:true},
-      {name:"Krabby",   method:"Super Rod",levels:"15–35",rate:"84%",lgOnly:true},
-      {name:"Gyarados", method:"Super Rod",levels:"15–25",rate:"15%"},
-      {name:"Psyduck",  method:"Super Rod",levels:"25–35",rate:"1%", frOnly:true},
-      {name:"Slowpoke", method:"Super Rod",levels:"25–35",rate:"1%", lgOnly:true},
     ],
     items:[
       {name:"Nanab Berry",hidden:true,note:"East of Rock Tunnel exit (★ Itemfinder)",img:"screenshots/hidden/route10-south-0.png"},
@@ -1320,6 +1280,72 @@ const AREAS = [
       {class:"Biker",       name:"Ruben",    team:[{name:"Weezing", level:28},{name:"Koffing", level:28},{name:"Weezing",level:28}]},
       {class:"Cue Ball",    name:"Camron",   team:[{name:"Mankey",  level:29},{name:"Machop",  level:29}]},
     ] },
+
+  { part:"Part 10", id:"route22-surf", name:"Route 22 (Surf & Fishing)",
+    note:"Return once you have Surf and the fishing rods from Fuchsia City.",
+    pokemon:[
+      {name:"Psyduck",  method:"Surf",      levels:"20–40", rate:"100%", frOnly:true},
+      {name:"Slowpoke", method:"Surf",      levels:"20–40", rate:"100%", lgOnly:true},
+      {name:"Magikarp", method:"Old Rod",   levels:"5",     rate:"100%"},
+      {name:"Poliwag",  method:"Good Rod",  levels:"5–15",  rate:"60%"},
+      {name:"Goldeen",  method:"Good Rod",  levels:"5–15",  rate:"20%"},
+      {name:"Magikarp", method:"Good Rod",  levels:"5–15",  rate:"20%"},
+      {name:"Poliwag",  method:"Super Rod", levels:"15–25", rate:"40%"},
+      {name:"Poliwhirl",method:"Super Rod", levels:"20–30", rate:"40%"},
+      {name:"Gyarados", method:"Super Rod", levels:"15–25", rate:"15%"},
+      {name:"Psyduck",  method:"Super Rod", levels:"15–35", rate:"5%",  frOnly:true},
+      {name:"Slowpoke", method:"Super Rod", levels:"15–35", rate:"5%",  lgOnly:true},
+    ],
+    items:[],
+    trainers:[]},
+
+  { part:"Part 10", id:"route11-surf", name:"Route 11 (Surf & Fishing)",
+    note:"Return once you have Surf and the fishing rods from Fuchsia City. Old Rod Magikarp is available on the first visit.",
+    pokemon:[
+      {name:"Tentacool",method:"Surf",      levels:"5–40",  rate:"100%"},
+      {name:"Horsea",   method:"Good Rod",  levels:"5–15",  rate:"60% FR / 20% LG"},
+      {name:"Krabby",   method:"Good Rod",  levels:"5–15",  rate:"20% FR / 60% LG"},
+      {name:"Magikarp", method:"Good Rod",  levels:"5–15",  rate:"20%"},
+      {name:"Horsea",   method:"Super Rod", levels:"15–35", rate:"84%", frOnly:true},
+      {name:"Krabby",   method:"Super Rod", levels:"15–35", rate:"84%", lgOnly:true},
+      {name:"Gyarados", method:"Super Rod", levels:"15–25", rate:"15%"},
+      {name:"Psyduck",  method:"Super Rod", levels:"25–35", rate:"1%",  frOnly:true},
+      {name:"Slowpoke", method:"Super Rod", levels:"25–35", rate:"1%",  lgOnly:true},
+    ],
+    items:[],
+    trainers:[]},
+
+  { part:"Part 10", id:"route10-north-surf", name:"Route 10 North (Surf & Fishing)",
+    note:"Return once you have Surf and the fishing rods from Fuchsia City. Old Rod Magikarp is available on the first visit.",
+    pokemon:[
+      {name:"Tentacool",method:"Surf",      levels:"5–40",  rate:"100%"},
+      {name:"Horsea",   method:"Good Rod",  levels:"5–15",  rate:"60% FR / 20% LG"},
+      {name:"Krabby",   method:"Good Rod",  levels:"5–15",  rate:"20% FR / 60% LG"},
+      {name:"Magikarp", method:"Good Rod",  levels:"5–15",  rate:"20%"},
+      {name:"Horsea",   method:"Super Rod", levels:"15–35", rate:"84%", frOnly:true},
+      {name:"Krabby",   method:"Super Rod", levels:"15–35", rate:"84%", lgOnly:true},
+      {name:"Gyarados", method:"Super Rod", levels:"15–25", rate:"15%"},
+      {name:"Psyduck",  method:"Super Rod", levels:"25–35", rate:"1%",  frOnly:true},
+      {name:"Slowpoke", method:"Super Rod", levels:"25–35", rate:"1%",  lgOnly:true},
+    ],
+    items:[],
+    trainers:[]},
+
+  { part:"Part 10", id:"route10-south-surf", name:"Route 10 South (Surf & Fishing)",
+    note:"Return once you have Surf and the fishing rods from Fuchsia City. Old Rod Magikarp is available on the first visit.",
+    pokemon:[
+      {name:"Tentacool",method:"Surf",      levels:"5–40",  rate:"100%"},
+      {name:"Horsea",   method:"Good Rod",  levels:"5–15",  rate:"60% FR / 20% LG"},
+      {name:"Krabby",   method:"Good Rod",  levels:"5–15",  rate:"20% FR / 60% LG"},
+      {name:"Magikarp", method:"Good Rod",  levels:"5–15",  rate:"20%"},
+      {name:"Horsea",   method:"Super Rod", levels:"15–35", rate:"84%", frOnly:true},
+      {name:"Krabby",   method:"Super Rod", levels:"15–35", rate:"84%", lgOnly:true},
+      {name:"Gyarados", method:"Super Rod", levels:"15–25", rate:"15%"},
+      {name:"Psyduck",  method:"Super Rod", levels:"25–35", rate:"1%",  frOnly:true},
+      {name:"Slowpoke", method:"Super Rod", levels:"25–35", rate:"1%",  lgOnly:true},
+    ],
+    items:[],
+    trainers:[]},
 
   { part:"Part 11", id:"saffron-city", name:"Saffron City",
     note:"Tea from Celadon Mansion required for gate guards. TM29 Psychic is a free gift from Mr. Psychic in the SE house.",
@@ -2164,6 +2190,16 @@ const AREAS = [
       {name:"Electrode",    hidden:false, note:"Fake item — northeast room, northwest corner (starts a battle when grabbed)"},
     ],
     trainers:[]},
+
+  { part:"Part 15", id:"route10-north-return", name:"Route 10 North (Return)",
+    note:"PokéManiac Mark and a hidden Max Ether are only reachable via Surf — accessible on the way to the Power Plant.",
+    pokemon:[],
+    items:[
+      {name:"Max Ether", hidden:true, note:"One step west, four steps north of PokéManiac Mark (★ Itemfinder)"},
+    ],
+    trainers:[
+      {class:"PokéManiac",name:"Mark",team:[{name:"Rhyhorn",level:29},{name:"Lickitung",level:29}]},
+    ]},
 
   { part:"Part 16", id:"route22-return", name:"Route 22 (Return)",
     note:"Blue challenges you here on the way to Victory Road — Rival Battle 7.",
@@ -6638,7 +6674,7 @@ function CompletionTab({ caught, checklist, toggleChecklist, isMobile }) {
 }
 
 // ─── NATIONAL POKÉDEX PANEL ──────────────────────────────────────────────────
-function NationalDexPanel({ caught, toggleCaught, setDexSelected, version }) {
+function NationalDexPanel({ caught, setDexSelected, version }) {
   const [collapsed, setCollapsed] = React.useState(false);
   const caughtCount = NATIONAL_DEX.filter(p => caught[p.name]).length;
   const isOtherVer = p => (version === "fr" && p.lgOnly) || (version === "lg" && p.frOnly);
@@ -6788,7 +6824,7 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
           </div>
           {displayed.length === 0 && <div style={{ textAlign:"center", padding:40, color:C.muted, fontSize:12 }}>{searchTerm ? `No Pokémon match "${dexSearch}".` : "No Pokémon match this filter."}</div>}
           <LivingDexPanel caught={caught} />
-          <NationalDexPanel caught={caught} toggleCaught={toggleCaught} setDexSelected={setDexSelected} version={version} />
+          <NationalDexPanel caught={caught} setDexSelected={setDexSelected} version={version} />
         </div>
 
         {/* Detail panel — desktop only */}
