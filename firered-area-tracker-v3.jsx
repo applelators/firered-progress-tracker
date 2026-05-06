@@ -160,7 +160,7 @@ const AREAS = [
     items:[{name:"Oak's Parcel",hidden:false,note:"From the Poké Mart shopkeeper — deliver to Professor Oak in Pallet Town"},{name:"Potion",hidden:false,note:"Near the city's north exit, west of the small tree"},{name:"Teachy TV",hidden:false,note:"From the old man after delivering Oak's Parcel"}] },
 
   { part:"Part 2", id:"route22", name:"Route 22",
-    note:"Worth visiting early for Mankey (useful against Brock). Surf and fishing unlocked on the return visit after Viridian Gym. Blue challenges you here a second time before the Pokémon League.",
+    note:"Worth visiting early for Mankey (useful against Brock). Surf and fishing unlocked on the return visit after Viridian Gym.",
     pokemon:[
       {name:"Rattata",  method:"Grass",     levels:"2–5",   rate:"45%"},
       {name:"Mankey",   method:"Grass",     levels:"2–5",   rate:"45%"},
@@ -181,8 +181,6 @@ const AREAS = [
     trainers:[
       {class:"Rival",name:"Blue",note:"Early visit — Lv. 9 Pidgey + the starter that counters yours.",
         team:[{name:"Pidgey",level:9}]},
-      {class:"Rival",name:"Blue (Pre-League)",note:"Pre-League return — team varies by starter. Shown: vs Bulbasaur.",
-        team:[{name:"Pidgeot",level:47},{name:"Rhyhorn",level:45},{name:"Exeggcute",level:45},{name:"Gyarados",level:45},{name:"Alakazam",level:47},{name:"Charizard",level:53}]},
     ]},
 
   { part:"Part 2", id:"route2-west", name:"Route 2 (West)",
@@ -2166,6 +2164,15 @@ const AREAS = [
       {name:"Electrode",    hidden:false, note:"Fake item — northeast room, northwest corner (starts a battle when grabbed)"},
     ],
     trainers:[]},
+
+  { part:"Part 16", id:"route22-return", name:"Route 22 (Return)",
+    note:"Blue challenges you here on the way to Victory Road — Rival Battle 7.",
+    pokemon:[],
+    items:[],
+    trainers:[
+      {class:"Rival",name:"Blue",note:"Rival Battle 7 — team varies by starter. Shown: vs Bulbasaur.",
+        team:[{name:"Pidgeot",level:47},{name:"Rhyhorn",level:45},{name:"Exeggcute",level:45},{name:"Gyarados",level:45},{name:"Alakazam",level:47},{name:"Charizard",level:53}]},
+    ]},
 
   { part:"Part 16", id:"route23", name:"Route 23",
     note:"A checkpoint gauntlet — you need all eight badges to pass the successive gatekeepers. Connects Viridian City to Victory Road and the Indigo Plateau.",
