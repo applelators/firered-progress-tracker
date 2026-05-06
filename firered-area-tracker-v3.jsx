@@ -6985,7 +6985,7 @@ function DexDetail({ selected, caught, locs, toggleCaught, compact }) {
           )}
         </div>
       )}
-      {!compact && <DexTypeInfo name={selected.name} />}
+      <DexTypeInfo name={selected.name} />
       {!compact && <EvoChainDisplay name={selected.name} caught={caught} />}
       {!compact && (() => {
         const moves = LEARNSETS[selected.name];
