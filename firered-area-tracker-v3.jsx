@@ -4281,6 +4281,84 @@ const TYPE_CHART = {
   Dark:     {Fighting:0.5,Dark:0.5,Steel:0.5,             Ghost:2, Psychic:2},
   Steel:    {Fire:0.5, Water:0.5,Electric:0.5,Steel:0.5,  Ice:2,   Rock:2},
 };
+const POKEMON_TYPES = {
+  Bulbasaur:["Grass","Poison"],   Ivysaur:["Grass","Poison"],     Venusaur:["Grass","Poison"],
+  Charmander:["Fire"],            Charmeleon:["Fire"],            Charizard:["Fire","Flying"],
+  Squirtle:["Water"],             Wartortle:["Water"],            Blastoise:["Water"],
+  Caterpie:["Bug"],               Metapod:["Bug"],                Butterfree:["Bug","Flying"],
+  Weedle:["Bug","Poison"],        Kakuna:["Bug","Poison"],        Beedrill:["Bug","Poison"],
+  Pidgey:["Normal","Flying"],     Pidgeotto:["Normal","Flying"],  Pidgeot:["Normal","Flying"],
+  Rattata:["Normal"],             Raticate:["Normal"],
+  Spearow:["Normal","Flying"],    Fearow:["Normal","Flying"],
+  Ekans:["Poison"],               Arbok:["Poison"],
+  Pikachu:["Electric"],           Raichu:["Electric"],
+  Sandshrew:["Ground"],           Sandslash:["Ground"],
+  "Nidoran♀":["Poison"],         Nidorina:["Poison"],            Nidoqueen:["Poison","Ground"],
+  "Nidoran♂":["Poison"],         Nidorino:["Poison"],            Nidoking:["Poison","Ground"],
+  Clefairy:["Normal"],            Clefable:["Normal"],
+  Vulpix:["Fire"],                Ninetales:["Fire"],
+  Jigglypuff:["Normal"],          Wigglytuff:["Normal"],
+  Zubat:["Poison","Flying"],      Golbat:["Poison","Flying"],
+  Oddish:["Grass","Poison"],      Gloom:["Grass","Poison"],       Vileplume:["Grass","Poison"],
+  Paras:["Bug","Grass"],          Parasect:["Bug","Grass"],
+  Venonat:["Bug","Poison"],       Venomoth:["Bug","Poison"],
+  Diglett:["Ground"],             Dugtrio:["Ground"],
+  Meowth:["Normal"],              Persian:["Normal"],
+  Psyduck:["Water"],              Golduck:["Water"],
+  Mankey:["Fighting"],            Primeape:["Fighting"],
+  Growlithe:["Fire"],             Arcanine:["Fire"],
+  Poliwag:["Water"],              Poliwhirl:["Water"],            Poliwrath:["Water","Fighting"],
+  Abra:["Psychic"],               Kadabra:["Psychic"],            Alakazam:["Psychic"],
+  Machop:["Fighting"],            Machoke:["Fighting"],           Machamp:["Fighting"],
+  Bellsprout:["Grass","Poison"],  Weepinbell:["Grass","Poison"],  Victreebel:["Grass","Poison"],
+  Tentacool:["Water","Poison"],   Tentacruel:["Water","Poison"],
+  Geodude:["Rock","Ground"],      Graveler:["Rock","Ground"],     Golem:["Rock","Ground"],
+  Ponyta:["Fire"],                Rapidash:["Fire"],
+  Slowpoke:["Water","Psychic"],   Slowbro:["Water","Psychic"],
+  Magnemite:["Electric","Steel"], Magneton:["Electric","Steel"],
+  "Farfetch'd":["Normal","Flying"],
+  Doduo:["Normal","Flying"],      Dodrio:["Normal","Flying"],
+  Seel:["Water"],                 Dewgong:["Water","Ice"],
+  Grimer:["Poison"],              Muk:["Poison"],
+  Shellder:["Water"],             Cloyster:["Water","Ice"],
+  Gastly:["Ghost","Poison"],      Haunter:["Ghost","Poison"],     Gengar:["Ghost","Poison"],
+  Onix:["Rock","Ground"],
+  Drowzee:["Psychic"],            Hypno:["Psychic"],
+  Krabby:["Water"],               Kingler:["Water"],
+  Voltorb:["Electric"],           Electrode:["Electric"],
+  Exeggcute:["Grass","Psychic"],  Exeggutor:["Grass","Psychic"],
+  Cubone:["Ground"],              Marowak:["Ground"],
+  Hitmonlee:["Fighting"],         Hitmonchan:["Fighting"],
+  Lickitung:["Normal"],
+  Koffing:["Poison"],             Weezing:["Poison"],
+  Rhyhorn:["Ground","Rock"],      Rhydon:["Ground","Rock"],
+  Chansey:["Normal"],
+  Tangela:["Grass"],
+  Kangaskhan:["Normal"],
+  Horsea:["Water"],               Seadra:["Water"],
+  Goldeen:["Water"],              Seaking:["Water"],
+  Staryu:["Water"],               Starmie:["Water","Psychic"],
+  "Mr. Mime":["Psychic"],
+  Scyther:["Bug","Flying"],
+  Jynx:["Ice","Psychic"],
+  Electabuzz:["Electric"],
+  Magmar:["Fire"],
+  Pinsir:["Bug"],
+  Tauros:["Normal"],
+  Magikarp:["Water"],             Gyarados:["Water","Flying"],
+  Lapras:["Water","Ice"],
+  Ditto:["Normal"],
+  Eevee:["Normal"],
+  Vaporeon:["Water"],             Jolteon:["Electric"],           Flareon:["Fire"],
+  Porygon:["Normal"],
+  Omanyte:["Rock","Water"],       Omastar:["Rock","Water"],
+  Kabuto:["Rock","Water"],        Kabutops:["Rock","Water"],
+  Aerodactyl:["Rock","Flying"],
+  Snorlax:["Normal"],
+  Articuno:["Ice","Flying"],      Zapdos:["Electric","Flying"],   Moltres:["Fire","Flying"],
+  Dratini:["Dragon"],             Dragonair:["Dragon"],           Dragonite:["Dragon","Flying"],
+  Mewtwo:["Psychic"],             Mew:["Psychic"],
+};
 function getDefensiveChart(types) {
   const chart = {};
   for (const atk of TYPES_17) {
@@ -6579,7 +6657,7 @@ function NationalDexPanel({ caught, toggleCaught, setDexSelected, version }) {
               const isDimmed = isOtherVer(p);
               return (
                 <div key={p.id}
-                  onClick={() => { if (!isDimmed) { toggleCaught(p.name); setDexSelected(p.name); } }}
+                  onClick={() => { if (!isDimmed) setDexSelected(p.name); }}
                   style={{
                     background: isCaught ? "rgba(74,175,116,0.10)" : C.card,
                     border:`1px solid ${isCaught ? C.green : p.lgOnly ? C.lgGreen : p.frOnly ? "#c85252" : C.border}`,
@@ -6676,7 +6754,7 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
               const isSel = dexSelected === p.name;
               const isDimmed = isOtherVersionDex(p);
               return (
-                <div key={p.id} onClick={() => { if (!isDimmed) { toggleCaught(p.name); setDexSelected(p.name); } }}
+                <div key={p.id} onClick={() => { if (!isDimmed) setDexSelected(p.name); }}
                   style={{
                     background: isCaught ? "rgba(74,175,116,0.18)" : isSel ? "rgba(0,0,0,0.15)" : C.card,
                     border:`1px solid ${isSel ? "var(--frlg-accent)" : isCaught ? C.green : p.event ? "#a87acc" : p.lgOnly ? C.lgGreen : p.frOnly ? "#c85252" : TRADE_EVO_SET.has(p.name) ? "#c89832" : EVO_ONLY_SET.has(p.name) ? "#5a9fd4" : C.border}`,
@@ -6711,10 +6789,10 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
           <div style={{ width:220, flexShrink:0, borderLeft:`1px solid ${C.border}`, background:C.card, overflowY:"auto", padding:16 }}>
             {!selected ? (
               <div style={{ color:C.muted, fontSize:12, textAlign:"center", marginTop:48, lineHeight:1.9, padding:"0 12px" }}>
-                Click any Pokémon to toggle caught and see where to find it.
+                Click any Pokémon to see its details.
               </div>
             ) : (
-              <DexDetail selected={selected} caught={caught} locs={locs} />
+              <DexDetail selected={selected} caught={caught} locs={locs} toggleCaught={toggleCaught} />
             )}
           </div>
         )}
@@ -6735,10 +6813,20 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
                 {(() => { const cs = CONSTRAINT_STYLE[CATCH_CONSTRAINT_MAP[selected.name]]; return cs ? <div style={{ fontSize:10, color:cs.color, fontWeight:"500" }}>⚠ {cs.label}</div> : null; })()}
               </div>
             </div>
-            <button onClick={() => setDexSelected(null)} style={{ background:"transparent", border:`1px solid ${C.border}`, color:C.muted, borderRadius:6, cursor:"pointer", padding:"4px 12px", fontSize:15 }}>✕</button>
+            <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+              <button onClick={() => toggleCaught(selected.name)}
+                style={{ fontSize:10, fontWeight:"700", cursor:"pointer", padding:"5px 10px",
+                         background: caught[selected.name] ? "rgba(74,175,116,0.15)" : "rgba(212,98,26,0.9)",
+                         color: caught[selected.name] ? C.green : "#fff",
+                         border: `1px solid ${caught[selected.name] ? C.green : "rgba(212,98,26,0.5)"}`,
+                         borderRadius:5, fontFamily:"'DM Sans',system-ui,sans-serif" }}>
+                {caught[selected.name] ? "✓ Caught" : "Mark Caught"}
+              </button>
+              <button onClick={() => setDexSelected(null)} style={{ background:"transparent", border:`1px solid ${C.border}`, color:C.muted, borderRadius:6, cursor:"pointer", padding:"4px 12px", fontSize:15 }}>✕</button>
+            </div>
           </div>
           <div style={{ overflowY:"auto", padding:"8px 16px 16px" }}>
-            <DexDetail selected={selected} caught={caught} locs={locs} compact />
+            <DexDetail selected={selected} caught={caught} locs={locs} toggleCaught={toggleCaught} compact />
           </div>
         </div>
       )}
@@ -6827,23 +6915,77 @@ function EvoChainDisplay({ name, caught }) {
   );
 }
 
-function DexDetail({ selected, caught, locs, compact }) {
+function TypeBadge({ type }) {
+  return (
+    <span style={{ fontSize:10, fontWeight:"700", color:"#fff", background:TYPE_COLORS[type]||"#888",
+                   padding:"2px 7px", borderRadius:4, letterSpacing:0.3 }}>{type}</span>
+  );
+}
+function DexTypeInfo({ name }) {
+  const types = POKEMON_TYPES[name];
+  if (!types) return null;
+  const chart = getDefensiveChart(types);
+  const immune = TYPES_17.filter(t => chart[t] === 0);
+  const quart  = TYPES_17.filter(t => chart[t] === 0.25);
+  const half   = TYPES_17.filter(t => chart[t] === 0.5);
+  const double = TYPES_17.filter(t => chart[t] === 2);
+  const quad   = TYPES_17.filter(t => chart[t] === 4);
+  const rows = [
+    { label:"4×", types:quad,   color:"#e04040" },
+    { label:"2×", types:double, color:"#d06020" },
+    { label:"½×", types:half,   color:"#4a9f68" },
+    { label:"¼×", types:quart,  color:"#2a7f50" },
+    { label:"0×", types:immune, color:"#888" },
+  ].filter(r => r.types.length > 0);
+  return (
+    <div style={{ marginBottom:14 }}>
+      <div style={{ display:"flex", gap:5, flexWrap:"wrap", marginBottom:8 }}>
+        {types.map(t => <TypeBadge key={t} type={t} />)}
+      </div>
+      {rows.length > 0 && (
+        <>
+          <div style={{ fontSize:10, letterSpacing:2, color:C.muted, marginBottom:6, textTransform:"uppercase" }}>Type matchups</div>
+          <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+            {rows.map(r => (
+              <div key={r.label} style={{ display:"flex", alignItems:"flex-start", gap:6 }}>
+                <span style={{ fontSize:9, fontWeight:"700", color:r.color, minWidth:18, textAlign:"right", paddingTop:2, flexShrink:0 }}>{r.label}</span>
+                <div style={{ display:"flex", gap:3, flexWrap:"wrap" }}>
+                  {r.types.map(t => <TypeBadge key={t} type={t} />)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+function DexDetail({ selected, caught, locs, toggleCaught, compact }) {
+  const isCaught = !!caught[selected.name];
   return (
     <>
       {!compact && (
         <div style={{ marginBottom:14 }}>
           <img src={pokeSpriteUrl(selected.id)} alt={selected.name} style={{ width:80, height:80, imageRendering:"pixelated", display:"block", margin:"0 auto 8px" }} />
           <div style={{ fontSize:10, color:C.muted, marginBottom:2, fontFamily:"'Courier New',monospace" }}>#{String(selected.id).padStart(3,"0")}</div>
-          <div style={{ fontSize:17, fontWeight:"700", color: caught[selected.name] ? C.green : C.text }}>{selected.name}</div>
-          <div style={{ fontSize:11, color: caught[selected.name] ? C.green : C.muted, marginTop:3 }}>
-            {caught[selected.name] ? "✓ Caught" : "Not yet caught"}
-          </div>
+          <div style={{ fontSize:17, fontWeight:"700", color: isCaught ? C.green : C.text }}>{selected.name}</div>
           {selected.frOnly && <div style={{ fontSize:10, color:"#c85252", marginTop:4, fontWeight:"500" }}>FireRed exclusive</div>}
           {selected.lgOnly && <div style={{ fontSize:10, color:C.lgGreen, marginTop:4, fontWeight:"500" }}>LeafGreen exclusive</div>}
           {selected.event  && <div style={{ fontSize:10, color:"#a87acc", marginTop:4, fontWeight:"500" }}>Event — not in-game obtainable</div>}
           {(() => { const cs = CONSTRAINT_STYLE[CATCH_CONSTRAINT_MAP[selected.name]]; return cs ? <div style={{ fontSize:10, color:cs.color, marginTop:4, fontWeight:"500" }}>⚠ {cs.desc}</div> : null; })()}
+          {toggleCaught && (
+            <button onClick={() => toggleCaught(selected.name)}
+              style={{ marginTop:10, width:"100%", padding:"7px 0", fontSize:12, fontWeight:"700", cursor:"pointer",
+                       background: isCaught ? "rgba(74,175,116,0.15)" : "rgba(212,98,26,0.9)",
+                       color: isCaught ? C.green : "#fff",
+                       border: `1px solid ${isCaught ? C.green : "rgba(212,98,26,0.5)"}`,
+                       borderRadius:6, fontFamily:"'DM Sans',system-ui,sans-serif", transition:"all 0.12s" }}>
+              {isCaught ? "✓ Caught" : "Mark Caught"}
+            </button>
+          )}
         </div>
       )}
+      {!compact && <DexTypeInfo name={selected.name} />}
       {!compact && <EvoChainDisplay name={selected.name} caught={caught} />}
       {!compact && (() => {
         const moves = LEARNSETS[selected.name];
