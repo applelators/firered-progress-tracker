@@ -6842,37 +6842,82 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
       </div>
 
       {/* Bottom sheet — mobile only */}
-      {isMobile && selected && (
-        <div style={{ position:"fixed", bottom:0, left:0, right:0, zIndex:200, background:C.card, borderTop:`2px solid var(--frlg-accent)`, boxShadow:"0 -6px 24px rgba(0,0,0,0.6)", maxHeight:"44vh", display:"flex", flexDirection:"column" }}>
-          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"10px 16px 8px", borderBottom:`1px solid ${C.border}`, flexShrink:0 }}>
-            <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-              <img src={pokeSpriteUrl(selected.id)} alt={selected.name} style={{ width:36, height:36, imageRendering:"pixelated" }} />
-              <div>
-                <div style={{ fontSize:13, fontWeight:"700", color: caught[selected.name] ? C.green : C.text }}>
-                  {caught[selected.name] ? "✓ " : ""}{selected.name}
-                </div>
-                {selected.frOnly && <div style={{ fontSize:10, color:"#c85252", fontWeight:"500" }}>FireRed exclusive</div>}
-                {selected.lgOnly && <div style={{ fontSize:10, color:C.lgGreen, fontWeight:"500" }}>LeafGreen exclusive</div>}
-                {(() => { const cs = CONSTRAINT_STYLE[CATCH_CONSTRAINT_MAP[selected.name]]; return cs ? <div style={{ fontSize:10, color:cs.color, fontWeight:"500" }}>⚠ {cs.label}</div> : null; })()}
+      {isMobile && selected && (() => {
+        const isCaught = !!caught[selected.name];
+        const types = POKEMON_TYPES[selected.name];
+        const matchupRows = types ? (() => {
+          const chart = getDefensiveChart(types);
+          return [
+            { mult:"4×", color:"#e04040", types: TYPES_17.filter(t => chart[t] === 4) },
+            { mult:"2×", color:"#d06020", types: TYPES_17.filter(t => chart[t] === 2) },
+            { mult:"½×", color:"#4a9f68", types: TYPES_17.filter(t => chart[t] === 0.5) },
+            { mult:"¼×", color:"#2a7f50", types: TYPES_17.filter(t => chart[t] === 0.25) },
+            { mult:"0×", color:"#888",    types: TYPES_17.filter(t => chart[t] === 0) },
+          ].filter(r => r.types.length > 0);
+        })() : [];
+        return (
+          <div style={{ position:"fixed", bottom:0, left:0, right:0, zIndex:200,
+                        background:C.card, borderTop:`2px solid var(--frlg-accent)`,
+                        boxShadow:"0 -6px 24px rgba(0,0,0,0.6)",
+                        maxHeight:"60vh", display:"flex", flexDirection:"column" }}>
+            <button onClick={() => setDexSelected(null)}
+              style={{ position:"absolute", top:8, right:10, background:"transparent",
+                       border:`1px solid ${C.border}`, color:C.muted, borderRadius:6,
+                       cursor:"pointer", padding:"2px 10px", fontSize:14, zIndex:1 }}>✕</button>
+            <div style={{ overflowY:"auto", padding:"14px 20px 20px" }}>
+              <img src={pokeSpriteUrl(selected.id)} alt={selected.name}
+                style={{ width:64, height:64, imageRendering:"pixelated", display:"block", margin:"0 auto 2px",
+                         filter: isCaught ? "none" : "grayscale(1)", opacity: isCaught ? 1 : 0.55 }} />
+              <div style={{ textAlign:"center", marginBottom:8 }}>
+                <div style={{ fontSize:10, color:C.muted, fontFamily:"'Courier New',monospace" }}>#{String(selected.id).padStart(3,"0")}</div>
+                <div style={{ fontSize:17, fontWeight:"700", color: isCaught ? C.green : C.text, lineHeight:1.2 }}>{selected.name}</div>
+                {selected.frOnly && <div style={{ fontSize:10, color:"#c85252", fontWeight:"500", marginTop:2 }}>FireRed exclusive</div>}
+                {selected.lgOnly && <div style={{ fontSize:10, color:C.lgGreen, fontWeight:"500", marginTop:2 }}>LeafGreen exclusive</div>}
+                {(() => { const cs = CONSTRAINT_STYLE[CATCH_CONSTRAINT_MAP[selected.name]]; return cs ? <div style={{ fontSize:10, color:cs.color, fontWeight:"500", marginTop:2 }}>⚠ {cs.label}</div> : null; })()}
               </div>
-            </div>
-            <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+              {types && (
+                <div style={{ display:"flex", justifyContent:"center", gap:5, marginBottom:8 }}>
+                  {types.map(t => <TypeBadge key={t} type={t} />)}
+                </div>
+              )}
+              {matchupRows.length > 0 && (
+                <div style={{ display:"flex", flexDirection:"column", gap:4, marginBottom:10, alignItems:"center" }}>
+                  {matchupRows.map(r => (
+                    <div key={r.mult} style={{ display:"flex", alignItems:"center", gap:5 }}>
+                      <span style={{ fontSize:9, fontWeight:"700", color:r.color, minWidth:18, textAlign:"right", flexShrink:0 }}>{r.mult}</span>
+                      <div style={{ display:"flex", gap:3, flexWrap:"wrap" }}>
+                        {r.types.map(t => <TypeBadge key={t} type={t} />)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
               <button onClick={() => toggleCaught(selected.name)}
-                style={{ fontSize:10, fontWeight:"700", cursor:"pointer", padding:"5px 10px",
-                         background: caught[selected.name] ? "rgba(74,175,116,0.15)" : "rgba(212,98,26,0.9)",
-                         color: caught[selected.name] ? C.green : "#fff",
-                         border: `1px solid ${caught[selected.name] ? C.green : "rgba(212,98,26,0.5)"}`,
-                         borderRadius:5, fontFamily:"'DM Sans',system-ui,sans-serif" }}>
-                {caught[selected.name] ? "✓ Caught" : "Mark Caught"}
+                style={{ width:"100%", padding:"8px 0", fontSize:12, fontWeight:"700", cursor:"pointer",
+                         background: isCaught ? "rgba(74,175,116,0.15)" : "rgba(212,98,26,0.9)",
+                         color: isCaught ? C.green : "#fff",
+                         border: `1px solid ${isCaught ? C.green : "rgba(212,98,26,0.5)"}`,
+                         borderRadius:6, fontFamily:"'DM Sans',system-ui,sans-serif",
+                         marginBottom:12, transition:"all 0.12s" }}>
+                {isCaught ? "✓ Caught" : "Mark Caught"}
               </button>
-              <button onClick={() => setDexSelected(null)} style={{ background:"transparent", border:`1px solid ${C.border}`, color:C.muted, borderRadius:6, cursor:"pointer", padding:"4px 12px", fontSize:15 }}>✕</button>
+              <div style={{ fontSize:10, letterSpacing:2, color:C.muted, marginBottom:6, textTransform:"uppercase" }}>Where to find</div>
+              {locs.length === 0 ? (
+                <div style={{ fontSize:11, color:C.muted, lineHeight:1.8 }}>
+                  Not found as a wild encounter or gift in any tracked area.<br/>
+                  Obtain via <span style={{ color:C.text, fontWeight:"500" }}>evolution, trading, or breeding</span>.
+                </div>
+              ) : locs.map((l, i) => (
+                <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline",
+                                      padding:"5px 0", borderBottom:`1px solid ${C.border}30` }}>
+                  <span style={{ fontSize:12, color:C.text, fontWeight:"600" }}>{l.areaName}</span>
+                  <span style={{ fontSize:10, color:C.muted, marginLeft:8, whiteSpace:"nowrap" }}>{l.method} · Lv.{l.levels}{l.rate ? ` · ${l.rate}` : ""}</span>
+                </div>
+              ))}
             </div>
           </div>
-          <div style={{ overflowY:"auto", padding:"8px 16px 16px" }}>
-            <DexDetail selected={selected} caught={caught} locs={locs} toggleCaught={toggleCaught} compact />
-          </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 }
