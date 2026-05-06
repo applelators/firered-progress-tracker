@@ -56,6 +56,12 @@ For each area in a part:
 
 ## Data Structure
 
+### Return visits
+
+Notable return trips to an area get their own dedicated area entry rather than being folded into the original. Use a `(Return)` suffix in the name and a new kebab ID (e.g. `route22-return`). Place it in the part that matches when the return visit occurs in the walkthrough. The original area keeps only the content that belongs to the first visit.
+
+A return visit is "notable" if it introduces new trainers (especially a rival battle), unlocks previously inaccessible wild Pokémon or items (e.g. post-Surf fishing routes), or is explicitly a separate walkthrough step.
+
 ### Flat area
 
 ```js
