@@ -6731,6 +6731,8 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
   const filters = [["all","All"],["caught","Caught"],["missing","Missing"],["fr","FR Only"],["lg","LG Only"],["event","Event"],["noball","No Poké Ball"]];
   const isOtherVersionDex = (p) => (version === "fr" && p.lgOnly) || (version === "lg" && p.frOnly);
   const [dexSearch, setDexSearch] = React.useState("");
+  const [mobileTab, setMobileTab] = React.useState("info");
+  React.useEffect(() => { setMobileTab("info"); }, [dexSelected]);
 
   const filtered = DEX.filter(p => {
     if (dexFilter === "caught")  return caught[p.name];
@@ -6859,61 +6861,81 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
           <div style={{ position:"fixed", bottom:0, left:0, right:0, zIndex:200,
                         background:C.card, borderTop:`2px solid var(--frlg-accent)`,
                         boxShadow:"0 -6px 24px rgba(0,0,0,0.6)",
-                        maxHeight:"60vh", display:"flex", flexDirection:"column" }}>
-            <button onClick={() => setDexSelected(null)}
-              style={{ position:"absolute", top:8, right:10, background:"transparent",
-                       border:`1px solid ${C.border}`, color:C.muted, borderRadius:6,
-                       cursor:"pointer", padding:"2px 10px", fontSize:14, zIndex:1 }}>✕</button>
-            <div style={{ overflowY:"auto", padding:"14px 20px 20px" }}>
+                        display:"flex", flexDirection:"column", maxHeight:"55vh" }}>
+
+            {/* Identity row — always visible */}
+            <div style={{ display:"flex", alignItems:"center", gap:10, padding:"10px 14px 8px", flexShrink:0 }}>
               <img src={pokeSpriteUrl(selected.id)} alt={selected.name}
-                style={{ width:64, height:64, imageRendering:"pixelated", display:"block", margin:"0 auto 2px",
-                         filter: isCaught ? "none" : "grayscale(1)", opacity: isCaught ? 1 : 0.55 }} />
-              <div style={{ textAlign:"center", marginBottom:8 }}>
-                <div style={{ fontSize:10, color:C.muted, fontFamily:"'Courier New',monospace" }}>#{String(selected.id).padStart(3,"0")}</div>
-                <div style={{ fontSize:17, fontWeight:"700", color: isCaught ? C.green : C.text, lineHeight:1.2 }}>{selected.name}</div>
-                {selected.frOnly && <div style={{ fontSize:10, color:"#c85252", fontWeight:"500", marginTop:2 }}>FireRed exclusive</div>}
-                {selected.lgOnly && <div style={{ fontSize:10, color:C.lgGreen, fontWeight:"500", marginTop:2 }}>LeafGreen exclusive</div>}
-                {(() => { const cs = CONSTRAINT_STYLE[CATCH_CONSTRAINT_MAP[selected.name]]; return cs ? <div style={{ fontSize:10, color:cs.color, fontWeight:"500", marginTop:2 }}>⚠ {cs.label}</div> : null; })()}
+                style={{ width:40, height:40, imageRendering:"pixelated", flexShrink:0,
+                         filter: isCaught ? "none" : "grayscale(1)", opacity: isCaught ? 1 : 0.6 }} />
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ fontSize:10, color:C.muted, fontFamily:"'Courier New',monospace", lineHeight:1 }}>#{String(selected.id).padStart(3,"0")}</div>
+                <div style={{ fontSize:15, fontWeight:"700", color: isCaught ? C.green : C.text, lineHeight:1.2, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>{selected.name}</div>
+                {types && (
+                  <div style={{ display:"flex", gap:4, marginTop:3, flexWrap:"wrap" }}>
+                    {types.map(t => <TypeBadge key={t} type={t} />)}
+                  </div>
+                )}
               </div>
-              {types && (
-                <div style={{ display:"flex", justifyContent:"center", gap:5, marginBottom:8 }}>
-                  {types.map(t => <TypeBadge key={t} type={t} />)}
-                </div>
-              )}
-              {matchupRows.length > 0 && (
-                <div style={{ display:"flex", flexDirection:"column", gap:4, marginBottom:10, alignItems:"center" }}>
-                  {matchupRows.map(r => (
-                    <div key={r.mult} style={{ display:"flex", alignItems:"center", gap:5 }}>
-                      <span style={{ fontSize:9, fontWeight:"700", color:r.color, minWidth:18, textAlign:"right", flexShrink:0 }}>{r.mult}</span>
-                      <div style={{ display:"flex", gap:3, flexWrap:"wrap" }}>
-                        {r.types.map(t => <TypeBadge key={t} type={t} />)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <button onClick={() => toggleCaught(selected.name)}
-                style={{ width:"100%", padding:"8px 0", fontSize:12, fontWeight:"700", cursor:"pointer",
-                         background: isCaught ? "rgba(74,175,116,0.15)" : "rgba(212,98,26,0.9)",
-                         color: isCaught ? C.green : "#fff",
-                         border: `1px solid ${isCaught ? C.green : "rgba(212,98,26,0.5)"}`,
-                         borderRadius:6, fontFamily:"'DM Sans',system-ui,sans-serif",
-                         marginBottom:12, transition:"all 0.12s" }}>
-                {isCaught ? "✓ Caught" : "Mark Caught"}
-              </button>
-              <div style={{ fontSize:10, letterSpacing:2, color:C.muted, marginBottom:6, textTransform:"uppercase" }}>Where to find</div>
-              {locs.length === 0 ? (
-                <div style={{ fontSize:11, color:C.muted, lineHeight:1.8 }}>
-                  Not found as a wild encounter or gift in any tracked area.<br/>
-                  Obtain via <span style={{ color:C.text, fontWeight:"500" }}>evolution, trading, or breeding</span>.
-                </div>
-              ) : locs.map((l, i) => (
-                <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline",
-                                      padding:"5px 0", borderBottom:`1px solid ${C.border}30` }}>
-                  <span style={{ fontSize:12, color:C.text, fontWeight:"600" }}>{l.areaName}</span>
-                  <span style={{ fontSize:10, color:C.muted, marginLeft:8, whiteSpace:"nowrap" }}>{l.method} · Lv.{l.levels}{l.rate ? ` · ${l.rate}` : ""}</span>
-                </div>
+              <div style={{ display:"flex", gap:6, flexShrink:0, alignItems:"center" }}>
+                <button onClick={() => toggleCaught(selected.name)}
+                  style={{ fontSize:10, fontWeight:"700", cursor:"pointer", padding:"5px 10px",
+                           background: isCaught ? "rgba(74,175,116,0.15)" : "rgba(212,98,26,0.9)",
+                           color: isCaught ? C.green : "#fff",
+                           border:`1px solid ${isCaught ? C.green : "rgba(212,98,26,0.5)"}`,
+                           borderRadius:5, fontFamily:"'DM Sans',system-ui,sans-serif", whiteSpace:"nowrap" }}>
+                  {isCaught ? "✓ Caught" : "Mark Caught"}
+                </button>
+                <button onClick={() => setDexSelected(null)}
+                  style={{ background:"transparent", border:`1px solid ${C.border}`, color:C.muted,
+                           borderRadius:6, cursor:"pointer", padding:"4px 10px", fontSize:14 }}>✕</button>
+              </div>
+            </div>
+
+            {/* Tab bar */}
+            <div style={{ display:"flex", borderBottom:`1px solid ${C.border}`, flexShrink:0 }}>
+              {[["info","Info"],["locations","Locations"]].map(([id, label]) => (
+                <button key={id} onClick={() => setMobileTab(id)}
+                  style={{ flex:1, padding:"7px 0", fontSize:11, fontWeight: mobileTab===id ? "700" : "400",
+                           background:"transparent", border:"none", borderBottom: mobileTab===id ? `2px solid var(--frlg-accent)` : "2px solid transparent",
+                           color: mobileTab===id ? C.text : C.muted, cursor:"pointer",
+                           fontFamily:"'DM Sans',system-ui,sans-serif", marginBottom:-1 }}>
+                  {label}
+                </button>
               ))}
+            </div>
+
+            {/* Tab content */}
+            <div style={{ overflowY:"auto", padding:"12px 16px 16px" }}>
+              {mobileTab === "info" ? (
+                matchupRows.length > 0 ? (
+                  <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
+                    {matchupRows.map(r => (
+                      <div key={r.mult} style={{ display:"flex", alignItems:"center", gap:6 }}>
+                        <span style={{ fontSize:10, fontWeight:"700", color:r.color, minWidth:20, textAlign:"right", flexShrink:0 }}>{r.mult}</span>
+                        <div style={{ display:"flex", gap:3, flexWrap:"wrap" }}>
+                          {r.types.map(t => <TypeBadge key={t} type={t} />)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ fontSize:11, color:C.muted, textAlign:"center", paddingTop:8 }}>No type matchup data.</div>
+                )
+              ) : (
+                locs.length === 0 ? (
+                  <div style={{ fontSize:11, color:C.muted, lineHeight:1.8 }}>
+                    Not found as a wild encounter or gift in any tracked area.<br/>
+                    Obtain via <span style={{ color:C.text, fontWeight:"500" }}>evolution, trading, or breeding</span>.
+                  </div>
+                ) : locs.map((l, i) => (
+                  <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline",
+                                        padding:"6px 0", borderBottom:`1px solid ${C.border}30` }}>
+                    <span style={{ fontSize:12, color:C.text, fontWeight:"600" }}>{l.areaName}</span>
+                    <span style={{ fontSize:10, color:C.muted, marginLeft:8, whiteSpace:"nowrap" }}>{l.method} · Lv.{l.levels}{l.rate ? ` · ${l.rate}` : ""}</span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         );
