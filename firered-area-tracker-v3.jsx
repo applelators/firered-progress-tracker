@@ -2166,6 +2166,16 @@ const AREAS = [
       {class:"Swimmer♂",   name:"Jerome",   team:[{name:"Staryu",level:33},{name:"Wartortle",level:33}]},
     ]},
 
+  { part:"Part 15", id:"route10-north-return", name:"Route 10 North (Return)",
+    note:"PokéManiac Mark and a hidden Max Ether are only reachable via Surf — accessible on the way to the Power Plant.",
+    pokemon:[],
+    items:[
+      {name:"Max Ether", hidden:true, note:"One step west, four steps north of PokéManiac Mark (★ Itemfinder)"},
+    ],
+    trainers:[
+      {class:"PokéManiac",name:"Mark",team:[{name:"Rhyhorn",level:29},{name:"Lickitung",level:29}]},
+    ]},
+
   { part:"Part 15", id:"power-plant", name:"Power Plant",
     note:"Accessible from Route 10 (North) via Surf. Two item spots are Electrode in disguise — approaching them starts a battle. Zapdos waits at the far end.",
     pokemon:[
@@ -2190,16 +2200,6 @@ const AREAS = [
       {name:"Electrode",    hidden:false, note:"Fake item — northeast room, northwest corner (starts a battle when grabbed)"},
     ],
     trainers:[]},
-
-  { part:"Part 15", id:"route10-north-return", name:"Route 10 North (Return)",
-    note:"PokéManiac Mark and a hidden Max Ether are only reachable via Surf — accessible on the way to the Power Plant.",
-    pokemon:[],
-    items:[
-      {name:"Max Ether", hidden:true, note:"One step west, four steps north of PokéManiac Mark (★ Itemfinder)"},
-    ],
-    trainers:[
-      {class:"PokéManiac",name:"Mark",team:[{name:"Rhyhorn",level:29},{name:"Lickitung",level:29}]},
-    ]},
 
   { part:"Part 16", id:"route22-return", name:"Route 22 (Return)",
     note:"Blue challenges you here on the way to Victory Road — Rival Battle 7.",
@@ -5486,7 +5486,7 @@ function FireRedTracker() {
       {tab === "recurring" && <RecurringTab sweeps={sweeps} markSwept={markSwept} />}
 
       {/* ── Tab: PC Boxes ── */}
-      {tab === "boxes" && <BoxTab caught={caught} toggleCaught={toggleCaught} />}
+      {tab === "boxes" && <BoxTab />}
 
       {/* ── Tab: 100% Completion ── */}
       {tab === "completion" && <CompletionTab caught={caught} checklist={checklist} toggleChecklist={toggleChecklist} isMobile={isMobile} />}
@@ -6733,8 +6733,6 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
   const filters = [["all","All"],["caught","Caught"],["missing","Missing"],["fr","FR Only"],["lg","LG Only"],["event","Event"],["noball","No Poké Ball"]];
   const isOtherVersionDex = (p) => (version === "fr" && p.lgOnly) || (version === "lg" && p.frOnly);
   const [dexSearch, setDexSearch] = React.useState("");
-  const [mobileTab, setMobileTab] = React.useState("info");
-  React.useEffect(() => { setMobileTab("info"); }, [dexSelected]);
 
   const filtered = DEX.filter(p => {
     if (dexFilter === "caught")  return caught[p.name];
@@ -6849,16 +6847,6 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
       {isMobile && selected && (() => {
         const isCaught = !!caught[selected.name];
         const types = POKEMON_TYPES[selected.name];
-        const matchupRows = types ? (() => {
-          const chart = getDefensiveChart(types);
-          return [
-            { mult:"4×", color:"#e04040", types: TYPES_17.filter(t => chart[t] === 4) },
-            { mult:"2×", color:"#d06020", types: TYPES_17.filter(t => chart[t] === 2) },
-            { mult:"½×", color:"#4a9f68", types: TYPES_17.filter(t => chart[t] === 0.5) },
-            { mult:"¼×", color:"#2a7f50", types: TYPES_17.filter(t => chart[t] === 0.25) },
-            { mult:"0×", color:"#888",    types: TYPES_17.filter(t => chart[t] === 0) },
-          ].filter(r => r.types.length > 0);
-        })() : [];
         return (
           <div style={{ position:"fixed", bottom:0, left:0, right:0, zIndex:200,
                         background:C.card, borderTop:`2px solid var(--frlg-accent)`,
@@ -6894,50 +6882,20 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
               </div>
             </div>
 
-            {/* Tab bar */}
-            <div style={{ display:"flex", borderBottom:`1px solid ${C.border}`, flexShrink:0 }}>
-              {[["info","Info"],["locations","Locations"]].map(([id, label]) => (
-                <button key={id} onClick={() => setMobileTab(id)}
-                  style={{ flex:1, padding:"7px 0", fontSize:11, fontWeight: mobileTab===id ? "700" : "400",
-                           background:"transparent", border:"none", borderBottom: mobileTab===id ? `2px solid var(--frlg-accent)` : "2px solid transparent",
-                           color: mobileTab===id ? C.text : C.muted, cursor:"pointer",
-                           fontFamily:"'DM Sans',system-ui,sans-serif", marginBottom:-1 }}>
-                  {label}
-                </button>
+            {/* Locations list */}
+            <div style={{ overflowY:"auto", padding:"12px 16px 16px", borderTop:`1px solid ${C.border}` }}>
+              {locs.length === 0 ? (
+                <div style={{ fontSize:11, color:C.muted, lineHeight:1.8 }}>
+                  Not found as a wild encounter or gift in any tracked area.<br/>
+                  Obtain via <span style={{ color:C.text, fontWeight:"500" }}>evolution, trading, or breeding</span>.
+                </div>
+              ) : locs.map((l, i) => (
+                <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline",
+                                      padding:"6px 0", borderBottom:`1px solid ${C.border}30` }}>
+                  <span style={{ fontSize:12, color:C.text, fontWeight:"600" }}>{l.areaName}</span>
+                  <span style={{ fontSize:10, color:C.muted, marginLeft:8, whiteSpace:"nowrap" }}>{l.method} · Lv.{l.levels}{l.rate ? ` · ${l.rate}` : ""}</span>
+                </div>
               ))}
-            </div>
-
-            {/* Tab content */}
-            <div style={{ overflowY:"auto", padding:"12px 16px 16px" }}>
-              {mobileTab === "info" ? (
-                matchupRows.length > 0 ? (
-                  <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
-                    {matchupRows.map(r => (
-                      <div key={r.mult} style={{ display:"flex", alignItems:"center", gap:6 }}>
-                        <span style={{ fontSize:10, fontWeight:"700", color:r.color, minWidth:20, textAlign:"right", flexShrink:0 }}>{r.mult}</span>
-                        <div style={{ display:"flex", gap:3, flexWrap:"wrap" }}>
-                          {r.types.map(t => <TypeBadge key={t} type={t} />)}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div style={{ fontSize:11, color:C.muted, textAlign:"center", paddingTop:8 }}>No type matchup data.</div>
-                )
-              ) : (
-                locs.length === 0 ? (
-                  <div style={{ fontSize:11, color:C.muted, lineHeight:1.8 }}>
-                    Not found as a wild encounter or gift in any tracked area.<br/>
-                    Obtain via <span style={{ color:C.text, fontWeight:"500" }}>evolution, trading, or breeding</span>.
-                  </div>
-                ) : locs.map((l, i) => (
-                  <div key={i} style={{ display:"flex", justifyContent:"space-between", alignItems:"baseline",
-                                        padding:"6px 0", borderBottom:`1px solid ${C.border}30` }}>
-                    <span style={{ fontSize:12, color:C.text, fontWeight:"600" }}>{l.areaName}</span>
-                    <span style={{ fontSize:10, color:C.muted, marginLeft:8, whiteSpace:"nowrap" }}>{l.method} · Lv.{l.levels}{l.rate ? ` · ${l.rate}` : ""}</span>
-                  </div>
-                ))
-              )}
             </div>
           </div>
         );
@@ -7097,7 +7055,6 @@ function DexDetail({ selected, caught, locs, toggleCaught, compact }) {
           )}
         </div>
       )}
-      <DexTypeInfo name={selected.name} />
       {!compact && <EvoChainDisplay name={selected.name} caught={caught} />}
       {!compact && (() => {
         const moves = LEARNSETS[selected.name];
@@ -8085,6 +8042,127 @@ function GymTab({ isMobile }) {
     );
   };
 
+  const ChipBtn = ({ g }) => {
+    const isSel = g.id === selId;
+    return (
+      <button onClick={() => setSelId(g.id)} style={{
+        flexShrink:0, display:"flex", flexDirection:"column", alignItems:"center", gap:4,
+        padding:"8px 12px", borderRadius:8, cursor:"pointer",
+        background: isSel ? "rgba(74,143,196,0.15)" : "rgba(0,0,0,0.2)",
+        border:`1px solid ${isSel ? "#4a8fc4" : C.border}`,
+        fontFamily:"'DM Sans',system-ui,sans-serif",
+      }}>
+        <span style={{ fontSize:12, fontWeight:"700", color: isSel ? "#4a8fc4" : C.text, whiteSpace:"nowrap" }}>{g.name}</span>
+        <div style={{ display:"flex", gap:3 }}>
+          {g.specialty.map(t => <span key={t} style={{ fontSize:9, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"2px 6px", borderRadius:3, fontWeight:"700" }}>{t}</span>)}
+        </div>
+      </button>
+    );
+  };
+
+  const detail = (
+    <div style={{ flex:1, overflowY:"auto", padding: isMobile ? "14px 14px 24px" : 20 }}>
+      <div style={{ marginBottom:16 }}>
+        <div style={{ fontSize:11, color:C.muted, letterSpacing:1, textTransform:"uppercase", marginBottom:3 }}>{gym.city}</div>
+        <div style={{ fontSize: isMobile ? 19 : 22, fontWeight:"700", color:C.text }}>{gym.name}</div>
+        {gym.badge && <div style={{ fontSize:11, color:C.gold, marginTop:2 }}>{gym.badge}</div>}
+        {gym.note && <div style={{ fontSize:11, color:C.muted, marginTop:8, padding:"6px 10px", background:"rgba(255,255,255,0.04)", borderRadius:6, borderLeft:`2px solid ${C.border}` }}>{gym.note}</div>}
+      </div>
+
+      {/* Team */}
+      <div style={{ marginBottom:20 }}>
+        <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:8 }}>Team</div>
+        <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+          {gym.team.map((p, i) => {
+            const dId = allDexId(p.name);
+            return (
+              <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 12px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>
+                {dId ? <img src={pokeSpriteUrl(dId)} alt={p.name} width={36} height={36} style={{ imageRendering:"pixelated", flexShrink:0 }} /> : <div style={{ width:36, flexShrink:0 }} />}
+                <div style={{ flex:1 }}>
+                  <div style={{ fontSize:13, fontWeight:"700", color:C.text }}>{p.name}</div>
+                  <div style={{ display:"flex", gap:4, marginTop:2 }}>
+                    {p.types.map(t => <span key={t} style={{ fontSize:9, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"1px 6px", borderRadius:3, fontWeight:"700" }}>{t}</span>)}
+                  </div>
+                </div>
+                <div style={{ textAlign:"right" }}>
+                  <div style={{ fontSize:12, color:C.muted, fontWeight:"600" }}>Lv {p.level}</div>
+                  {p.note && <div style={{ fontSize:9, color:C.muted, fontStyle:"italic", maxWidth:130 }}>{p.note}</div>}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Type matchup summary */}
+      <div style={{ display:"flex", gap:12, flexWrap:"wrap", marginBottom: teamPicks ? 20 : 0 }}>
+        <div style={{ flex:1, minWidth:140, padding:"12px 14px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>
+          <div style={{ fontSize:9, color:C.green, letterSpacing:1.5, textTransform:"uppercase", marginBottom:8, fontWeight:"700" }}>Super effective against them</div>
+          <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>
+            {attackAdvantage.length === 0
+              ? <span style={{ fontSize:11, color:C.muted }}>None</span>
+              : attackAdvantage.map(t => <span key={t} style={{ fontSize:11, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"3px 10px", borderRadius:4, fontWeight:"700" }}>{t}</span>)}
+          </div>
+        </div>
+        <div style={{ flex:1, minWidth:140, padding:"12px 14px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>
+          <div style={{ fontSize:9, color:"#e85c5c", letterSpacing:1.5, textTransform:"uppercase", marginBottom:8, fontWeight:"700" }}>Their types are SE against</div>
+          <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>
+            {gymThreats.length === 0
+              ? <span style={{ fontSize:11, color:C.muted }}>None</span>
+              : gymThreats.map(t => <span key={t} style={{ fontSize:11, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"3px 10px", borderRadius:4, fontWeight:"700" }}>{t}</span>)}
+          </div>
+        </div>
+      </div>
+
+      {/* Dream team picks */}
+      {teamPicks && (
+        <div>
+          <div style={{ display:"flex", alignItems:"baseline", gap:8, marginBottom:8 }}>
+            <div style={{ fontSize:9, color:C.gold, letterSpacing:1.5, textTransform:"uppercase", fontWeight:"700" }}>Your dream team picks</div>
+            <div style={{ fontSize:10, color:C.muted }}>aim for Lv {Math.max(...gym.team.map(p => p.level))}</div>
+          </div>
+          {teamPicks.length === 0
+            ? <div style={{ fontSize:11, color:C.muted, padding:"8px 12px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>None of your team members have a type advantage here.</div>
+            : <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+                {teamPicks.map(name => {
+                  const dId = allDexId(name);
+                  const cand = DT_CANDIDATES.find(c => c.name === name);
+                  return (
+                    <div key={name} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3, padding:"8px 10px", background:C.card, borderRadius:8, border:`1px solid ${C.gold}`, minWidth:68, textAlign:"center" }}>
+                      {dId && <img src={pokeSpriteUrl(dId)} alt={name} width={36} height={36} style={{ imageRendering:"pixelated" }} />}
+                      <span style={{ fontSize:9, color:C.gold, fontWeight:"600" }}>{name}</span>
+                      <div style={{ display:"flex", gap:2, flexWrap:"wrap", justifyContent:"center" }}>
+                        {cand?.types.map(t => <span key={t} style={{ fontSize:7, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"1px 4px", borderRadius:2, fontWeight:"700" }}>{t}</span>)}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+          }
+        </div>
+      )}
+    </div>
+  );
+
+  if (isMobile) {
+    return (
+      <div style={{ display:"flex", flexDirection:"column", flex:1, overflow:"hidden" }}>
+        {/* Horizontal chip selector */}
+        <div style={{ flexShrink:0, background:C.card, borderBottom:`1px solid ${C.border}` }}>
+          <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", padding:"8px 12px 4px" }}>Gym Leaders</div>
+          <div style={{ display:"flex", gap:8, overflowX:"auto", padding:"4px 12px 10px" }}>
+            {GYM_DATA.filter(g => !E4_IDS.has(g.id)).map(g => <ChipBtn key={g.id} g={g} />)}
+          </div>
+          <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", padding:"6px 12px 4px", borderTop:`1px solid ${C.border}` }}>Elite Four + Champion</div>
+          <div style={{ display:"flex", gap:8, overflowX:"auto", padding:"4px 12px 10px" }}>
+            {GYM_DATA.filter(g => E4_IDS.has(g.id)).map(g => <ChipBtn key={g.id} g={g} />)}
+          </div>
+        </div>
+        {detail}
+      </div>
+    );
+  }
+
   return (
     <div style={{ display:"flex", flex:1, overflow:"hidden" }}>
       {/* Sidebar */}
@@ -8094,89 +8172,7 @@ function GymTab({ isMobile }) {
         <div style={{ padding:"6px 10px 4px", fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", borderBottom:`1px solid ${C.border}`, borderTop:`1px solid ${C.border}`, marginTop:4 }}>Elite Four + Champion</div>
         {GYM_DATA.filter(g => E4_IDS.has(g.id)).map(g => <SideBtn key={g.id} g={g} />)}
       </div>
-
-      {/* Detail */}
-      <div style={{ flex:1, overflowY:"auto", padding:20 }}>
-        <div style={{ marginBottom:16 }}>
-          <div style={{ fontSize:11, color:C.muted, letterSpacing:1, textTransform:"uppercase", marginBottom:3 }}>{gym.city}</div>
-          <div style={{ fontSize:22, fontWeight:"700", color:C.text }}>{gym.name}</div>
-          {gym.badge && <div style={{ fontSize:11, color:C.gold, marginTop:2 }}>{gym.badge}</div>}
-          {gym.note && <div style={{ fontSize:11, color:C.muted, marginTop:8, padding:"6px 10px", background:"rgba(255,255,255,0.04)", borderRadius:6, borderLeft:`2px solid ${C.border}` }}>{gym.note}</div>}
-        </div>
-
-        {/* Team */}
-        <div style={{ marginBottom:20 }}>
-          <div style={{ fontSize:9, color:C.muted, letterSpacing:1.5, textTransform:"uppercase", marginBottom:8 }}>Team</div>
-          <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
-            {gym.team.map((p, i) => {
-              const dId = allDexId(p.name);
-              return (
-                <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 12px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>
-                  {dId ? <img src={pokeSpriteUrl(dId)} alt={p.name} width={36} height={36} style={{ imageRendering:"pixelated", flexShrink:0 }} /> : <div style={{ width:36, flexShrink:0 }} />}
-                  <div style={{ flex:1 }}>
-                    <div style={{ fontSize:13, fontWeight:"700", color:C.text }}>{p.name}</div>
-                    <div style={{ display:"flex", gap:4, marginTop:2 }}>
-                      {p.types.map(t => <span key={t} style={{ fontSize:9, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"1px 6px", borderRadius:3, fontWeight:"700" }}>{t}</span>)}
-                    </div>
-                  </div>
-                  <div style={{ textAlign:"right" }}>
-                    <div style={{ fontSize:12, color:C.muted, fontWeight:"600" }}>Lv {p.level}</div>
-                    {p.note && <div style={{ fontSize:9, color:C.muted, fontStyle:"italic", maxWidth:130 }}>{p.note}</div>}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Type matchup summary */}
-        <div style={{ display:"flex", gap:16, flexWrap:"wrap", marginBottom: teamPicks ? 20 : 0 }}>
-          <div style={{ flex:1, minWidth:180, padding:"12px 14px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>
-            <div style={{ fontSize:9, color:C.green, letterSpacing:1.5, textTransform:"uppercase", marginBottom:8, fontWeight:"700" }}>Super effective against them</div>
-            <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>
-              {attackAdvantage.length === 0
-                ? <span style={{ fontSize:11, color:C.muted }}>None</span>
-                : attackAdvantage.map(t => <span key={t} style={{ fontSize:11, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"3px 10px", borderRadius:4, fontWeight:"700" }}>{t}</span>)}
-            </div>
-          </div>
-          <div style={{ flex:1, minWidth:180, padding:"12px 14px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>
-            <div style={{ fontSize:9, color:"#e85c5c", letterSpacing:1.5, textTransform:"uppercase", marginBottom:8, fontWeight:"700" }}>Their types are SE against</div>
-            <div style={{ display:"flex", gap:5, flexWrap:"wrap" }}>
-              {gymThreats.length === 0
-                ? <span style={{ fontSize:11, color:C.muted }}>None</span>
-                : gymThreats.map(t => <span key={t} style={{ fontSize:11, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"3px 10px", borderRadius:4, fontWeight:"700" }}>{t}</span>)}
-            </div>
-          </div>
-        </div>
-
-        {/* Dream team picks */}
-        {teamPicks && (
-          <div>
-            <div style={{ display:"flex", alignItems:"baseline", gap:8, marginBottom:8 }}>
-              <div style={{ fontSize:9, color:C.gold, letterSpacing:1.5, textTransform:"uppercase", fontWeight:"700" }}>Your dream team picks</div>
-              <div style={{ fontSize:10, color:C.muted }}>aim for Lv {Math.max(...gym.team.map(p => p.level))}</div>
-            </div>
-            {teamPicks.length === 0
-              ? <div style={{ fontSize:11, color:C.muted, padding:"8px 12px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>None of your team members have a type advantage here.</div>
-              : <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
-                  {teamPicks.map(name => {
-                    const dId = allDexId(name);
-                    const cand = DT_CANDIDATES.find(c => c.name === name);
-                    return (
-                      <div key={name} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3, padding:"8px 10px", background:C.card, borderRadius:8, border:`1px solid ${C.gold}`, minWidth:68, textAlign:"center" }}>
-                        {dId && <img src={pokeSpriteUrl(dId)} alt={name} width={36} height={36} style={{ imageRendering:"pixelated" }} />}
-                        <span style={{ fontSize:9, color:C.gold, fontWeight:"600" }}>{name}</span>
-                        <div style={{ display:"flex", gap:2, flexWrap:"wrap", justifyContent:"center" }}>
-                          {cand?.types.map(t => <span key={t} style={{ fontSize:7, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"1px 4px", borderRadius:2, fontWeight:"700" }}>{t}</span>)}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-            }
-          </div>
-        )}
-      </div>
+      {detail}
     </div>
   );
 }
@@ -8221,6 +8217,7 @@ function BattleTab() {
         <input value={query} onChange={handleChange}
           placeholder="Search Pokémon…"
           autoComplete="off"
+          onKeyDown={e => { if (e.key === "Enter" && results.length > 0) handleSelect(results[0]); }}
           style={{ width:"100%", boxSizing:"border-box", padding:"10px 14px", fontSize:16,
                    fontFamily:"'DM Sans',system-ui,sans-serif", background:"rgba(0,0,0,0.25)",
                    border:`1px solid ${C.border}`, borderRadius: showDropdown ? "6px 6px 0 0" : 6,
@@ -8683,8 +8680,20 @@ function RecurringTab({ sweeps, markSwept }) {
 
 const BOX_SIZE = 30;
 
-function BoxTab({ caught, toggleCaught }) {
+function BoxTab() {
   const { useState: useS, useMemo: useM, useCallback: useCB } = React;
+
+  const [boxCaught, setBoxCaught] = useS(() => {
+    try { return JSON.parse(localStorage.getItem("frlg-box-caught") || "{}"); } catch { return {}; }
+  });
+  const toggleBox = useCB(name => {
+    setBoxCaught(prev => {
+      const next = { ...prev };
+      if (next[name]) delete next[name]; else next[name] = true;
+      try { localStorage.setItem("frlg-box-caught", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }, []);
 
   const [boxNames, setBoxNames] = useS(() => {
     try { return JSON.parse(localStorage.getItem("frlg-box-names") || "{}"); } catch { return {}; }
@@ -8719,7 +8728,7 @@ function BoxTab({ caught, toggleCaught }) {
         PC Box Organizer
       </div>
       {boxes.map((box, boxIdx) => {
-        const caughtInBox = box.filter(p => caught[p.name]).length;
+        const caughtInBox = box.filter(p => boxCaught[p.name]).length;
         const defaultName = `Box ${boxIdx + 1}`;
         const boxName = boxNames[boxIdx] || defaultName;
         return (
@@ -8753,12 +8762,12 @@ function BoxTab({ caught, toggleCaught }) {
             </div>
             <div style={{ display:"grid", gridTemplateColumns:"repeat(10, 1fr)", gap:3 }}>
               {box.map(p => {
-                const isCaught = !!caught[p.name];
+                const isCaught = !!boxCaught[p.name];
                 return (
                   <div
                     key={p.name}
                     title={p.name}
-                    onClick={() => toggleCaught(p.name)}
+                    onClick={() => toggleBox(p.name)}
                     style={{
                       aspectRatio:"1", background: isCaught ? "rgba(74,175,116,0.15)" : "rgba(0,0,0,0.25)",
                       border:`1px solid ${isCaught ? C.green : C.border}`,
