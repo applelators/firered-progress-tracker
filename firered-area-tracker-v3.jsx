@@ -5438,7 +5438,7 @@ function FireRedTracker() {
 
         {/* Tabs */}
         <div style={{ display:"flex", gap:2, marginTop:10, overflowX:"auto", WebkitOverflowScrolling:"touch", flexWrap:"nowrap" }}>
-          {[["areas","Areas"],["dex","Pokédex"],["team","Team"],["gyms","Gyms"],["evo","Evolutions"],["types","Types"],["calc","Catch"],["hunt","Hunt"],["tms","TMs"],["remain","Left"],["recurring","Recur"],["boxes","Boxes"],["completion","100%"]].map(([t,label]) => (
+          {[["areas","Areas"],["dex","Pokédex"],["team","Team"],["gyms","Gyms"],["battle","Battle"],["evo","Evolutions"],["types","Types"],["calc","Catch"],["hunt","Hunt"],["tms","TMs"],["remain","Left"],["recurring","Recur"],["boxes","Boxes"],["completion","100%"]].map(([t,label]) => (
             <button key={t} onClick={() => setTabAndSave(t)} style={{
               padding: isMobile ? "7px 12px" : "8px 20px", border:"none", borderRadius:"6px 6px 0 0", cursor:"pointer", flexShrink:0,
               fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:13, fontWeight:"600",
@@ -5462,6 +5462,8 @@ function FireRedTracker() {
 
       {/* ── Tab: Gym Matchup ── */}
       {tab === "gyms" && <GymTab isMobile={isMobile} />}
+
+      {tab === "battle" && <BattleTab />}
 
       {/* ── Tab: Evolution Planner ── */}
       {tab === "evo" && <EvoTab caught={caught} toggleCaught={toggleCaught} version={version} />}
@@ -8175,6 +8177,141 @@ function GymTab({ isMobile }) {
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+// ─── BATTLE REFERENCE TAB ────────────────────────────────────────────────────
+function BattleTab() {
+  const [query, setQuery]     = React.useState("");
+  const [selected, setSelected] = React.useState(null);
+
+  const trimmed = query.trim().toLowerCase();
+  const results = React.useMemo(() => {
+    if (!trimmed) return [];
+    const all = Object.keys(POKEMON_TYPES);
+    const starts = all.filter(n => n.toLowerCase().startsWith(trimmed));
+    const contains = all.filter(n => !n.toLowerCase().startsWith(trimmed) && n.toLowerCase().includes(trimmed));
+    return [...starts, ...contains].slice(0, 8);
+  }, [trimmed]);
+
+  const handleSelect = name => { setSelected(name); setQuery(name); };
+  const handleChange = e => { setQuery(e.target.value); setSelected(null); };
+
+  const types  = selected ? POKEMON_TYPES[selected] : null;
+  const chart  = types ? getDefensiveChart(types) : null;
+  const dexId  = selected ? allDexId(selected) : null;
+  const showDropdown = results.length > 0 && !selected;
+
+  const weakRows = chart ? [
+    { mult:"4×", color:"#e04040", bg:"rgba(224,64,64,0.10)",  types: TYPES_17.filter(t => chart[t] === 4) },
+    { mult:"2×", color:"#d06020", bg:"rgba(208,96,32,0.08)",  types: TYPES_17.filter(t => chart[t] === 2) },
+  ].filter(r => r.types.length > 0) : [];
+
+  const otherRows = chart ? [
+    { mult:"½×", color:"#4a9f68", types: TYPES_17.filter(t => chart[t] === 0.5) },
+    { mult:"¼×", color:"#2a7f50", types: TYPES_17.filter(t => chart[t] === 0.25) },
+    { mult:"0×", color:"#888",    types: TYPES_17.filter(t => chart[t] === 0) },
+  ].filter(r => r.types.length > 0) : [];
+
+  return (
+    <div style={{ flex:1, overflowY:"auto", padding:"16px 20px", color:C.text }}>
+      {/* Search */}
+      <div style={{ position:"relative", marginBottom:20 }}>
+        <input value={query} onChange={handleChange}
+          placeholder="Search Pokémon…"
+          autoComplete="off"
+          style={{ width:"100%", boxSizing:"border-box", padding:"10px 14px", fontSize:16,
+                   fontFamily:"'DM Sans',system-ui,sans-serif", background:"rgba(0,0,0,0.25)",
+                   border:`1px solid ${C.border}`, borderRadius: showDropdown ? "6px 6px 0 0" : 6,
+                   color:C.text, outline:"none" }} />
+        {showDropdown && (
+          <div style={{ position:"absolute", top:"100%", left:0, right:0, zIndex:50,
+                        background:C.card, border:`1px solid ${C.border}`, borderTop:"none",
+                        borderRadius:"0 0 6px 6px", overflow:"hidden" }}>
+            {results.map(name => {
+              const id = allDexId(name);
+              return (
+                <div key={name} onClick={() => handleSelect(name)}
+                  style={{ display:"flex", alignItems:"center", gap:10, padding:"8px 12px",
+                           cursor:"pointer", borderBottom:`1px solid ${C.border}20` }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+                  {id && <img src={pokeSpriteUrl(id)} alt={name} style={{ width:28, height:28, imageRendering:"pixelated", flexShrink:0 }} />}
+                  <span style={{ fontSize:13, fontWeight:"600" }}>{name}</span>
+                  <div style={{ display:"flex", gap:4, marginLeft:"auto" }}>
+                    {POKEMON_TYPES[name].map(t => <TypeBadge key={t} type={t} />)}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Result */}
+      {selected && types && (
+        <>
+          {/* Pokémon identity */}
+          <div style={{ display:"flex", alignItems:"center", gap:14, marginBottom:20,
+                        padding:"12px 16px", background:"rgba(0,0,0,0.18)", borderRadius:8 }}>
+            {dexId && <img src={pokeSpriteUrl(dexId)} alt={selected}
+              style={{ width:56, height:56, imageRendering:"pixelated", flexShrink:0 }} />}
+            <div>
+              <div style={{ fontSize:18, fontWeight:"700", color:C.text, marginBottom:6 }}>{selected}</div>
+              <div style={{ display:"flex", gap:5 }}>
+                {types.map(t => <TypeBadge key={t} type={t} />)}
+              </div>
+            </div>
+          </div>
+
+          {/* Weaknesses */}
+          {weakRows.length > 0 && (
+            <div style={{ marginBottom:16 }}>
+              <div style={{ fontSize:10, letterSpacing:2, color:C.muted, textTransform:"uppercase", marginBottom:8 }}>Super effective against</div>
+              <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+                {weakRows.map(r => (
+                  <div key={r.mult} style={{ display:"flex", alignItems:"center", gap:8,
+                                             padding:"8px 12px", background:r.bg, borderRadius:6,
+                                             border:`1px solid ${r.color}30` }}>
+                    <span style={{ fontSize:13, fontWeight:"800", color:r.color, minWidth:24, textAlign:"right", flexShrink:0 }}>{r.mult}</span>
+                    <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
+                      {r.types.map(t => <TypeBadge key={t} type={t} />)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {weakRows.length === 0 && (
+            <div style={{ marginBottom:16, padding:"10px 14px", background:"rgba(0,0,0,0.15)", borderRadius:6,
+                          fontSize:12, color:C.muted }}>No type weaknesses.</div>
+          )}
+
+          {/* Resistances / immunities */}
+          {otherRows.length > 0 && (
+            <div>
+              <div style={{ fontSize:10, letterSpacing:2, color:C.muted, textTransform:"uppercase", marginBottom:8 }}>Resists / immune</div>
+              <div style={{ display:"flex", flexDirection:"column", gap:5 }}>
+                {otherRows.map(r => (
+                  <div key={r.mult} style={{ display:"flex", alignItems:"center", gap:8 }}>
+                    <span style={{ fontSize:11, fontWeight:"700", color:r.color, minWidth:24, textAlign:"right", flexShrink:0 }}>{r.mult}</span>
+                    <div style={{ display:"flex", gap:4, flexWrap:"wrap" }}>
+                      {r.types.map(t => <TypeBadge key={t} type={t} />)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      {!selected && !trimmed && (
+        <div style={{ textAlign:"center", color:C.muted, fontSize:12, marginTop:40, lineHeight:2 }}>
+          Search any Pokémon to see its type weaknesses.
+        </div>
+      )}
     </div>
   );
 }
