@@ -6196,7 +6196,7 @@ function CatchCalcTab({ isMobile }) {
                 width:"100%", boxSizing:"border-box",
                 padding:"6px 10px", borderRadius:6,
                 border:`1px solid ${C.border}`, background:"rgba(0,0,0,0.3)",
-                color:C.text, fontSize:12, fontFamily:"'DM Sans',sans-serif", outline:"none",
+                color:C.text, fontSize:16, fontFamily:"'DM Sans',sans-serif", outline:"none",
               }}
             />
           </div>
@@ -6406,7 +6406,7 @@ function HuntTab({ version, isMobile }) {
           placeholder="Search Pokémon…"
           style={{ width:"100%", boxSizing:"border-box", background:"rgba(0,0,0,0.3)",
                    border:`1px solid ${C.border}`, borderRadius:6, color:C.text,
-                   fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:12,
+                   fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16,
                    padding:"5px 8px", outline:"none" }} />
       </div>
       <div style={{ overflowY:"auto", maxHeight: isMobile ? 180 : "calc(100vh - 220px)" }}>
@@ -6780,7 +6780,7 @@ function DexTab({ caught, toggleCaught, dexFilter, setDexFilter, dexSelected, se
           <input value={dexSearch} onChange={e => setDexSearch(e.target.value)}
             placeholder="Search Pokémon…"
             style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text,
-                     padding:"7px 32px 7px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:13,
+                     padding:"7px 32px 7px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16,
                      borderRadius:6, boxSizing:"border-box", outline:"none" }} />
           {dexSearch
             ? <button onClick={() => setDexSearch("")} style={{ position:"absolute", right:8, top:"50%", transform:"translateY(-50%)", background:"transparent", border:"none", color:C.muted, cursor:"pointer", fontSize:16, padding:"0 2px", lineHeight:1, fontFamily:"sans-serif" }}>×</button>
@@ -7343,7 +7343,7 @@ function AreasTab({ caught, toggleCaught, items, toggleItem, trainers, toggleTra
       <div ref={sidebarRef} style={{ width: isMobile ? "100%" : 210, flexShrink:0, borderRight: isMobile ? "none" : `1px solid ${C.border}`, borderBottom: isMobile ? `1px solid ${C.border}` : "none", background:C.card, display:"flex", flexDirection:"column", overflowY:"auto", flex: isMobile ? "1" : "unset" }}>
         <div style={{ padding:"10px 12px", borderBottom:`1px solid ${C.border}`, position:"sticky", top:0, background:C.card, zIndex:1 }}>
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search areas…"
-            style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:14, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
+            style={{ width:"100%", background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}`, color:C.text, padding:"8px 12px", fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:16, borderRadius:6, boxSizing:"border-box", outline:"none" }} />
         </div>
         {filtered
           ? filtered.map(a => <AreaRow key={a.id} area={a} areaId={areaId} setAreaId={setAreaId} caught={caught} items={items} trainers={trainers} trades={trades} version={version} choiceGroups={choiceGroups} areaNotes={areaNotes} />)
