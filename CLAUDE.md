@@ -10,8 +10,9 @@ This file is loaded automatically by Claude Code. It captures the conventions, d
 
 A single-page React 18 app tracking a 100% completion + Living Dex run of Pokémon FireRed/LeafGreen. No build tools — in-browser Babel transpilation via CDN. All data is hardcoded in the JSX. State persists to `localStorage`.
 
-**Active file:** `firered-area-tracker-v3.jsx` (loaded by `index.html`)
-**Reference:** `firered-area-tracker-v2.jsx` (previous version, kept for fallback)
+**Active file:** `firered-area-tracker-v4.jsx` (loaded by `index.html`)
+**Reference:** `firered-area-tracker-v3.jsx` (previous version, kept for fallback)
+**Design system:** Twilight Cave palette · Space Grotesk display / JetBrains Mono / DM Sans · 3-group tab bar · motion tier system (see `v4/MOTION_TIERS.md`)
 **Audit source:** [Bulbapedia FireRed & LeafGreen Walkthrough](https://bulbapedia.bulbagarden.net/wiki/Walkthrough:Pok%C3%A9mon_FireRed_and_LeafGreen)
 
 ---
