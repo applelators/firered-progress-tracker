@@ -5731,7 +5731,7 @@ function FireRedTracker() {
       </div>
 
       {/* Tab content — keyed wrapper for cross-tab stagger-in */}
-      <div key={tab} className="frlg-tab-in">
+      <div key={tab} className="frlg-tab-in" style={{ flex:1, display:"flex", flexDirection:"column", overflow:"hidden" }}>
       {/* ── Tab: Pokédex ── */}
       {tab === "dex" && <DexTab caught={caught} toggleCaught={toggleCaught} dexFilter={dexFilter} setDexFilter={setDexFilter} dexSelected={dexSelected} setDexSelected={setDexSelected} version={version} isMobile={isMobile} />}
 
