@@ -9230,14 +9230,14 @@ const EXCL_EVO_INFO = {
   // FR National
   "Bellossom":  { from:"Gloom",     how:"with Sun Stone" },
   "Quagsire":   { from:"Wooper",    how:"at Lv 20" },
-  "Scizor":     { from:"Scyther",   trade:true, item:"Metal Coat" },
+  "Scizor":     { from:"Scyther",   trade:true, item:"Metal Coat",  itemSrc:"Metal Coat — Memorial Pillar · or Trainer Tower (Knockout mode)" },
   "Elekid":     { from:"Electabuzz",breed:true },
   // LG National
-  "Slowking":   { from:"Slowpoke",  trade:true, item:"King's Rock" },
+  "Slowking":   { from:"Slowpoke",  trade:true, item:"King's Rock", itemSrc:"King's Rock — Sevault Canyon · or Trainer Tower (Mixed mode)" },
   "Azumarill":  { from:"Marill",    how:"at Lv 18" },
   "Octillery":  { from:"Remoraid",  how:"at Lv 25" },
   "Magby":      { from:"Magmar",    breed:true },
-  "Azurill":    { from:"Marill",    breed:true, how:"hold Sea Incense" },
+  "Azurill":    { from:"Marill",    breed:true, how:"hold Sea Incense", itemSrc:"Sea Incense — Lost Cave" },
 };
 
 function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
@@ -9273,19 +9273,26 @@ function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
         + {item}
       </span>
     );
-    if (evo.trade) return (
-      <div style={{ fontSize:10, display:"flex", gap:5, alignItems:"center", flexWrap:"wrap" }}>
-        <span style={{ color:"#9b6fd4", fontWeight:"600" }}>Trade</span>
-        <span style={{ color:C.muted }}>{evo.from}</span>
-        {evo.item && itemBadge(evo.item)}
+    let mainLine;
+    if (evo.trade) {
+      mainLine = (
+        <div style={{ fontSize:10, display:"flex", gap:5, alignItems:"center", flexWrap:"wrap" }}>
+          <span style={{ color:"#9b6fd4", fontWeight:"600" }}>Trade</span>
+          <span style={{ color:C.muted }}>{evo.from}</span>
+          {evo.item && itemBadge(evo.item)}
+        </div>
+      );
+    } else if (evo.breed) {
+      mainLine = <div style={{ fontSize:10, color:C.muted }}>Breed {evo.from}{evo.how ? ` (${evo.how})` : ""}</div>;
+    } else {
+      mainLine = <div style={{ fontSize:10, color:C.muted }}>Evolve {evo.from} {evo.how}</div>;
+    }
+    return (
+      <div style={{ display:"flex", flexDirection:"column", gap:2 }}>
+        {mainLine}
+        {evo.itemSrc && <div style={{ fontSize:9, color:C.muted, opacity:0.8 }}>{evo.itemSrc}</div>}
       </div>
     );
-    if (evo.breed) return (
-      <div style={{ fontSize:10, color:C.muted }}>
-        Breed {evo.from}{evo.how ? ` (${evo.how})` : ""}
-      </div>
-    );
-    return <div style={{ fontSize:10, color:C.muted }}>Evolve {evo.from} {evo.how}</div>;
   };
 
   const card = ({ name, locs, formeNote }) => {
