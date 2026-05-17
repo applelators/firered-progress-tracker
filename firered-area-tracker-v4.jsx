@@ -9243,21 +9243,21 @@ const EXCL_EVO_INFO = {
 function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
   const { useMemo } = React;
 
-  const buildData = (serebiiSet) => {
+  const buildData = (serebiiSet, formeNotes) => {
     return [...serebiiSet]
       .sort((a, b) => (allDexId(a) || 9999) - (allDexId(b) || 9999))
       .map(name => {
         const allLocs = LOCATION_MAP[name] || [];
         const seen = new Set();
         const locs = allLocs.filter(l => seen.has(l.areaName) ? false : (seen.add(l.areaName), true));
-        return { name, locs };
+        return { name, locs, formeNote: (formeNotes || {})[name] || null };
       });
   };
 
   const frData    = useMemo(() => buildData(SEREBII_FR),     []);
   const lgData    = useMemo(() => buildData(SEREBII_LG),     []);
-  const natFrData = useMemo(() => buildData(NAT_SEREBII_FR), []);
-  const natLgData = useMemo(() => buildData(NAT_SEREBII_LG), []);
+  const natFrData = useMemo(() => buildData(NAT_SEREBII_FR, { "Deoxys": "Attack Forme" }),  []);
+  const natLgData = useMemo(() => buildData(NAT_SEREBII_LG, { "Deoxys": "Defense Forme" }), []);
 
   const frCaught    = frData.filter(d => !!caught[d.name]).length;
   const lgCaught    = lgData.filter(d => !!caught[d.name]).length;
@@ -9288,7 +9288,7 @@ function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
     return <div style={{ fontSize:10, color:C.muted }}>Evolve {evo.from} {evo.how}</div>;
   };
 
-  const card = ({ name, locs }) => {
+  const card = ({ name, locs, formeNote }) => {
     const done = !!caught[name];
     const id = allDexId(name);
     return (
@@ -9304,7 +9304,10 @@ function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
           ? <img src={pokeSpriteUrl(id)} alt={name} style={{ width:40, height:40, imageRendering:"pixelated", flexShrink:0, opacity:done?1:0.6, marginTop:2 }} />
           : <div style={{ width:40, height:40, flexShrink:0 }} />}
         <div style={{ flex:1, minWidth:0 }}>
-          <div style={{ fontSize:13, fontWeight:"600", color:done?C.green:C.text, marginBottom:3 }}>{name}</div>
+          <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:3, flexWrap:"wrap" }}>
+            <span style={{ fontSize:13, fontWeight:"600", color:done?C.green:C.text }}>{name}</span>
+            {formeNote && <span style={{ fontSize:9, fontWeight:"700", padding:"1px 6px", borderRadius:99, color:C.muted, background:"rgba(255,255,255,0.07)", border:`1px solid ${C.border}` }}>{formeNote}</span>}
+          </div>
           {locs.length > 0 ? locs.map((l, i) => (
             <div key={i} style={{ fontSize:10, color:C.muted, display:"flex", gap:4, flexWrap:"wrap", lineHeight:1.6 }}>
               <span style={{ color: done ? C.green : C.text, opacity:0.75, fontWeight:"500" }}>{l.areaName}</span>
