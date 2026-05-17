@@ -9217,6 +9217,29 @@ const SEREBII_LG = new Set(["Sandshrew","Sandslash","Vulpix","Ninetales","Bellsp
 const NAT_SEREBII_FR = new Set(["Bellossom","Wooper","Quagsire","Murkrow","Qwilfish","Delibird","Skarmory","Elekid","Scizor"]);
 const NAT_SEREBII_LG = new Set(["Marill","Azumarill","Slowking","Misdreavus","Sneasel","Remoraid","Octillery","Mantine","Magby","Azurill"]);
 
+// Evolution details for exclusives with no wild encounter in LOCATION_MAP
+const EXCL_EVO_INFO = {
+  // FR Kanto
+  "Vileplume":  { from:"Gloom",     how:"with Leaf Stone" },
+  "Arcanine":   { from:"Growlithe", how:"with Fire Stone" },
+  "Cloyster":   { from:"Shellder",  how:"with Water Stone" },
+  // LG Kanto
+  "Ninetales":  { from:"Vulpix",    how:"with Fire Stone" },
+  "Victreebel": { from:"Weepinbell",how:"with Leaf Stone" },
+  "Starmie":    { from:"Staryu",    how:"with Water Stone" },
+  // FR National
+  "Bellossom":  { from:"Gloom",     how:"with Sun Stone" },
+  "Quagsire":   { from:"Wooper",    how:"at Lv 20" },
+  "Scizor":     { from:"Scyther",   trade:true, item:"Metal Coat" },
+  "Elekid":     { from:"Electabuzz",breed:true },
+  // LG National
+  "Slowking":   { from:"Slowpoke",  trade:true, item:"King's Rock" },
+  "Azumarill":  { from:"Marill",    how:"at Lv 18" },
+  "Octillery":  { from:"Remoraid",  how:"at Lv 25" },
+  "Magby":      { from:"Magmar",    breed:true },
+  "Azurill":    { from:"Marill",    breed:true, how:"hold Sea Incense" },
+};
+
 function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
   const { useMemo } = React;
 
@@ -9240,6 +9263,30 @@ function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
   const lgCaught    = lgData.filter(d => !!caught[d.name]).length;
   const natFrCaught = natFrData.filter(d => !!caught[d.name]).length;
   const natLgCaught = natLgData.filter(d => !!caught[d.name]).length;
+
+  const evoLine = (name) => {
+    const evo = EXCL_EVO_INFO[name];
+    if (!evo) return <div style={{ fontSize:10, color:C.muted }}>Evolution only</div>;
+    const itemBadge = item => (
+      <span style={{ fontSize:9, fontWeight:"700", padding:"1px 5px", borderRadius:99,
+        color:"#c8a040", background:"rgba(200,150,40,0.18)", border:"1px solid rgba(200,150,40,0.4)" }}>
+        + {item}
+      </span>
+    );
+    if (evo.trade) return (
+      <div style={{ fontSize:10, display:"flex", gap:5, alignItems:"center", flexWrap:"wrap" }}>
+        <span style={{ color:"#9b6fd4", fontWeight:"600" }}>Trade</span>
+        <span style={{ color:C.muted }}>{evo.from}</span>
+        {evo.item && itemBadge(evo.item)}
+      </div>
+    );
+    if (evo.breed) return (
+      <div style={{ fontSize:10, color:C.muted }}>
+        Breed {evo.from}{evo.how ? ` (${evo.how})` : ""}
+      </div>
+    );
+    return <div style={{ fontSize:10, color:C.muted }}>Evolve {evo.from} {evo.how}</div>;
+  };
 
   const card = ({ name, locs }) => {
     const done = !!caught[name];
@@ -9266,9 +9313,7 @@ function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
               {l.levels && <><span>·</span><span>Lv {l.levels}</span></>}
               {l.rate && <><span>·</span><span style={{ color:"#a0c8ff" }}>{l.rate}</span></>}
             </div>
-          )) : (
-            <div style={{ fontSize:10, color:C.muted }}>Evolution only</div>
-          )}
+          )) : evoLine(name)}
         </div>
         <div style={{ width:20, height:20, borderRadius:5, flexShrink:0, transition:"all 0.12s", marginTop:2,
           border:`2px solid ${done ? C.green : C.border}`, background: done ? C.green : "transparent",
