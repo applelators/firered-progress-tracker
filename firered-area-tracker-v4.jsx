@@ -5695,7 +5695,7 @@ function FireRedTracker() {
           {[
             // Primary — used every play session
             ["areas","Areas","primary"],["dex","Pokédex","primary"],
-            ["team","Team","primary"],["battle","Battle","primary"],["excl","Exclusives","primary"],
+            ["team","Team","primary"],["battle","Battle","primary"],["trade","Trade","primary"],["excl","Exclusives","primary"],
             // Divider
             ["__div1","",null],
             // Secondary — used regularly but less hot
@@ -5745,6 +5745,9 @@ function FireRedTracker() {
       {tab === "gyms" && <GymTab isMobile={isMobile} />}
 
       {tab === "battle" && <BattleTab />}
+
+      {/* ── Tab: Trade ── */}
+      {tab === "trade" && <TradeTab version={version} isMobile={isMobile} />}
 
       {/* ── Tab: Exclusives ── */}
       {tab === "excl" && <ExclusivesTab caught={caught} toggleCaught={toggleCaught} version={version} isMobile={isMobile} />}
@@ -9206,6 +9209,209 @@ function BoxTab() {
         );
       })}
     </div>
+    </div>
+  );
+}
+
+// ─── TRADE TAB ───────────────────────────────────────────────────────────────
+const FRLG_TRADE_EVOS = [
+  // Plain trades (Kanto Dex)
+  { from:"Kadabra",   to:"Alakazam",  item:null,            itemSrc:null },
+  { from:"Machoke",   to:"Machamp",   item:null,            itemSrc:null },
+  { from:"Graveler",  to:"Golem",     item:null,            itemSrc:null },
+  { from:"Haunter",   to:"Gengar",    item:null,            itemSrc:null },
+  // National Dex (at least one evolution is post-Kanto)
+  { from:"Onix",      to:"Steelix",   item:"Metal Coat",    itemSrc:"Memorial Pillar · or Trainer Tower (Knockout mode)" },
+  { from:"Scyther",   to:"Scizor",    item:"Metal Coat",    itemSrc:"Memorial Pillar · or Trainer Tower (Knockout mode)" },
+  { from:"Poliwhirl", to:"Politoed",  item:"King's Rock",   itemSrc:"Sevault Canyon · or Trainer Tower (Mixed mode)" },
+  { from:"Slowpoke",  to:"Slowking",  item:"King's Rock",   itemSrc:"Sevault Canyon · or Trainer Tower (Mixed mode)" },
+  { from:"Seadra",    to:"Kingdra",   item:"Dragon Scale",  itemSrc:"Water Path · or Trainer Tower (Double mode)" },
+  { from:"Porygon",   to:"Porygon2",  item:"Up-Grade",      itemSrc:"Rocket Warehouse · or Trainer Tower (Single mode)" },
+];
+
+function TradeTab({ version, isMobile }) {
+  const { useMemo, useState } = React;
+
+  const [spares,   setSpares]   = useState(() => { try { return JSON.parse(localStorage.getItem("frlg-trade-spares")   || "{}"); } catch { return {}; } });
+  const [received, setReceived] = useState(() => { try { return JSON.parse(localStorage.getItem("frlg-trade-received") || "{}"); } catch { return {}; } });
+  const [evoDone,  setEvoDone]  = useState(() => { try { return JSON.parse(localStorage.getItem("frlg-trade-evo-done") || "{}"); } catch { return {}; } });
+
+  const persist = (key, next, setter) => { setter(next); localStorage.setItem(key, JSON.stringify(next)); };
+  const toggleSpare    = n => persist("frlg-trade-spares",    { ...spares,   [n]: !spares[n]   }, setSpares);
+  const toggleReceived = n => persist("frlg-trade-received",  { ...received, [n]: !received[n] }, setReceived);
+  const toggleEvo      = k => persist("frlg-trade-evo-done",  { ...evoDone,  [k]: !evoDone[k]  }, setEvoDone);
+
+  const parseRate = r => { const m = (r||"").match(/(\d+)/); return m ? +m[1] : 0; };
+
+  // Build exclusives entries: catch locations filtered by frOnly/lgOnly; evolution-only fallback to pre-evo
+  const buildEntries = (exclSet, flag) => {
+    const sorted = [...exclSet].sort((a, b) => (allDexId(a)||9999) - (allDexId(b)||9999));
+    return sorted.map(name => {
+      const rawLocs = (LOCATION_MAP[name] || []).filter(l => l[flag]);
+      if (rawLocs.length > 0) {
+        const seen = new Set();
+        const deduped = rawLocs.filter(l => seen.has(l.areaName) ? false : (seen.add(l.areaName), true));
+        const maxR = Math.max(0, ...deduped.map(l => parseRate(l.rate)));
+        const best = maxR > 0 ? deduped.filter(l => parseRate(l.rate) === maxR) : deduped.slice(0, 1);
+        return { name, best, evo: null };
+      }
+      const evo = EXCL_EVO_INFO[name];
+      if (evo) {
+        const preLocs = (LOCATION_MAP[evo.from] || []).filter(l => l[flag]);
+        const seen = new Set();
+        const deduped = preLocs.filter(l => seen.has(l.areaName) ? false : (seen.add(l.areaName), true));
+        const maxR = Math.max(0, ...deduped.map(l => parseRate(l.rate)));
+        const best = maxR > 0 ? deduped.filter(l => parseRate(l.rate) === maxR) : deduped.slice(0, 1);
+        return { name, best, evo };
+      }
+      return { name, best: [], evo: null };
+    });
+  };
+
+  const frEntries = useMemo(() => buildEntries(new Set([...SEREBII_FR, ...NAT_SEREBII_FR]), "frOnly"), []);
+  const lgEntries = useMemo(() => buildEntries(new Set([...SEREBII_LG, ...NAT_SEREBII_LG]), "lgOnly"), []);
+
+  const myEntries    = version === "fr" ? frEntries : lgEntries;
+  const theirEntries = version === "fr" ? lgEntries : frEntries;
+  const myLabel    = version === "fr" ? "FireRed" : "LeafGreen";
+  const theirLabel = version === "fr" ? "LeafGreen" : "FireRed";
+  const myColor    = version === "fr" ? C.frRed : C.lgGreen;
+  const theirColor = version === "fr" ? C.lgGreen : C.frRed;
+
+  const spareCount    = myEntries.filter(e => spares[e.name]).length;
+  const receivedCount = theirEntries.filter(e => received[e.name]).length;
+
+  const kantoTradeEvos = FRLG_TRADE_EVOS.filter(e => DEX_ID[e.from] && DEX_ID[e.to]);
+  const natTradeEvos   = FRLG_TRADE_EVOS.filter(e => !(DEX_ID[e.from] && DEX_ID[e.to]));
+  const evoDoneCount    = kantoTradeEvos.filter(e => evoDone[`${e.from}-${e.to}`]).length;
+  const natEvoDoneCount = natTradeEvos.filter(e => evoDone[`${e.from}-${e.to}`]).length;
+
+  const rowSty = done => ({
+    display:"flex", alignItems:"center", gap:10, padding:"7px 12px", borderRadius:8,
+    cursor:"pointer", transition:"all 0.12s",
+    background: done ? `${C.green}12` : "rgba(0,0,0,0.2)",
+    border: `1px solid ${done ? C.green + "50" : C.border}`,
+  });
+  const chkSty = done => ({
+    width:20, height:20, borderRadius:5, flexShrink:0, transition:"all 0.12s",
+    border: `2px solid ${done ? C.green : C.border}`,
+    background: done ? C.green : "transparent",
+    display:"flex", alignItems:"center", justifyContent:"center",
+    fontSize:11, fontWeight:"700", color:"#000",
+  });
+
+  const secHead = (label, count, total, color) => (
+    <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
+      <div style={{ width:3, height:16, background:color, borderRadius:99, flexShrink:0 }} />
+      <span style={{ fontSize:11, fontWeight:"700", color:C.text, letterSpacing:"0.07em", textTransform:"uppercase" }}>{label}</span>
+      <span style={{ fontSize:11, color:C.muted, marginLeft:"auto" }}>{count} / {total}</span>
+    </div>
+  );
+
+  const exRow = ({ name, best, evo }, done, onToggle) => {
+    const id = allDexId(name);
+    let locStr = "";
+    if (best.length > 0) {
+      const lPart = best.map(l => {
+        const r = parseRate(l.rate);
+        return r > 0 ? `${l.areaName} (${r}%)` : l.areaName;
+      }).join(" · ");
+      locStr = evo ? `Catch ${evo.from}: ${lPart} → evolve ${evo.how}` : lPart;
+    } else if (evo) {
+      locStr = `Evolve ${evo.from} ${evo.how}`;
+    }
+    return (
+      <div key={name} onClick={onToggle}
+        onMouseEnter={e => { e.currentTarget.style.background = done ? `${C.green}1e` : "rgba(255,255,255,0.04)"; }}
+        onMouseLeave={e => { e.currentTarget.style.background = done ? `${C.green}12` : "rgba(0,0,0,0.2)"; }}
+        style={rowSty(done)}>
+        {id ? <img src={pokeSpriteUrl(id)} alt={name} style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0, opacity:done?1:0.6 }} />
+             : <div style={{ width:36, height:36, flexShrink:0 }} />}
+        <div style={{ flex:1, minWidth:0 }}>
+          <div style={{ fontSize:13, fontWeight:"600", color:done?C.green:C.text }}>{name}</div>
+          {locStr && <div style={{ fontSize:10, color:C.muted, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{locStr}</div>}
+        </div>
+        <div style={chkSty(done)}>{done && "✓"}</div>
+      </div>
+    );
+  };
+
+  const evoRow = ({ from, to, item, itemSrc }) => {
+    const key = `${from}-${to}`;
+    const done = !!evoDone[key];
+    const fromId = allDexId(from), toId = allDexId(to);
+    return (
+      <div key={key} onClick={() => toggleEvo(key)}
+        onMouseEnter={e => { e.currentTarget.style.background = done ? `${C.green}1e` : "rgba(255,255,255,0.04)"; }}
+        onMouseLeave={e => { e.currentTarget.style.background = done ? `${C.green}12` : "rgba(0,0,0,0.2)"; }}
+        style={rowSty(done)}>
+        {fromId ? <img src={pokeSpriteUrl(fromId)} alt={from} style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0, opacity:done?1:0.55 }} />
+                : <div style={{ width:36, height:36, flexShrink:0 }} />}
+        <div style={{ flex:1, minWidth:0 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>
+            <span style={{ fontSize:13, fontWeight:"600", color:done?C.green:C.text }}>{from}</span>
+            {item && <span style={{ fontSize:9, fontWeight:"700", padding:"1px 6px", borderRadius:99, whiteSpace:"nowrap",
+              color:"#c8a040", background:"rgba(200,150,40,0.18)", border:"1px solid rgba(200,150,40,0.4)" }}>+ {item}</span>}
+            <span style={{ color:C.muted, fontSize:14 }}>→</span>
+            {toId && <img src={pokeSpriteUrl(toId)} alt={to} style={{ width:30, height:30, imageRendering:"pixelated", flexShrink:0, opacity:done?1:0.45 }} />}
+            <span style={{ fontSize:13, fontWeight:"600", color:done?C.green:C.text }}>{to}</span>
+          </div>
+          {itemSrc && <div style={{ fontSize:10, color:C.muted, marginTop:2 }}>{itemSrc}</div>}
+        </div>
+        <div style={chkSty(done)}>{done && "✓"}</div>
+      </div>
+    );
+  };
+
+  return (
+    <div style={{ flex:1, overflowY:"auto" }}>
+      <div style={{ maxWidth:700, margin:"0 auto", padding:"20px 16px 40px", display:"flex", flexDirection:"column", gap:24 }}>
+
+        {/* Collect spares to trade away */}
+        <div>
+          {secHead(`${myLabel} exclusives — collect spares`, spareCount, myEntries.length, myColor)}
+          <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>
+            Only catchable in {myLabel}. Catch extras to send to your {theirLabel} partner.
+          </div>
+          <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+            {myEntries.map(entry => exRow(entry, !!spares[entry.name], () => toggleSpare(entry.name)))}
+          </div>
+        </div>
+
+        {/* Mark when received from partner */}
+        <div>
+          {secHead(`${theirLabel} exclusives — mark when received`, receivedCount, theirEntries.length, theirColor)}
+          <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>
+            Only catchable in {theirLabel}. Check off each one as your partner trades it to you.
+          </div>
+          <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+            {theirEntries.map(entry => exRow(entry, !!received[entry.name], () => toggleReceived(entry.name)))}
+          </div>
+        </div>
+
+        {/* Trade evolutions — Kanto Dex */}
+        <div>
+          {secHead("Trade evolutions", evoDoneCount, kantoTradeEvos.length, C.accent)}
+          <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>
+            Pokémon that only evolve by trading. Check off once you have the evolved form.
+          </div>
+          <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+            {kantoTradeEvos.map(evoRow)}
+          </div>
+        </div>
+
+        {/* Trade evolutions — National Dex only */}
+        <div>
+          {secHead("National Dex trade evolutions", natEvoDoneCount, natTradeEvos.length, C.muted)}
+          <div style={{ fontSize:11, color:C.muted, marginBottom:10 }}>
+            Not required for Kanto 100% completion — needed for Living Dex only.
+          </div>
+          <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+            {natTradeEvos.map(evoRow)}
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }
