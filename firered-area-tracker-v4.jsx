@@ -5695,7 +5695,7 @@ function FireRedTracker() {
           {[
             // Primary — used every play session
             ["areas","Areas","primary"],["dex","Pokédex","primary"],
-            ["team","Team","primary"],["battle","Battle","primary"],
+            ["team","Team","primary"],["battle","Battle","primary"],["excl","Exclusives","primary"],
             // Divider
             ["__div1","",null],
             // Secondary — used regularly but less hot
@@ -5745,6 +5745,9 @@ function FireRedTracker() {
       {tab === "gyms" && <GymTab isMobile={isMobile} />}
 
       {tab === "battle" && <BattleTab />}
+
+      {/* ── Tab: Exclusives ── */}
+      {tab === "excl" && <ExclusivesTab caught={caught} toggleCaught={toggleCaught} version={version} isMobile={isMobile} />}
 
       {/* ── Tab: Evolution Planner ── */}
       {tab === "evo" && <EvoTab caught={caught} toggleCaught={toggleCaught} version={version} />}
@@ -9203,6 +9206,122 @@ function BoxTab() {
         );
       })}
     </div>
+    </div>
+  );
+}
+
+// ─── EXCLUSIVES TAB ──────────────────────────────────────────────────────────
+// Per Serebii: https://www.serebii.net/fireredleafgreen/exclusives.shtml
+const SEREBII_FR = new Set(["Ekans","Arbok","Oddish","Gloom","Vileplume","Psyduck","Golduck","Growlithe","Arcanine","Shellder","Cloyster","Electabuzz","Scyther"]);
+const SEREBII_LG = new Set(["Sandshrew","Sandslash","Vulpix","Ninetales","Bellsprout","Weepinbell","Victreebel","Slowpoke","Slowbro","Staryu","Starmie","Magmar","Pinsir"]);
+const NAT_SEREBII_FR = new Set(["Bellossom","Wooper","Quagsire","Murkrow","Qwilfish","Delibird","Skarmory","Elekid","Scizor"]);
+const NAT_SEREBII_LG = new Set(["Marill","Azumarill","Slowking","Misdreavus","Sneasel","Remoraid","Octillery","Mantine","Magby","Azurill"]);
+
+function ExclusivesTab({ caught, toggleCaught, version, isMobile }) {
+  const { useMemo } = React;
+
+  const buildData = (serebiiSet) => {
+    return [...serebiiSet]
+      .sort((a, b) => (allDexId(a) || 9999) - (allDexId(b) || 9999))
+      .map(name => {
+        const allLocs = LOCATION_MAP[name] || [];
+        const seen = new Set();
+        const locs = allLocs.filter(l => seen.has(l.areaName) ? false : (seen.add(l.areaName), true));
+        return { name, locs };
+      });
+  };
+
+  const frData    = useMemo(() => buildData(SEREBII_FR),     []);
+  const lgData    = useMemo(() => buildData(SEREBII_LG),     []);
+  const natFrData = useMemo(() => buildData(NAT_SEREBII_FR), []);
+  const natLgData = useMemo(() => buildData(NAT_SEREBII_LG), []);
+
+  const frCaught    = frData.filter(d => !!caught[d.name]).length;
+  const lgCaught    = lgData.filter(d => !!caught[d.name]).length;
+  const natFrCaught = natFrData.filter(d => !!caught[d.name]).length;
+  const natLgCaught = natLgData.filter(d => !!caught[d.name]).length;
+
+  const card = ({ name, locs }) => {
+    const done = !!caught[name];
+    const id = allDexId(name);
+    return (
+      <div key={name}
+        onClick={() => toggleCaught(name)}
+        onMouseEnter={e => { e.currentTarget.style.background = done ? `${C.green}1e` : "rgba(255,255,255,0.04)"; }}
+        onMouseLeave={e => { e.currentTarget.style.background = done ? `${C.green}12` : "rgba(0,0,0,0.2)"; }}
+        style={{ display:"flex", alignItems:"flex-start", gap:10, padding:"8px 12px", borderRadius:8,
+          cursor:"pointer", transition:"all 0.12s",
+          background: done ? `${C.green}12` : "rgba(0,0,0,0.2)",
+          border: `1px solid ${done ? C.green + "50" : C.border}` }}>
+        {id
+          ? <img src={pokeSpriteUrl(id)} alt={name} style={{ width:40, height:40, imageRendering:"pixelated", flexShrink:0, opacity:done?1:0.6, marginTop:2 }} />
+          : <div style={{ width:40, height:40, flexShrink:0 }} />}
+        <div style={{ flex:1, minWidth:0 }}>
+          <div style={{ fontSize:13, fontWeight:"600", color:done?C.green:C.text, marginBottom:3 }}>{name}</div>
+          {locs.length > 0 ? locs.map((l, i) => (
+            <div key={i} style={{ fontSize:10, color:C.muted, display:"flex", gap:4, flexWrap:"wrap", lineHeight:1.6 }}>
+              <span style={{ color: done ? C.green : C.text, opacity:0.75, fontWeight:"500" }}>{l.areaName}</span>
+              <span>·</span>
+              <span>{l.method}</span>
+              {l.levels && <><span>·</span><span>Lv {l.levels}</span></>}
+              {l.rate && <><span>·</span><span style={{ color:"#a0c8ff" }}>{l.rate}</span></>}
+            </div>
+          )) : (
+            <div style={{ fontSize:10, color:C.muted }}>Evolution only</div>
+          )}
+        </div>
+        <div style={{ width:20, height:20, borderRadius:5, flexShrink:0, transition:"all 0.12s", marginTop:2,
+          border:`2px solid ${done ? C.green : C.border}`, background: done ? C.green : "transparent",
+          display:"flex", alignItems:"center", justifyContent:"center",
+          fontSize:11, fontWeight:"700", color:"#000" }}>{done && "✓"}</div>
+      </div>
+    );
+  };
+
+  const col = (label, color, data, caughtCount) => (
+    <div style={{ flex:1, minWidth:0 }}>
+      <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:12 }}>
+        <div style={{ width:3, height:16, background:color, borderRadius:99, flexShrink:0 }} />
+        <span style={{ fontSize:11, fontWeight:"700", color, letterSpacing:"0.07em", textTransform:"uppercase" }}>{label}</span>
+        <span style={{ fontSize:11, color:C.muted, marginLeft:"auto" }}>{caughtCount} / {data.length}</span>
+      </div>
+      <div style={{ display:"flex", flexDirection:"column", gap:4 }}>
+        {data.map(d => card(d))}
+      </div>
+    </div>
+  );
+
+  const sectionHead = (label) => (
+    <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:16 }}>
+      <div style={{ flex:1, height:1, background:C.border }} />
+      <span style={{ fontSize:10, fontWeight:"700", color:C.muted, letterSpacing:"0.1em", textTransform:"uppercase", whiteSpace:"nowrap" }}>{label}</span>
+      <div style={{ flex:1, height:1, background:C.border }} />
+    </div>
+  );
+
+  const flexDir = isMobile ? "column" : "row";
+
+  return (
+    <div style={{ flex:1, overflowY:"auto" }}>
+      <div style={{ maxWidth:900, margin:"0 auto", padding:"20px 16px 40px", display:"flex", flexDirection:"column", gap:32 }}>
+
+        <div>
+          {sectionHead("Kanto Pokédex")}
+          <div style={{ display:"flex", gap: isMobile ? 20 : 32, flexDirection: flexDir }}>
+            {col("FireRed exclusives", C.frRed, frData, frCaught)}
+            {col("LeafGreen exclusives", C.lgGreen, lgData, lgCaught)}
+          </div>
+        </div>
+
+        <div>
+          {sectionHead("National Dex — post-game & Cerulean Cave")}
+          <div style={{ display:"flex", gap: isMobile ? 20 : 32, flexDirection: flexDir }}>
+            {col("FireRed exclusives", C.frRed, natFrData, natFrCaught)}
+            {col("LeafGreen exclusives", C.lgGreen, natLgData, natLgCaught)}
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }
