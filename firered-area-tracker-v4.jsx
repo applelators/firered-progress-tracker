@@ -9212,10 +9212,10 @@ function BoxTab() {
 
 // ─── EXCLUSIVES TAB ──────────────────────────────────────────────────────────
 // Per Serebii: https://www.serebii.net/fireredleafgreen/exclusives.shtml
-const SEREBII_FR = new Set(["Ekans","Arbok","Oddish","Gloom","Vileplume","Psyduck","Golduck","Growlithe","Arcanine","Shellder","Cloyster","Electabuzz","Scyther","Deoxys"]);
-const SEREBII_LG = new Set(["Sandshrew","Sandslash","Vulpix","Ninetales","Bellsprout","Weepinbell","Victreebel","Slowpoke","Slowbro","Staryu","Starmie","Magmar","Pinsir","Deoxys"]);
-const NAT_SEREBII_FR = new Set(["Bellossom","Wooper","Quagsire","Murkrow","Qwilfish","Delibird","Skarmory","Elekid","Scizor"]);
-const NAT_SEREBII_LG = new Set(["Marill","Azumarill","Slowking","Misdreavus","Sneasel","Remoraid","Octillery","Mantine","Magby","Azurill"]);
+const SEREBII_FR = new Set(["Ekans","Arbok","Oddish","Gloom","Vileplume","Psyduck","Golduck","Growlithe","Arcanine","Shellder","Cloyster","Electabuzz","Scyther"]);
+const SEREBII_LG = new Set(["Sandshrew","Sandslash","Vulpix","Ninetales","Bellsprout","Weepinbell","Victreebel","Slowpoke","Slowbro","Staryu","Starmie","Magmar","Pinsir"]);
+const NAT_SEREBII_FR = new Set(["Bellossom","Wooper","Quagsire","Murkrow","Qwilfish","Delibird","Skarmory","Elekid","Scizor","Deoxys"]);
+const NAT_SEREBII_LG = new Set(["Marill","Azumarill","Slowking","Misdreavus","Sneasel","Remoraid","Octillery","Mantine","Magby","Azurill","Deoxys"]);
 
 // Evolution details for exclusives with no wild encounter in LOCATION_MAP
 const EXCL_EVO_INFO = {
