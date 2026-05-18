@@ -9523,6 +9523,77 @@ function TowerTab({ checklist, toggleChecklist }) {
           </div>
 
         </>)}
+
+        {/* ─── Tips & Strategy ──────────────────────────────────────────── */}
+        <div style={{ marginTop:24, padding:"0 4px" }}>
+          <div style={{ height:1, background:C.border, marginBottom:16 }} />
+          <div style={{ fontSize:11, fontWeight:"700", color:C.muted, letterSpacing:"0.1em",
+            textTransform:"uppercase", marginBottom:12 }}>Tips &amp; Strategy</div>
+
+          {/* Dragon Rage card */}
+          <div style={{ background:C.card, border:`1px solid ${TOWER_ACCENT}50`, borderRadius:10,
+            padding:"12px 14px", marginBottom:12 }}>
+            <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:8 }}>
+              <span style={{ fontSize:16 }}>🐉</span>
+              <span style={{ fontSize:13, fontWeight:"700", color:C.text }}>Dragon Rage Speed-Clear</span>
+            </div>
+            <p style={{ fontSize:11, color:C.muted, margin:"0 0 10px", lineHeight:1.65 }}>
+              <strong style={{ color:C.text }}>Dragon Rage always deals exactly 40 HP</strong> — fixed,
+              regardless of the user's level or the opponent's stats. Combined with the Tower's level scaling,
+              this gives you reliable, predictable damage output on every floor.
+            </p>
+            <ol style={{ margin:"0 0 10px", paddingLeft:18, display:"flex", flexDirection:"column", gap:7 }}>
+              {[
+                <>Get a Pokémon that knows Dragon Rage at as low a level as possible.
+                  <strong style={{ color:C.text }}> Gyarados</strong> learns it at <strong style={{ color:C.text }}>Lv 20</strong> the
+                  moment Magikarp evolves — the earliest access in FRLG.
+                  <strong style={{ color:C.text }}> Dratini</strong> learns it at <strong style={{ color:C.text }}>Lv 22</strong> (or catch
+                  the Lv 18 Game Corner Dratini and level it up twice).</>,
+                <>Keep every other Pokémon in your party <strong style={{ color:C.text }}>below that level</strong> — or
+                  simply enter with only your Dragon Rage user. The Tower scales all opponents to your
+                  <em> highest</em> party level.</>,
+                <>At Lv 20–22, most Tower opponents have <strong style={{ color:C.text }}>45–80 HP</strong>. Two Dragon Rages
+                  (80 total damage) cleanly 2HKOs the vast majority; use a Potion or Antidote between
+                  battles if needed — the bag is available freely between floors.</>,
+                <>High-HP outliers need extra attention:
+                  <strong style={{ color:C.text }}> Chansey</strong> (Single 7F &amp; Knockout 4F),{" "}
+                  <strong style={{ color:C.text }}>Snorlax</strong> (Single 8F), and{" "}
+                  <strong style={{ color:C.text }}>Blissey</strong> (Double 5F) all have very large HP pools
+                  — plan for 3–4 Dragon Rages or supplement with another move.</>,
+              ].map((step, i) => (
+                <li key={i} style={{ fontSize:11, color:C.muted, lineHeight:1.65 }}>{step}</li>
+              ))}
+            </ol>
+            <div style={{ padding:"8px 10px", borderRadius:6,
+              background:`${C.gold}0d`, border:`1px solid ${C.gold}30`,
+              fontSize:11, color:C.muted, lineHeight:1.65 }}>
+              <strong style={{ color:C.gold }}>Why it's consistent: </strong>
+              Dragon Rage never crits, never varies — 40 damage every time. No RNG to manage.
+              You can heal freely between battles, and the floor timer resets between floors,
+              so there's no time pressure once you're inside.
+            </div>
+          </div>
+
+          {/* Tower Rules card */}
+          <div style={{ background:C.card, border:`1px solid ${C.border}`, borderRadius:10,
+            padding:"12px 14px" }}>
+            <div style={{ fontSize:12, fontWeight:"700", color:C.text, marginBottom:8 }}>Tower Rules</div>
+            <ul style={{ margin:0, paddingLeft:18, display:"flex", flexDirection:"column", gap:5 }}>
+              {[
+                "No Exp or money from Tower battles — only the mode prize on completion.",
+                "No automatic healing between floors — use items from your bag.",
+                "The Trick move does not work on Tower trainers.",
+                "Thief and Covet cannot steal held items from Tower opponents.",
+                "Each mode prize is one-time only per cartridge.",
+                "If your bag is full when you receive a prize, the item is lost — check bag space first.",
+                "All opponent levels match your highest-level party Pokémon at the start of each battle.",
+              ].map((rule, i) => (
+                <li key={i} style={{ fontSize:11, color:C.muted, lineHeight:1.55 }}>{rule}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
       </div>
     </div>
   );
