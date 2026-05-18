@@ -9342,17 +9342,6 @@ function TowerTab({ checklist, toggleChecklist }) {
   const modeData  = TOWER_DATA.find(m => m.id === mode);
   const doneCount = TOWER_DATA.filter(m => !!checklist[m.ckId]).length;
 
-  // Collect all enemy types in the current mode for dream-team matchup
-  const modeTypes = useMemo(() => {
-    if (!modeData) return [];
-    const types = new Set();
-    for (const fl of modeData.floors)
-      for (const tr of fl.trainers)
-        for (const p of tr.team)
-          for (const t of (TOWER_PKMN_TYPES[p.pkmn] || [])) types.add(t);
-    return [...types];
-  }, [modeData]);
-
   const savedTeam = useMemo(() => {
     try {
       const r = localStorage.getItem("frlg-dream-team-v4");
@@ -9363,14 +9352,18 @@ function TowerTab({ checklist, toggleChecklist }) {
     } catch { return null; }
   }, []);
 
-  const teamPicks = useMemo(() => {
+  const floorPicks = (trainers) => {
     if (!savedTeam) return null;
+    const types = new Set();
+    for (const tr of trainers)
+      for (const p of tr.team)
+        for (const t of (TOWER_PKMN_TYPES[p.pkmn] || [])) types.add(t);
     return savedTeam.filter(name => {
       const cand = DT_CANDIDATES.find(c => c.name === name);
       if (!cand) return false;
-      return cand.types.some(myType => modeTypes.some(et => (TYPE_CHART[myType]?.[et] || 1) >= 2));
+      return cand.types.some(myType => [...types].some(et => (TYPE_CHART[myType]?.[et] || 1) >= 2));
     });
-  }, [savedTeam, modeTypes]);
+  };
 
   const shinyBadge = (
     <span style={{ fontSize:8, fontWeight:"700", padding:"1px 5px", borderRadius:99, whiteSpace:"nowrap",
@@ -9452,7 +9445,7 @@ function TowerTab({ checklist, toggleChecklist }) {
           {/* Floor list */}
           <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
             {modeData.floors.map(({ f, type, trainers }) => {
-              const hasShiny = trainers.some(tr => tr.team.some(p => p.shiny));
+              const picks = floorPicks(trainers);
               return (
                 <div key={f} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
 
@@ -9462,7 +9455,7 @@ function TowerTab({ checklist, toggleChecklist }) {
                     {type && <div style={{ fontSize:8, color:C.muted, opacity:0.75, marginTop:1 }}>{type}</div>}
                   </div>
 
-                  {/* Trainer cards for this floor */}
+                  {/* Trainer cards + per-floor picks */}
                   <div style={{ flex:1, display:"flex", flexDirection:"column", gap:3 }}>
                     {trainers.map((tr, ti) => (
                       <div key={ti} style={{ display:"flex", alignItems:"flex-start", gap:8, padding:"7px 10px",
@@ -9502,43 +9495,32 @@ function TowerTab({ checklist, toggleChecklist }) {
 
                       </div>
                     ))}
+
+                    {/* Dream team picks for this floor */}
+                    {picks && picks.length > 0 && (
+                      <div style={{ display:"flex", gap:6, alignItems:"center", flexWrap:"wrap",
+                        padding:"5px 10px", borderRadius:6,
+                        background:`${C.gold}0a`, border:`1px solid ${C.gold}30` }}>
+                        <span style={{ fontSize:8, fontWeight:"700", color:C.gold, letterSpacing:"0.08em",
+                          textTransform:"uppercase", flexShrink:0 }}>Use</span>
+                        {picks.map(name => {
+                          const dId = allDexId(name);
+                          return (
+                            <div key={name} style={{ display:"flex", alignItems:"center", gap:3 }}>
+                              {dId && <img src={pokeSpriteUrl(dId)} alt={name}
+                                style={{ width:24, height:24, imageRendering:"pixelated", flexShrink:0 }} />}
+                              <span style={{ fontSize:10, fontWeight:"600", color:C.gold }}>{name}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
 
                 </div>
               );
             })}
           </div>
-
-          {/* Dream team recommendations */}
-          {teamPicks && (
-            <div style={{ marginTop:20, paddingTop:16, borderTop:`1px solid ${C.border}` }}>
-              <div style={{ fontSize:9, color:C.gold, letterSpacing:1.5, textTransform:"uppercase", fontWeight:"700", marginBottom:8 }}>
-                Your dream team picks for this mode
-              </div>
-              {teamPicks.length === 0
-                ? <div style={{ fontSize:11, color:C.muted, padding:"8px 12px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>
-                    None of your team members have a type advantage here.
-                  </div>
-                : <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
-                    {teamPicks.map(name => {
-                      const dId = allDexId(name);
-                      const cand = DT_CANDIDATES.find(c => c.name === name);
-                      return (
-                        <div key={name} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3,
-                          padding:"8px 10px", background:C.card, borderRadius:8, border:`1px solid ${C.gold}`,
-                          minWidth:68, textAlign:"center" }}>
-                          {dId && <img src={pokeSpriteUrl(dId)} alt={name} width={36} height={36} style={{ imageRendering:"pixelated" }} />}
-                          <span style={{ fontSize:9, color:C.gold, fontWeight:"600" }}>{name}</span>
-                          <div style={{ display:"flex", gap:2, flexWrap:"wrap", justifyContent:"center" }}>
-                            {cand?.types.map(t => <span key={t} style={{ fontSize:7, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"1px 4px", borderRadius:2, fontWeight:"700" }}>{t}</span>)}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-              }
-            </div>
-          )}
 
         </>)}
       </div>
