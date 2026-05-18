@@ -9539,27 +9539,41 @@ function TowerTab({ checklist, toggleChecklist }) {
             </div>
             <p style={{ fontSize:11, color:C.muted, margin:"0 0 10px", lineHeight:1.65 }}>
               <strong style={{ color:C.text }}>Dragon Rage always deals exactly 40 HP</strong> — fixed,
-              regardless of the user's level or the opponent's stats. Combined with the Tower's level scaling,
-              this gives you reliable, predictable damage output on every floor.
+              regardless of level or stats. Tower opponents scale to your highest party level.
+              The goal: get Dragon Rage on a Pokémon at the lowest possible level so every opponent also
+              has ≤ 40 HP and is OHKOd.
             </p>
+
+            {/* Breeding callout */}
+            <div style={{ padding:"9px 11px", borderRadius:7, marginBottom:10,
+              background:`${TOWER_ACCENT}10`, border:`1px solid ${TOWER_ACCENT}40` }}>
+              <div style={{ fontSize:11, fontWeight:"700", color:TOWER_ACCENT, marginBottom:4 }}>
+                Optimal: breed a Lv 5 Dratini with Dragon Rage
+              </div>
+              <p style={{ fontSize:11, color:C.muted, margin:0, lineHeight:1.65 }}>
+                Dragon Rage is in Dratini's level-up learnset (Lv 22). In Gen III, if the <em>father</em> knows
+                a move that's in the baby's learnset, the baby hatches already knowing it.
+                Breed a <strong style={{ color:C.text }}>Dragonair/Dragonite that knows Dragon Rage</strong> with
+                Ditto at the Four Island Day Care → baby Dratini hatches at{" "}
+                <strong style={{ color:C.text }}>Lv 5 with Dragon Rage</strong>. All Tower opponents become
+                Lv 5 (max HP ≤ 40 for every species) → guaranteed OHKO across the board,
+                including Snorlax, Chansey, and Blissey.
+              </p>
+            </div>
+
             <ol style={{ margin:"0 0 10px", paddingLeft:18, display:"flex", flexDirection:"column", gap:7 }}>
               {[
-                <>Get a Pokémon that knows Dragon Rage at as low a level as possible.
-                  <strong style={{ color:C.text }}> Gyarados</strong> learns it at <strong style={{ color:C.text }}>Lv 20</strong> the
-                  moment Magikarp evolves — the earliest access in FRLG.
-                  <strong style={{ color:C.text }}> Dratini</strong> learns it at <strong style={{ color:C.text }}>Lv 22</strong> (or catch
-                  the Lv 18 Game Corner Dratini and level it up twice).</>,
-                <>Keep every other Pokémon in your party <strong style={{ color:C.text }}>below that level</strong> — or
-                  simply enter with only your Dragon Rage user. The Tower scales all opponents to your
-                  <em> highest</em> party level.</>,
-                <>At Lv 20–22, most Tower opponents have <strong style={{ color:C.text }}>45–80 HP</strong>. Two Dragon Rages
-                  (80 total damage) cleanly 2HKOs the vast majority; use a Potion or Antidote between
-                  battles if needed — the bag is available freely between floors.</>,
-                <>High-HP outliers need extra attention:
-                  <strong style={{ color:C.text }}> Chansey</strong> (Single 7F &amp; Knockout 4F),{" "}
-                  <strong style={{ color:C.text }}>Snorlax</strong> (Single 8F), and{" "}
-                  <strong style={{ color:C.text }}>Blissey</strong> (Double 5F) all have very large HP pools
-                  — plan for 3–4 Dragon Rages or supplement with another move.</>,
+                <>Get a parent with Dragon Rage. Easiest path: buy the <strong style={{ color:C.text }}>Game Corner Dratini</strong> in
+                  Celadon (2,800 coins, starts at Lv 18), level it 4 times to Lv 22 — it learns Dragon Rage.
+                  Alternatively use any Dragonair/Dragonite already trained past Lv 22.</>,
+                <>Breed that parent with <strong style={{ color:C.text }}>Ditto</strong> at the Four Island Day Care
+                  (available post-Elite Four). The egg hatches a <strong style={{ color:C.text }}>Lv 5 Dratini</strong> that
+                  already has Dragon Rage in its moveset.</>,
+                <>Enter the Tower with <strong style={{ color:C.text }}>only that Lv 5 Dratini</strong> in your party.
+                  Opponents scale to Lv 5 — every Pokémon in the Tower has ≤ 40 HP at that level.
+                  Dragon Rage OHKOs everything.</>,
+                <>Use items freely between battles if Dratini takes chip damage. The bag is accessible
+                  between every floor, and the floor timer resets, so there's no rush.</>,
               ].map((step, i) => (
                 <li key={i} style={{ fontSize:11, color:C.muted, lineHeight:1.65 }}>{step}</li>
               ))}
@@ -9567,10 +9581,11 @@ function TowerTab({ checklist, toggleChecklist }) {
             <div style={{ padding:"8px 10px", borderRadius:6,
               background:`${C.gold}0d`, border:`1px solid ${C.gold}30`,
               fontSize:11, color:C.muted, lineHeight:1.65 }}>
-              <strong style={{ color:C.gold }}>Why it's consistent: </strong>
-              Dragon Rage never crits, never varies — 40 damage every time. No RNG to manage.
-              You can heal freely between battles, and the floor timer resets between floors,
-              so there's no time pressure once you're inside.
+              <strong style={{ color:C.gold }}>No breeding? </strong>
+              Gyarados learns Dragon Rage at <strong style={{ color:C.text }}>Lv 20</strong> the moment Magikarp evolves,
+              or Dratini learns it at <strong style={{ color:C.text }}>Lv 22</strong> from leveling.
+              At those levels opponents have 45–80 HP — Dragon Rage reliably 2HKOs most of them; plan
+              extra hits for Chansey (Single 7F &amp; Knockout 4F), Snorlax (Single 8F), and Blissey (Double 5F).
             </div>
           </div>
 
