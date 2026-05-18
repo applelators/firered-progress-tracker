@@ -9489,7 +9489,11 @@ function TowerTab({ checklist, toggleChecklist }) {
                                     <span style={{ fontSize:12, fontWeight:"600", color: p.shiny ? "#f5c842" : C.text }}>{p.pkmn}</span>
                                     {p.shiny && shinyBadge}
                                   </div>
-                                  <div style={{ fontSize:9, color:C.muted, marginTop:1 }}>{p.item}</div>
+                                  <div style={{ display:"flex", gap:5, marginTop:1, alignItems:"center" }}>
+                                    <span style={{ fontSize:9, color:C.muted }}>Lv = your max</span>
+                                    <span style={{ fontSize:9, color:C.muted }}>·</span>
+                                    <span style={{ fontSize:9, color:C.muted }}>{p.item}</span>
+                                  </div>
                                 </div>
                               </div>
                             );
