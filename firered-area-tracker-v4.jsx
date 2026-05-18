@@ -5705,7 +5705,7 @@ function FireRedTracker() {
             ["__div2","",null],
             // Tertiary — occasional lookup
             ["remain","Left","tertiary"],["recurring","Recur","tertiary"],
-            ["gyms","Gyms","tertiary"],["evo","Evolutions","tertiary"],["tms","TMs","tertiary"],
+            ["gyms","Gyms","tertiary"],["tower","Tower","tertiary"],["evo","Evolutions","tertiary"],["tms","TMs","tertiary"],
           ].map(([t,label,group]) => {
             if (t === "__div1" || t === "__div2") return (
               <div key={t} style={{ width:1, alignSelf:"stretch", margin:"4px 8px 0", background:`linear-gradient(180deg, transparent, ${C.border} 30%, ${C.border} 70%, transparent)`, flexShrink:0 }} />
@@ -5742,7 +5742,8 @@ function FireRedTracker() {
       {tab === "team" && <DreamTeamTab isMobile={isMobile} version={version} />}
 
       {/* ── Tab: Gym Matchup ── */}
-      {tab === "gyms" && <GymTab isMobile={isMobile} />}
+      {tab === "gyms"   && <GymTab isMobile={isMobile} />}
+      {tab === "tower"  && <TowerTab checklist={checklist} toggleChecklist={toggleChecklist} />}
 
       {tab === "battle" && <BattleTab />}
 
@@ -9209,6 +9210,248 @@ function BoxTab() {
         );
       })}
     </div>
+    </div>
+  );
+}
+
+// ─── TRAINER TOWER TAB ──────────────────────────────────────────────────────
+// Completion IDs match the 100% checklist: tt-single / tt-double / tt-knockout / tt-mixed
+
+const TOWER_DATA = [
+  { id:"single",   ckId:"tt-single",   label:"Single",   prize:"Up-Grade",    prizeNote:"trade Porygon → Porygon2",
+    desc:"One trainer per floor · two Pokémon each · 8 floors",
+    floors:[
+      { f:"1F", trainers:[{ cls:"Sailor",           name:"Alberto", team:[{pkmn:"Feraligatr",item:"Focus Band"   },{pkmn:"Kangaskhan",item:"Quick Claw"    }] }] },
+      { f:"2F", trainers:[{ cls:"Bug Catcher",      name:"Brandon", team:[{pkmn:"Beedrill",  item:"BrightPowder" },{pkmn:"Yanma",      item:"BrightPowder" }] }] },
+      { f:"3F", trainers:[{ cls:"Juggler",          name:"Jarrett", team:[{pkmn:"Weezing",   item:"Salac Berry"  },{pkmn:"Exeggcute",  item:"Quick Claw"   }] }] },
+      { f:"4F", trainers:[{ cls:"Youngster",        name:"Cole",    team:[{pkmn:"Primeape",  item:"Sitrus Berry" },{pkmn:"Slowbro",    item:"Sitrus Berry" }] }] },
+      { f:"5F", trainers:[{ cls:"Camper",           name:"Joey",    team:[{pkmn:"Nidoking",  item:"Soft Sand"    },{pkmn:"Tauros",     item:"Silk Scarf"   }] }] },
+      { f:"6F", trainers:[{ cls:"Swimmer",          name:"Braden",  team:[{pkmn:"Dunsparce", item:"Persim Berry" },{pkmn:"Politoed",   item:"Chesto Berry" }] }] },
+      { f:"7F", trainers:[{ cls:"Burglar",          name:"Jac",     team:[{pkmn:"Meowth",    item:"Liechi Berry",shiny:true},{pkmn:"Chansey",item:"Lucky Punch"}] }] },
+      { f:"8F", trainers:[{ cls:"Pokémon Breeder",  name:"Lily",    team:[{pkmn:"Togepi",    item:"Sitrus Berry" },{pkmn:"Snorlax",    item:"Leftovers"    }] }] },
+    ] },
+  { id:"double",   ckId:"tt-double",   label:"Double",   prize:"Dragon Scale", prizeNote:"trade Seadra → Kingdra",
+    desc:"One double battle per floor · one Pokémon per trainer · 8 floors",
+    floors:[
+      { f:"1F", trainers:[{ cls:"Twins",        name:"Jen & Kira",  team:[{pkmn:"Jolteon",    item:"Quick Claw"    },{pkmn:"Espeon",    item:"BrightPowder",shiny:true}] }] },
+      { f:"2F", trainers:[{ cls:"Crush Kin",    name:"Jo & Haley",  team:[{pkmn:"Alakazam",   item:"Salac Berry"   },{pkmn:"Houndoom",  item:"Focus Band"   }] }] },
+      { f:"3F", trainers:[{ cls:"Crush Kin",    name:"Ric & Rene",  team:[{pkmn:"Golem",      item:"Scope Lens"    },{pkmn:"Machamp",   item:"Scope Lens"   }] }] },
+      { f:"4F", trainers:[{ cls:"Cool Couple",  name:"Isac & Mag",  team:[{pkmn:"Piloswine",  item:"Soft Sand"     },{pkmn:"Crobat",    item:"King's Rock"  }] }] },
+      { f:"5F", trainers:[{ cls:"Cool Couple",  name:"Jos & Anne",  team:[{pkmn:"Blissey",    item:"Leftovers"     },{pkmn:"Arcanine",  item:"Charcoal"     }] }] },
+      { f:"6F", trainers:[{ cls:"Young Couple", name:"Emy & Alek",  team:[{pkmn:"Ursaring",   item:"Lum Berry"     },{pkmn:"Furret",    item:"Shell Bell"   }] }] },
+      { f:"7F", trainers:[{ cls:"Sis and Bro",  name:"Axe & Ren",   team:[{pkmn:"Lanturn",    item:"BrightPowder"  },{pkmn:"Dragonair", item:"Shell Bell"   }] }] },
+      { f:"8F", trainers:[{ cls:"Cool Couple",  name:"Geb & Megan", team:[{pkmn:"Gyarados",   item:"Salac Berry"   },{pkmn:"Rhydon",    item:"Quick Claw"   }] }] },
+    ] },
+  { id:"knockout", ckId:"tt-knockout", label:"Knockout", prize:"Metal Coat",   prizeNote:"trade Onix → Steelix or Scyther → Scizor",
+    desc:"Three consecutive single battles per floor · one Pokémon each · 8 floors",
+    floors:[
+      { f:"1F", trainers:[
+          { cls:"Biker",          name:"Jordy",    team:[{pkmn:"Magby",    item:"Lax Incense"  }] },
+          { cls:"Biker",          name:"Ernest",   team:[{pkmn:"Togepi",   item:"Quick Claw"   }] },
+          { cls:"Cue Ball",       name:"Gabriel",  team:[{pkmn:"Smoochum", item:"BrightPowder" }] },
+        ] },
+      { f:"2F", trainers:[
+          { cls:"Hiker",          name:"Mike",     team:[{pkmn:"Charizard",item:"Scope Lens"   }] },
+          { cls:"Crush Girl",     name:"Rebecca",  team:[{pkmn:"Flareon",  item:"Silk Scarf"   }] },
+          { cls:"Black Belt",     name:"Nicolas",  team:[{pkmn:"Poliwrath",item:"King's Rock"  }] },
+        ] },
+      { f:"3F", trainers:[
+          { cls:"Picnicker",      name:"Camryn",   team:[{pkmn:"Miltank",  item:"Silk Scarf"   }] },
+          { cls:"Aroma Lady",     name:"Natalia",  team:[{pkmn:"Vileplume",item:"Persim Berry" }] },
+          { cls:"Cool Trainer",   name:"Kathleen", team:[{pkmn:"Lapras",   item:"Lum Berry"    }] },
+        ] },
+      { f:"4F", trainers:[
+          { cls:"Sailor",         name:"Brennan",  team:[{pkmn:"Chansey",  item:"Oran Berry"   }] },
+          { cls:"Fisherman",      name:"Kaden",    team:[{pkmn:"Seaking",  item:"Cheri Berry",shiny:true}] },
+          { cls:"Gentleman",      name:"Emanuel",  team:[{pkmn:"Vaporeon", item:"Shell Bell"   }] },
+        ] },
+      { f:"5F", trainers:[
+          { cls:"Beauty",         name:"Maura",    team:[{pkmn:"Nidoran♀", item:"Sitrus Berry" }] },
+          { cls:"Lass",           name:"Mikaela",  team:[{pkmn:"Nidorina",  item:"Choice Band" }] },
+          { cls:"Engineer",       name:"Flint",    team:[{pkmn:"Nidoqueen", item:"Choice Band" }] },
+        ] },
+      { f:"6F", trainers:[
+          { cls:"Rocker",         name:"Ben",      team:[{pkmn:"Ampharos",  item:"Shell Bell"  }] },
+          { cls:"Engineer",       name:"Camden",   team:[{pkmn:"Granbull",  item:"Choice Band" }] },
+          { cls:"Scientist",      name:"Zackery",  team:[{pkmn:"Misdreavus",item:"Salac Berry" }] },
+        ] },
+      { f:"7F", trainers:[
+          { cls:"Tuber",          name:"Priscilla",team:[{pkmn:"Goldeen",   item:"Apicot Berry"}] },
+          { cls:"Lady",           name:"Charlotte",team:[{pkmn:"Qwilfish",  item:"Persim Berry"}] },
+          { cls:"Swimmer",        name:"Shania",   team:[{pkmn:"Mantine",   item:"Mental Herb" }] },
+        ] },
+      { f:"8F", trainers:[
+          { cls:"Pokémon Ranger", name:"Chelsea",  team:[{pkmn:"Starmie",   item:"Petaya Berry"}] },
+          { cls:"Pokémon Ranger", name:"Trenton",  team:[{pkmn:"Arcanine",  item:"Sitrus Berry"}] },
+          { cls:"Cool Trainer",   name:"Albert",   team:[{pkmn:"Venusaur",  item:"Salac Berry" }] },
+        ] },
+    ] },
+  { id:"mixed",    ckId:"tt-mixed",    label:"Mixed",    prize:"King's Rock",  prizeNote:"trade Poliwhirl → Politoed or Slowpoke → Slowking",
+    desc:"Mix of Single, Double, and Knockout battles · 8 floors",
+    floors:[
+      { f:"1F", type:"Single",   trainers:[{ cls:"Cooltrainer",  name:"Allyson",     team:[{pkmn:"Starmie",    item:"Lum Berry"    },{pkmn:"Kingdra",    item:"Chesto Berry" }] }] },
+      { f:"2F", type:"Single",   trainers:[{ cls:"Psychic",      name:"Lorenzo",     team:[{pkmn:"Hypno",      item:"Salac Berry"  },{pkmn:"Gengar",     item:"Leftovers"    }] }] },
+      { f:"3F", type:"Single",   trainers:[{ cls:"Super Nerd",   name:"Owen",        team:[{pkmn:"Jolteon",    item:"BrightPowder" },{pkmn:"Porygon2",   item:"Salac Berry"  }] }] },
+      { f:"4F", type:"Double",   trainers:[{ cls:"Cool Couple",  name:"Geb & Megan", team:[{pkmn:"Nidoking",   item:"Focus Band"   },{pkmn:"Nidoqueen",  item:"Focus Band"   }] }] },
+      { f:"5F", type:"Double",   trainers:[{ cls:"Sis and Bro",  name:"Kat & Kipp",  team:[{pkmn:"Corsola",    item:"Quick Claw"   },{pkmn:"Kingler",    item:"Quick Claw"   }] }] },
+      { f:"6F", type:"Knockout", trainers:[
+          { cls:"Pokémon Ranger", name:"Chelsea",  team:[{pkmn:"Ledian",    item:"Liechi Berry" }] },
+          { cls:"Pokémon Ranger", name:"Trenton",  team:[{pkmn:"Gyarados",  item:"Sitrus Berry" }] },
+          { cls:"Cool Trainer",   name:"Albert",   team:[{pkmn:"Tyranitar", item:"Salac Berry"  }] },
+        ] },
+      { f:"7F", type:"Double",   trainers:[{ cls:"Crush Kin",    name:"Ric & Rene",  team:[{pkmn:"Hitmonchan", item:"Scope Lens"   },{pkmn:"Hitmonlee",  item:"Scope Lens"   }] }] },
+      { f:"8F", type:"Knockout", trainers:[
+          { cls:"Hiker",          name:"Mike",     team:[{pkmn:"Charizard", item:"Scope Lens"   }] },
+          { cls:"Crush Girl",     name:"Rebecca",  team:[{pkmn:"Nidoqueen", item:"Silk Scarf"   }] },
+          { cls:"Black Belt",     name:"Nicolas",  team:[{pkmn:"Poliwrath", item:"King's Rock"  }] },
+        ] },
+    ] },
+];
+
+const TOWER_ACCENT = "#c85252";
+
+function TowerTab({ checklist, toggleChecklist }) {
+  const { useState } = React;
+  const [mode, setMode] = useState("single");
+
+  const modeData  = TOWER_DATA.find(m => m.id === mode);
+  const doneCount = TOWER_DATA.filter(m => !!checklist[m.ckId]).length;
+
+  const shinyBadge = (
+    <span style={{ fontSize:8, fontWeight:"700", padding:"1px 5px", borderRadius:99, whiteSpace:"nowrap",
+      color:"#f5c842", background:"rgba(245,200,66,0.18)", border:"1px solid rgba(245,200,66,0.4)" }}>★ Shiny</span>
+  );
+  const prizeBadge = prize => (
+    <span style={{ fontSize:9, fontWeight:"700", padding:"2px 7px", borderRadius:99, whiteSpace:"nowrap",
+      color:"#c8a040", background:"rgba(200,150,40,0.16)", border:"1px solid rgba(200,150,40,0.4)" }}>{prize}</span>
+  );
+  const typeBadge = type => (
+    <span style={{ fontSize:8, fontWeight:"700", padding:"1px 6px", borderRadius:3, whiteSpace:"nowrap",
+      color:"rgba(255,255,255,0.8)", background:"rgba(255,255,255,0.12)", border:`1px solid ${C.border}` }}>{type}</span>
+  );
+
+  const chkSty = done => ({
+    width:20, height:20, borderRadius:5, flexShrink:0, transition:"all 0.12s", cursor:"pointer",
+    border:`2px solid ${done ? C.green : C.border}`, background: done ? C.green : "transparent",
+    display:"flex", alignItems:"center", justifyContent:"center", fontSize:11, fontWeight:"700", color:"#000",
+  });
+
+  return (
+    <div style={{ flex:1, overflowY:"auto" }}>
+      <div style={{ maxWidth:800, margin:"0 auto", padding:"20px 16px 40px" }}>
+
+        {/* Header */}
+        <div style={{ marginBottom:18 }}>
+          <div style={{ display:"flex", alignItems:"baseline", gap:10, marginBottom:4 }}>
+            <span style={{ fontSize:16, fontWeight:"700", color:C.text }}>Trainer Tower</span>
+            <span style={{ fontSize:11, color:C.muted }}>Seven Island · post-game</span>
+            <span style={{ fontSize:11, color: doneCount === 4 ? C.green : C.muted, marginLeft:"auto" }}>{doneCount} / 4 cleared</span>
+          </div>
+          <div style={{ fontSize:11, color:C.muted, lineHeight:1.7 }}>
+            All trainer Pokémon scale to your highest party level. No XP or money awarded. Items (Potions, Revives) usable between battles. Three Pokémon in the tower use shiny sprites: Burglar Jac's Meowth (Single 7F), Twins' Espeon (Double 1F), Fisherman Kaden's Seaking (Knockout 4F).
+          </div>
+        </div>
+
+        {/* Mode selector */}
+        <div style={{ display:"flex", gap:6, marginBottom:16, flexWrap:"wrap" }}>
+          {TOWER_DATA.map(m => {
+            const isActive = mode === m.id;
+            const isDone   = !!checklist[m.ckId];
+            return (
+              <button key={m.id} onClick={() => setMode(m.id)} style={{
+                display:"flex", alignItems:"center", gap:6,
+                padding:"7px 16px", borderRadius:7, border:"none", cursor:"pointer",
+                fontFamily:"'DM Sans',system-ui,sans-serif", fontSize:13, fontWeight:"600",
+                background: isActive ? `${TOWER_ACCENT}22` : isDone ? `${C.green}14` : "rgba(0,0,0,0.2)",
+                color: isActive ? TOWER_ACCENT : isDone ? C.green : C.muted,
+                outline: `1px solid ${isActive ? TOWER_ACCENT : isDone ? C.green + "50" : C.border}`,
+                transition:"all 0.12s",
+              }}>
+                {m.label}
+                {isDone && <span style={{ fontSize:11 }}>✓</span>}
+              </button>
+            );
+          })}
+        </div>
+
+        {modeData && (<>
+
+          {/* Mode header: description + prize + cleared toggle */}
+          <div style={{ display:"flex", alignItems:"center", gap:12, padding:"10px 14px", borderRadius:8, marginBottom:16,
+            background:"rgba(0,0,0,0.25)", border:`1px solid ${C.border}` }}>
+            <div style={{ flex:1, minWidth:0 }}>
+              <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4, flexWrap:"wrap" }}>
+                <span style={{ fontSize:13, fontWeight:"700", color:TOWER_ACCENT }}>{modeData.label} Mode</span>
+                {prizeBadge(`Prize: ${modeData.prize}`)}
+                <span style={{ fontSize:10, color:C.muted }}>{modeData.prizeNote}</span>
+              </div>
+              <div style={{ fontSize:10, color:C.muted }}>{modeData.desc}</div>
+            </div>
+            <div style={{ display:"flex", alignItems:"center", gap:7, flexShrink:0 }}
+              onClick={() => toggleChecklist(modeData.ckId)}>
+              <span style={{ fontSize:10, color: checklist[modeData.ckId] ? C.green : C.muted, userSelect:"none" }}>Cleared</span>
+              <div style={chkSty(!!checklist[modeData.ckId])}>{checklist[modeData.ckId] && "✓"}</div>
+            </div>
+          </div>
+
+          {/* Floor list */}
+          <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+            {modeData.floors.map(({ f, type, trainers }) => {
+              const hasShiny = trainers.some(tr => tr.team.some(p => p.shiny));
+              return (
+                <div key={f} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
+
+                  {/* Floor label */}
+                  <div style={{ width:42, flexShrink:0, textAlign:"right", paddingTop:10 }}>
+                    <div style={{ fontSize:11, fontWeight:"700", color:TOWER_ACCENT }}>{f}</div>
+                    {type && <div style={{ fontSize:8, color:C.muted, opacity:0.75, marginTop:1 }}>{type}</div>}
+                  </div>
+
+                  {/* Trainer cards for this floor */}
+                  <div style={{ flex:1, display:"flex", flexDirection:"column", gap:3 }}>
+                    {trainers.map((tr, ti) => (
+                      <div key={ti} style={{ display:"flex", alignItems:"flex-start", gap:8, padding:"7px 10px",
+                        borderRadius:7, background:C.card, border:`1px solid ${C.border}` }}>
+
+                        {/* Trainer class + name */}
+                        <div style={{ flexShrink:0, minWidth:160 }}>
+                          <div style={{ fontSize:10, color:C.muted, letterSpacing:"0.04em" }}>{tr.cls}</div>
+                          <div style={{ fontSize:12, fontWeight:"700", color:C.text }}>{tr.name}</div>
+                        </div>
+
+                        <div style={{ width:1, alignSelf:"stretch", background:C.border, flexShrink:0, margin:"0 2px" }} />
+
+                        {/* Pokémon team */}
+                        <div style={{ display:"flex", gap:12, flexWrap:"wrap", flex:1, alignItems:"center" }}>
+                          {tr.team.map((p, pi) => {
+                            const id = allDexId(p.pkmn);
+                            return (
+                              <div key={pi} style={{ display:"flex", alignItems:"center", gap:5 }}>
+                                {id && <img src={pokeSpriteUrl(id)} alt={p.pkmn}
+                                  style={{ width:36, height:36, imageRendering:"pixelated", flexShrink:0 }} />}
+                                <div>
+                                  <div style={{ display:"flex", alignItems:"center", gap:4, flexWrap:"wrap" }}>
+                                    <span style={{ fontSize:12, fontWeight:"600", color: p.shiny ? "#f5c842" : C.text }}>{p.pkmn}</span>
+                                    {p.shiny && shinyBadge}
+                                  </div>
+                                  <div style={{ fontSize:9, color:C.muted, marginTop:1 }}>{p.item}</div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                      </div>
+                    ))}
+                  </div>
+
+                </div>
+              );
+            })}
+          </div>
+
+        </>)}
+      </div>
     </div>
   );
 }
