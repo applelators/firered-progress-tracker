@@ -9310,12 +9310,67 @@ const TOWER_DATA = [
 
 const TOWER_ACCENT = "#c85252";
 
+// Types for each Pokémon that appears in Trainer Tower (used for dream team matchup)
+const TOWER_PKMN_TYPES = {
+  "Feraligatr":["Water"],           "Kangaskhan":["Normal"],         "Beedrill":["Bug","Poison"],
+  "Yanma":["Bug","Flying"],          "Weezing":["Poison"],            "Exeggcute":["Grass","Psychic"],
+  "Primeape":["Fighting"],           "Slowbro":["Water","Psychic"],   "Nidoking":["Poison","Ground"],
+  "Tauros":["Normal"],               "Dunsparce":["Normal"],          "Politoed":["Water"],
+  "Meowth":["Normal"],               "Chansey":["Normal"],            "Togepi":["Normal"],
+  "Snorlax":["Normal"],              "Jolteon":["Electric"],          "Espeon":["Psychic"],
+  "Alakazam":["Psychic"],            "Houndoom":["Dark","Fire"],      "Golem":["Rock","Ground"],
+  "Machamp":["Fighting"],            "Piloswine":["Ice","Ground"],    "Crobat":["Poison","Flying"],
+  "Blissey":["Normal"],              "Arcanine":["Fire"],             "Ursaring":["Normal"],
+  "Furret":["Normal"],               "Lanturn":["Water","Electric"],  "Dragonair":["Dragon"],
+  "Gyarados":["Water","Flying"],     "Rhydon":["Ground","Rock"],      "Magby":["Fire"],
+  "Smoochum":["Ice","Psychic"],      "Charizard":["Fire","Flying"],   "Flareon":["Fire"],
+  "Poliwrath":["Water","Fighting"],  "Miltank":["Normal"],            "Vileplume":["Grass","Poison"],
+  "Lapras":["Water","Ice"],          "Seaking":["Water"],             "Vaporeon":["Water"],
+  "Nidoran♀":["Poison"],             "Nidorina":["Poison"],           "Nidoqueen":["Poison","Ground"],
+  "Ampharos":["Electric"],           "Granbull":["Normal"],           "Misdreavus":["Ghost"],
+  "Goldeen":["Water"],               "Qwilfish":["Water","Poison"],   "Mantine":["Water","Flying"],
+  "Starmie":["Water","Psychic"],     "Venusaur":["Grass","Poison"],   "Hypno":["Psychic"],
+  "Gengar":["Ghost","Poison"],       "Porygon2":["Normal"],           "Corsola":["Water","Rock"],
+  "Kingler":["Water"],               "Ledian":["Bug","Flying"],       "Tyranitar":["Rock","Dark"],
+  "Hitmonchan":["Fighting"],         "Hitmonlee":["Fighting"],        "Kingdra":["Water","Dragon"],
+};
+
 function TowerTab({ checklist, toggleChecklist }) {
-  const { useState } = React;
+  const { useState, useMemo } = React;
   const [mode, setMode] = useState("single");
 
   const modeData  = TOWER_DATA.find(m => m.id === mode);
   const doneCount = TOWER_DATA.filter(m => !!checklist[m.ckId]).length;
+
+  // Collect all enemy types in the current mode for dream-team matchup
+  const modeTypes = useMemo(() => {
+    if (!modeData) return [];
+    const types = new Set();
+    for (const fl of modeData.floors)
+      for (const tr of fl.trainers)
+        for (const p of tr.team)
+          for (const t of (TOWER_PKMN_TYPES[p.pkmn] || [])) types.add(t);
+    return [...types];
+  }, [modeData]);
+
+  const savedTeam = useMemo(() => {
+    try {
+      const r = localStorage.getItem("frlg-dream-team-v4");
+      if (!r) return null;
+      const { favorite, pins, version } = JSON.parse(r);
+      if (!favorite) return null;
+      return buildDreamTeamV2(favorite, pins, version);
+    } catch { return null; }
+  }, []);
+
+  const teamPicks = useMemo(() => {
+    if (!savedTeam) return null;
+    return savedTeam.filter(name => {
+      const cand = DT_CANDIDATES.find(c => c.name === name);
+      if (!cand) return false;
+      return cand.types.some(myType => modeTypes.some(et => (TYPE_CHART[myType]?.[et] || 1) >= 2));
+    });
+  }, [savedTeam, modeTypes]);
 
   const shinyBadge = (
     <span style={{ fontSize:8, fontWeight:"700", padding:"1px 5px", borderRadius:99, whiteSpace:"nowrap",
@@ -9449,6 +9504,37 @@ function TowerTab({ checklist, toggleChecklist }) {
               );
             })}
           </div>
+
+          {/* Dream team recommendations */}
+          {teamPicks && (
+            <div style={{ marginTop:20, paddingTop:16, borderTop:`1px solid ${C.border}` }}>
+              <div style={{ fontSize:9, color:C.gold, letterSpacing:1.5, textTransform:"uppercase", fontWeight:"700", marginBottom:8 }}>
+                Your dream team picks for this mode
+              </div>
+              {teamPicks.length === 0
+                ? <div style={{ fontSize:11, color:C.muted, padding:"8px 12px", background:C.card, borderRadius:8, border:`1px solid ${C.border}` }}>
+                    None of your team members have a type advantage here.
+                  </div>
+                : <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+                    {teamPicks.map(name => {
+                      const dId = allDexId(name);
+                      const cand = DT_CANDIDATES.find(c => c.name === name);
+                      return (
+                        <div key={name} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:3,
+                          padding:"8px 10px", background:C.card, borderRadius:8, border:`1px solid ${C.gold}`,
+                          minWidth:68, textAlign:"center" }}>
+                          {dId && <img src={pokeSpriteUrl(dId)} alt={name} width={36} height={36} style={{ imageRendering:"pixelated" }} />}
+                          <span style={{ fontSize:9, color:C.gold, fontWeight:"600" }}>{name}</span>
+                          <div style={{ display:"flex", gap:2, flexWrap:"wrap", justifyContent:"center" }}>
+                            {cand?.types.map(t => <span key={t} style={{ fontSize:7, color:"#fff", background:TYPE_COLORS[t]||"#888", padding:"1px 4px", borderRadius:2, fontWeight:"700" }}>{t}</span>)}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+              }
+            </div>
+          )}
 
         </>)}
       </div>
